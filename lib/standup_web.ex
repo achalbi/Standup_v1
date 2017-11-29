@@ -40,6 +40,8 @@ defmodule StandupWeb do
       import StandupWeb.Router.Helpers
       import StandupWeb.ErrorHelpers
       import StandupWeb.Gettext
+      
+      import Standup.Accounts, only: [current_user: 1, logged_in?: 1]
     end
   end
 

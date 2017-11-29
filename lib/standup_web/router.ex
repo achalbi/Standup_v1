@@ -17,6 +17,16 @@ defmodule StandupWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/users", UserController
+  end
+
+  scope "/auth", StandupWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :new
+    get "/:provider/callback", AuthController, :callback
+    post "/identity/callback", AuthController, :callback
+    delete "/delete", AuthController, :delete
   end
 
   # Other scopes may use custom stacks.

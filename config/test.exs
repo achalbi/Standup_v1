@@ -17,3 +17,6 @@ config :standup, Standup.Repo,
   database: "standup_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Configuration for Comeonin
+config :bcrypt_elixir, :log_rounds, 4
