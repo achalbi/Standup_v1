@@ -8,6 +8,8 @@ defmodule Standup.Accounts.Credential do
     field :email, :string
     field :password_hash, :string
     field :provider, :string
+    field :token, :string
+    field :avatar, :string
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
     belongs_to :user, User
@@ -15,17 +17,25 @@ defmodule Standup.Accounts.Credential do
     timestamps()
   end
 
-
   @doc false
   def changeset(%Credential{} = credential, attrs) do
     credential
-    |> cast(attrs, [:email, :password, :password_confirmation, :provider])
-    |> validate_required([:email, :password, :password_confirmation, :provider])
+    |> cast(attrs, [:email, :password, :password_confirmation, :provider, :token])
+    |> validate_required([:email, :password, :password_confirmation])
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
     |> validate_length(:password, min: 1)
     |> validate_length(:password_confirmation, min: 1)
     |> validate_confirmation(:password)
+  end
+
+  @doc false
+  def strategy_changeset(%Credential{} = credential, attrs) do
+    credential
+    |> cast(attrs, [:email, :provider, :token, :avatar])
+    |> validate_required([:email, :provider, :token])
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:email)
   end
 
   @doc false

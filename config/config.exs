@@ -37,7 +37,7 @@ config :ueberauth, Ueberauth,
   ]
 
 # Ueberauth Strategy Config for Google oauth
-config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+config :ueberauth, Ueberauth.Strategy.Google.OAuth ,
   client_id: System.get_env("GOOGLE_CLIENT_ID"),
   client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
   redirect_uri: System.get_env("GOOGLE_REDIRECT_URI")
@@ -51,7 +51,7 @@ config :guardian, Guardian,
   allowed_drift: 2000,
   verify_issuer: true, # optional
   secret_key: System.get_env("GUARDIAN_SECRET") || "j6LyXGbyn1R15T9UzgWUmtlAGxRpnM6eMdSdmFR5SS3mpxpsPKPBrUfjnuynICgj",
-  serializer: SocialAppApi.GuardianSerializer
+  serializer: Standup.GuardianSerializer
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

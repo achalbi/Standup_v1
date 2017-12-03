@@ -37,13 +37,16 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["static", "css", "js", "vendor"],
+    watched: ["static", "css", "js", "vendor", "fonts"],
     // Where to compile files to
     public: "../priv/static"
   },
 
   // Configure your plugins
   plugins: {
+    copycat: {
+      "fonts": ["node_modules/font-awesome/fonts"] // copy node_modules/font-awesome/fonts/* to priv/static/fonts/
+    },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/]
@@ -57,6 +60,13 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    globals: { // Bootstrap JavaScript requires both '$', 'jQuery', and Tether in global scope
+      $: 'jquery',
+      jQuery: 'jquery',
+      jquery: 'jquery'
+  //    Tether: 'tether',
+  //    bootstrap: 'bootstrap' // require Bootstrap JavaScript globally too
+    }
   }
 };

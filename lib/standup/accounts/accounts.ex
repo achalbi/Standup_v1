@@ -2,6 +2,9 @@ defmodule Standup.Accounts do
   @moduledoc """
   The Accounts context.
   """
+  require Logger
+  require Poison
+  require IEx
 
   import Ecto.Query, warn: false
 
@@ -61,6 +64,14 @@ defmodule Standup.Accounts do
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.create_changeset/2)
+    |> Repo.insert()
+  end
+
+  def create_oauth_user(attrs \\ %{}) do
+    %User{}
+    |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.strategy_changeset/2)
     |> Repo.insert()
   end
 
@@ -205,6 +216,13 @@ defmodule Standup.Accounts do
   def change_credential(%Credential{} = credential) do
     Credential.changeset(credential, %{})
   end
+
+  def strategy_create_user(attrs \\ %{}) do
+    %User{}
+    |> User.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.strategy_changeset/2)
+    |> Repo.insert()
+  end
   
 
   def authenticate(%Auth{provider: :identity} = auth) do
@@ -214,9 +232,55 @@ defmodule Standup.Accounts do
         where: c.email == ^auth.uid
 
     Repo.one(query)
+    |> Repo.preload(:credential)
     |> authorize(auth)
   end
 
+  def insert_or_update(%Auth{} = auth) do
+   # {:ok, basic_info(auth)}
+    query =
+      from u in User,
+        inner_join: c in assoc(u, :credential),
+        where: c.email == ^auth.info.email
+
+    case Repo.one(query) do
+      nil ->
+        credentials_params = %{token: auth.credentials.token, email: auth.info.email, provider: Atom.to_string(auth.provider), avatar: avatar_from_auth(auth)}
+        %{firstname: auth.info.first_name, lastname: auth.info.last_name, credential: credentials_params}
+        |> create_oauth_user()
+      user ->
+        {:ok, user}
+    end
+  end
+
+  #%{id: auth.uid, name: name_from_auth(auth), avatar: avatar_from_auth(auth)}
+
+    # github does it this way
+  defp avatar_from_auth( %{info: %{urls: %{avatar_url: image}} }), do: image
+
+  #facebook does it this way
+  defp avatar_from_auth( %{info: %{image: image} }), do: image
+
+  # default case if nothing matches
+  defp avatar_from_auth( auth ) do
+    Logger.warn auth.provider <> " needs to find an avatar URL!"
+    Logger.debug(Poison.encode!(auth))
+    nil
+  end
+
+  # defp name_from_auth(auth) do
+  #   if auth.info.name do
+  #     auth.info.name
+  #   else
+  #     name = [auth.info.first_name, auth.info.last_name]
+  #     |> Enum.filter(&(&1 != nil and &1 != ""))
+
+  #     cond do
+  #       length(name) == 0 -> auth.info.nickname
+  #       true -> Enum.join(name, " ")
+  #     end
+  #   end
+  # end
 
   defp authorize(nil,_auth), do: {:error, "Invalid username or password"}
   defp authorize(user, auth) do
@@ -228,10 +292,12 @@ defmodule Standup.Accounts do
   defp resolve_authorization(true, user), do: {:ok, user}
 
   def current_user(conn) do
-    id = Plug.Conn.get_session(conn, :current_user)
-    if id, do: Standup.Repo.get(User, id)
+    id = Plug.Conn.get_session(conn, :current_user_id)
+    if id, do: Standup.Repo.get(User, id) |> Repo.preload(:credential)
+    #id = Guardian.Plug.current_resource(conn)
+    #Guardian.Plug.current_resource(conn)
   end
 
-  def logged_in?(conn), do: !!current_user(conn)
+  def logged_in?(conn), do: !!current_user(conn) #Guardian.Plug.authenticated?(conn)
 
 end

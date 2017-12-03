@@ -1,1 +1,22 @@
 /* This file is for your main application css. */
+
+
+.user-avatar-sm {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #769fd1;
+}
+
+/* Phoenix flash messages */
+.alert:empty { display: none; }
+
+.clear, .clear-10, .clear-15 {
+  clear: both;
+  height: 0; overflow: hidden; /* Précaution pour IE 7 */
+}
+.clear-10 {
+  margin-bottom: 10px
+}
+.clear-15 {
+  margin-bottom: 15px
+}

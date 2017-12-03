@@ -1,31 +1,37 @@
-<h1>Sign in</h1>
-
-
-<%= form_tag @callback_url, method: "post", class: "login", novalidate: true do %>
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label" for="email-input">Email</label>
-    <div class="col-sm-10">
-        <input class="form-control" type="email" name="email" value="<%= @conn.params["email"] %>" required />
+<div class="row"></div>
+<div class="row">
+  <div class="card-panel hoverable">
+    <h2 class="center orange-text">Sign in</h2>
+    <div class="center">
+      <%= form_tag @callback_url, method: "post", class: "login", novalidate: true do %>
+      <div class="row">
+        <div class="input-field col s8 offset-s2">
+          <label for="email">Email</label>
+          <input type="email" name="email" value="
+            <%= @conn.params["email"] %>" required class="validate" />
+        </div>
+      </div>
+      <div class="row">
+          <div class="input-field col s8 offset-s2">
+            <label for="password">Password</label>
+            <input type="password" name="password" required class="validate" />
+          </div>
+      </div>
+      <div class="row">
+          <div class="">
+            <button type="submit" class="btn-large waves-effect waves-light orange">Sign in</button>
+            <a href="/users/new" class="btn-large waves-effect waves-light blue">Sign up</a>
+          </div>
+      </div>
+      <% end %>
+    </div>
+    <h5 class="center grey-text">
+      <smal >or</small>
+    </h5>
+    <div class="center">
+      <a class="btn-large waves-effect waves-light blue accent-4 z-depth-4" href="/auth/google">
+        <i class="material-icons small"></i>Sign in with Google  
+      </a>
     </div>
   </div>
-
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label" for="password-input">Password</label>
-    <div class="col-sm-10">
-        <input class="form-control" type="password" name="password" required />
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-sm-10 pull-right">
-      <button type="submit" class="btn btn-primary">Sign in</button>
-    </div>
-  </div>
-<% end %>
-
-<%= if logged_in?(@conn) do %>
-    <%= form_for @conn, auth_path(@conn, :delete), [method: :delete], fn _ -> %>
-    <div class="form-group">
-        <%= submit "logout" %>
-    </div>
-    <% end %>
-<% end %>
+</div>

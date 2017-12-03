@@ -9,22 +9,55 @@
 
     <title>Hello Standup!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
   </head>
 
   <body>
+    <nav class="light-blue lighten-1">
+      <div class="nav-wrapper container">
+        <a class="brand-logo" href="#">Stand up</a>
+        <ul class="right hide-on-med-and-down">
+          <%= if logged_in?(@conn) do %>
+            <li>
+              <%# <%= img_tag(current_user(@conn).credential.avatar, class: "circle user-avatar-sm ") %>
+            </li>
+            <li>
+              <%= form_for @conn, auth_path(@conn, :delete), [method: :delete], fn _ -> %>
+                    <%= submit "logout", class: "waves-effect waves-blue btn-flat transparent white-text" %>
+              <% end %>
+            </li>
+          <% else %>
+            <li><a href="/auth/identity">Sign in</a></li>
+          <% end %>
+        </ul>
+      </div>
+    </nav>
+
     <div class="container">
-      <header class="header">
-        <span class="logo"></span>
-      </header>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
+      <%= if(get_flash(@conn, :info)) do %>
+      <div class="card green lighten-5" role="alert">
+        <div class="card-content green-text">
+          <p><%= get_flash(@conn, :info) %></p>
+        </div>
+      </div>
+      <% end %>
+      <%= if(get_flash(@conn, :error)) do %>
+      <div class="card red lighten-5" role="alert">
+        <div class="card-content red-text">
+          <p><%= get_flash(@conn, :error) %></p>
+        </div>
+      </div>
+      <% end %>
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
 
     </div> <!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

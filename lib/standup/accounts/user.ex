@@ -17,7 +17,7 @@ defmodule Standup.Accounts.User do
   def changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:firstname, :lastname, :username])
-    |> validate_required([:firstname, :lastname, :username])
-    |> unique_constraint(:username)
+    |> validate_required([:firstname, :lastname])
+  #  |> unique_constraint(:username)
   end
 end

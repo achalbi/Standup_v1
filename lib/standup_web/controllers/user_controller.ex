@@ -1,6 +1,8 @@
 defmodule StandupWeb.UserController do
   use StandupWeb, :controller
 
+  require IEx
+
   alias Standup.Accounts
   alias Standup.Accounts.User
 
@@ -15,10 +17,12 @@ defmodule StandupWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+   # IEx.pry
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User created successfully.")
+        |> put_session(:current_user, user.id)
         |> redirect(to: user_path(conn, :show, user))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

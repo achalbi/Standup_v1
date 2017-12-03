@@ -9,12 +9,17 @@ defmodule StandupWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  # pipeline :authorization do
+  #   plug Guardian.Plug.VerifySession
+  #   plug Guardian.Plug.LoadResource
+  # end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", StandupWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser] #, :authorization] # Use the default browser stack
 
     get "/", PageController, :index
     resources "/users", UserController
@@ -25,7 +30,7 @@ defmodule StandupWeb.Router do
 
     get "/:provider", AuthController, :new
     get "/:provider/callback", AuthController, :callback
-    post "/identity/callback", AuthController, :callback
+    post "/identity/callback", AuthController, :identity_callback
     delete "/delete", AuthController, :delete
   end
 

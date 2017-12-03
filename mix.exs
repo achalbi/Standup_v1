@@ -20,7 +20,7 @@ defmodule Standup.Mixfile do
   def application do
     [
       mod: {Standup.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_google, :ueberauth_identity]
+      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_google, :ueberauth_identity] #, :guardian]
     ]
   end
 
