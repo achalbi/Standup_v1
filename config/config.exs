@@ -43,15 +43,11 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth ,
   redirect_uri: System.get_env("GOOGLE_REDIRECT_URI")
   
 # Guardian configuration
-config :guardian, Guardian,
-  allowed_algos: ["HS512"], # optional
-  verify_module: Guardian.JWT,  # optional
+config :standup, Standup.Guardian,
   issuer: "standup",
-  ttl: { 30, :days },
-  allowed_drift: 2000,
-  verify_issuer: true, # optional
   secret_key: System.get_env("GUARDIAN_SECRET") || "j6LyXGbyn1R15T9UzgWUmtlAGxRpnM6eMdSdmFR5SS3mpxpsPKPBrUfjnuynICgj",
-  serializer: Standup.GuardianSerializer
+  error_handler: Standup.AuthErrorHandler
+  #serializer: Standup.GuardianSerializer
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

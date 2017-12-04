@@ -9,24 +9,44 @@ defmodule StandupWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  # pipeline :authorization do
+  # pipeline :browser_auth do
   #   plug Guardian.Plug.VerifySession
-  #   plug Guardian.Plug.LoadResource
+  #   plug Guardian.Plug.EnsureAuthenticated, handler: Standup.AuthErrorHandler
+  #   plug Guardian.Plug.LoadResource, allow_blank: true
+  #   plug Standup.CurrentUser
+  # end
+
+  # pipeline :api do
+  #   plug :accepts, ["json"]
+  # end
+  pipeline :browser_session do
+    plug Standup.Guardian.AuthPipeline.Browser
+    plug Standup.Auth.CurrentUser
+  end
+
+  pipeline :login_required do
+    plug Standup.Guardian.AuthPipeline.Authenticate
+  end
+
+  # pipeline :authorize_admin do
+  #   plug Standup.Guardian.AuthPipeline.Authenticate
+  #   plug Standup.Auth.Authorize, :admin
   # end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Standup.Guardian.AuthPipeline.JSON
   end
 
   scope "/", StandupWeb do
-    pipe_through [:browser] #, :authorization] # Use the default browser stack
+    pipe_through [:browser, :browser_session, :login_required] # Use the default browser stack
 
     get "/", PageController, :index
     resources "/users", UserController
   end
 
   scope "/auth", StandupWeb do
-    pipe_through :browser
+    pipe_through [:browser, :browser_session]
 
     get "/:provider", AuthController, :new
     get "/:provider/callback", AuthController, :callback

@@ -6,6 +6,7 @@ defmodule StandupWeb.AuthController do
 
   alias Ueberauth.Strategy.Helpers
   alias Standup.Accounts
+  alias Standup.Guardian
   
   import Standup.Helpers, only: [scrub_get_params: 2]
 
@@ -13,21 +14,21 @@ defmodule StandupWeb.AuthController do
 
 
   def new(conn, _params) do
-    render(conn, "new.html", callback_url: Helpers.callback_url(conn), current_user_id: nil)
+    render(conn, "new.html", callback_url: Helpers.callback_url(conn))#, current_user_id: nil)
   end
 
   def delete(conn, _params) do
     conn
     |> put_flash(:info, "You have been logged out!")
   #  |> configure_session(drop: true)
-    |> configure_session(drop: true)
-    |> redirect(to: "/auth/identity", callback_url: Helpers.callback_url(conn), current_user_id: nil)
+    |> Guardian.Plug.sign_out()
+    |> redirect(to: "/auth/identity", callback_url: Helpers.callback_url(conn))#, current_user_id: nil)
   end
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
     |> put_flash(:error, "Failed to authenticate.")
-    |> redirect(to: "/auth/identity", callback_url: Helpers.callback_url(conn), current_user_id: nil)
+    |> redirect(to: "/auth/identity", callback_url: Helpers.callback_url(conn))#, current_user_id: nil)
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
@@ -35,12 +36,13 @@ defmodule StandupWeb.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, user.firstname <> " " <> user.lastname <> " Successfully authenticated.")
-        |> put_session(:current_user_id, user.id)
+       # |> put_session(:current_user_id, user.id)
+        |> Guardian.Plug.sign_in(user)
         |> redirect(to: "/")
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)
-        |> render("new.html", callback_url: Helpers.callback_url(conn), current_user: nil)
+        |> render("new.html", callback_url: Helpers.callback_url(conn))#, current_user: nil)
     end
   end
 
@@ -50,18 +52,19 @@ defmodule StandupWeb.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")
-        |> put_session(:current_user_id, user.id)
+       # |> put_session(:current_user_id, user.id)
+        |> Guardian.Plug.sign_in(user)
         |> redirect(to: "/")
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)
-        |> render("new.html", callback_url: Helpers.callback_url(conn), current_user: nil)
+        |> render("new.html", callback_url: Helpers.callback_url(conn))#, current_user: nil)
     end
   end
 
   def identity_callback(conn, _params) do
     conn
     |> put_flash(:error, "Email/Password can't be blank")
-    |> render("new.html", callback_url: Helpers.callback_url(conn), current_user: nil)
+    |> render("new.html", callback_url: Helpers.callback_url(conn))#, current_user: nil)
   end
 end

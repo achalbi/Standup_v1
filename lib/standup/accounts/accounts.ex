@@ -292,8 +292,9 @@ defmodule Standup.Accounts do
   defp resolve_authorization(true, user), do: {:ok, user}
 
   def current_user(conn) do
-    id = Plug.Conn.get_session(conn, :current_user_id)
-    if id, do: Standup.Repo.get(User, id) |> Repo.preload(:credential)
+    #id = Plug.Conn.get_session(conn, :current_user_id)
+    current_user = Guardian.Plug.current_resource(conn)
+    if current_user, do: Standup.Repo.get(User, current_user.id) |> Repo.preload(:credential)
     #id = Guardian.Plug.current_resource(conn)
     #Guardian.Plug.current_resource(conn)
   end
