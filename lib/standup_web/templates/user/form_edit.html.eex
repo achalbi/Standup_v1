@@ -1,0 +1,49 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p><%= error_string_from_changeset(@changeset) %></p>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="input-field col m6 s12">
+      <%= label f, :firstname %>
+      <%= text_input f, :firstname, class: "validate", required: true %>
+      <%= error_tag f, :firstname %>
+    </div>
+
+    <div class="input-field col m6 s12">
+      <%= label f, :lastname %>
+      <%= text_input f, :lastname, class: "validate", required: true %>
+      <%= error_tag f, :lastname %>
+    </div>
+  </div>
+
+  <%= inputs_for f, :credential, fn cf -> %>
+    <div class="input-field col s12">
+      <%= label cf, :email %>
+      <%= text_input cf, :email, class: "validate", required: true %>
+      <%= error_tag cf, :email %>
+    </div>
+
+    <div class="row">
+      <div class="input-field col m6 s12">
+        <%= label cf, :password %>
+        <%= password_input cf, :password, class: "validate" %>
+        <%= error_tag cf, :password %>
+      </div>
+
+      <div class="input-field col m6 s12">
+        <%= label cf, :password_confirmation %>
+        <%= password_input cf, :password_confirmation, class: "validate" %>
+        <%= error_tag cf, :password_confirmation %>
+      </div>
+    </div>
+    <%= hidden_input cf, :provider, value: 'identity' %>
+  <% end %>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "waves-effect waves-light btn orange" %>
+    <a href="/auth/identity" class="waves-effect waves-light btn blue right hide-on-large-only">Sign in</a>
+  </div>
+<% end %>

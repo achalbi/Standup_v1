@@ -41,13 +41,18 @@ defmodule StandupWeb.Router do
   scope "/auth", StandupWeb do
     pipe_through [:browser, :browser_session]
     
-    get "/users/new", UserController, :new
     get "/:provider", AuthController, :new
     get "/:provider/callback", AuthController, :callback
     post "/identity/callback", AuthController, :identity_callback
     delete "/delete", AuthController, :delete
   end
   
+  scope "/users", StandupWeb do
+    pipe_through [:browser, :browser_session]
+    
+    get "/new", UserController, :new
+  end
+
   scope "/", StandupWeb do
     pipe_through [:browser, :browser_session, :login_required] # Use the default browser stack
     
