@@ -6,13 +6,13 @@
   <% end %>
 
   <div class="row">
-    <div class="input-field col s6">
+    <div class="input-field col m6 s12">
       <%= label f, :firstname %>
       <%= text_input f, :firstname, class: "validate", required: true %>
       <%= error_tag f, :firstname %>
     </div>
 
-    <div class="input-field col s6">
+    <div class="input-field col m6 s12">
       <%= label f, :lastname %>
       <%= text_input f, :lastname, class: "validate", required: true %>
       <%= error_tag f, :lastname %>
@@ -27,13 +27,13 @@
     </div>
 
     <div class="row">
-      <div class="input-field col s6">
+      <div class="input-field col m6 s12">
         <%= label cf, :password %>
         <%= password_input cf, :password, class: "validate", required: true %>
         <%= error_tag cf, :password %>
       </div>
 
-      <div class="input-field col s6">
+      <div class="input-field col m6 s12">
         <%= label cf, :password_confirmation %>
         <%= password_input cf, :password_confirmation, class: "validate", required: true %>
         <%= error_tag cf, :password_confirmation %>
@@ -44,5 +44,6 @@
 
   <div class="form-group">
     <%= submit "Submit", class: "waves-effect waves-light btn orange" %>
+    <a href="/auth/identity" class="waves-effect waves-light btn blue right hide-on-large-only">Sign in</a>
   </div>
 <% end %>

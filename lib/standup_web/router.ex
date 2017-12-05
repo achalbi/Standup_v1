@@ -21,11 +21,11 @@ defmodule StandupWeb.Router do
   # end
   pipeline :browser_session do
     plug Standup.Guardian.AuthPipeline.Browser
-    plug Standup.Auth.CurrentUser
   end
-
+  
   pipeline :login_required do
     plug Standup.Guardian.AuthPipeline.Authenticate
+    plug Standup.Auth.CurrentUser
   end
 
   # pipeline :authorize_admin do
@@ -37,23 +37,23 @@ defmodule StandupWeb.Router do
     plug :accepts, ["json"]
     plug Standup.Guardian.AuthPipeline.JSON
   end
-
-  scope "/", StandupWeb do
-    pipe_through [:browser, :browser_session, :login_required] # Use the default browser stack
-
-    get "/", PageController, :index
-    resources "/users", UserController
-  end
-
+  
   scope "/auth", StandupWeb do
     pipe_through [:browser, :browser_session]
-
+    
+    get "/users/new", UserController, :new
     get "/:provider", AuthController, :new
     get "/:provider/callback", AuthController, :callback
     post "/identity/callback", AuthController, :identity_callback
     delete "/delete", AuthController, :delete
   end
-
+  
+  scope "/", StandupWeb do
+    pipe_through [:browser, :browser_session, :login_required] # Use the default browser stack
+    
+    get "/", PageController, :index
+    resources "/users", UserController, except: [:new]
+  end
   # Other scopes may use custom stacks.
   # scope "/api", StandupWeb do
   #   pipe_through :api

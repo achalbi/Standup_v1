@@ -5,14 +5,14 @@
     <div class="center">
       <%= form_tag @callback_url, method: "post", class: "login", novalidate: true do %>
       <div class="row">
-        <div class="input-field col s8 offset-s2">
+        <div class="input-field col m8 s12 offset-m2">
           <label for="email">Email</label>
           <input type="email" name="email" value="
             <%= @conn.params["email"] %>" required class="validate" />
         </div>
       </div>
       <div class="row">
-          <div class="input-field col s8 offset-s2">
+          <div class="input-field col m8 s12 offset-m2">
             <label for="password">Password</label>
             <input type="password" name="password" required class="validate" />
           </div>
@@ -20,7 +20,7 @@
       <div class="row">
           <div class="">
             <button type="submit" class="btn-large waves-effect waves-light orange">Sign in</button>
-            <a href="/users/new" class="btn-large waves-effect waves-light blue">Sign up</a>
+            <a href="/auth/users/new" class="btn-large waves-effect waves-light blue">Sign up</a>
           </div>
       </div>
       <% end %>
