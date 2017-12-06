@@ -1,11 +1,10 @@
-<h2>Listing Users</h2>
+<h2>Users</h2>
 
-<table class="table">
+<table class=" bordered highlight ">
   <thead>
     <tr>
-      <th>Firstname</th>
-      <th>Lastname</th>
-      <th>Username</th>
+      <th>Name</th>
+      <%# <th>Username</th> %>
 
       <th></th>
     </tr>
@@ -13,14 +12,13 @@
   <tbody>
 <%= for user <- @users do %>
     <tr>
-      <td><%= user.firstname %></td>
-      <td><%= user.lastname %></td>
-      <td><%= user.username %></td>
+      <td><%= user.firstname %>  <%= user.lastname %></td>
+     
 
-      <td class="text-right">
-        <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      <td class="text-right right">
+        <span><%= link "Show", to: user_path(@conn, :show, user), class: "waves-effect waves-light btn blue" %></span>
+        <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "waves-effect waves-light btn orange" %></span>
+        <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "waves-effect waves-light btn red" %></span>
       </td>
     </tr>
 <% end %>

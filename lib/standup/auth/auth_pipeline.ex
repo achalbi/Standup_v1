@@ -18,7 +18,8 @@ end
 
 defmodule Standup.Guardian.AuthPipeline.Authenticate do
   use Guardian.Plug.Pipeline, otp_app: :standup,
-                              module: Standup.Guardian
+                              module: Standup.Guardian,
+                              error_handler: Standup.Auth.ErrorHandler
 
   plug Guardian.Plug.EnsureAuthenticated
 end

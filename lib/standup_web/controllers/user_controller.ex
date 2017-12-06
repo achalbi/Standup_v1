@@ -35,15 +35,15 @@ defmodule StandupWeb.UserController do
   end
 
   def edit(conn, %{"id" => id}) do
-    current_user = conn.assigns[:current_user]
-    if current_user.id == id do
+    current_user = conn.assigns.current_user
+    if current_user.id == String.to_integer(id) do
       user = Accounts.get_user!(id)
       changeset = Accounts.change_user(user)
       render(conn, "edit.html", user: user, changeset: changeset)
     else
       conn
         |> put_flash(:error, "Don't have permission to edit other users")
-        |> redirect(to: user_path(conn, :show, current_user))
+        |> redirect(to: user_path(conn, :edit, current_user))
     end
   end
 

@@ -21,11 +21,11 @@ defmodule StandupWeb.Router do
   # end
   pipeline :browser_session do
     plug Standup.Guardian.AuthPipeline.Browser
+    plug Standup.Auth.CurrentUser
   end
   
   pipeline :login_required do
     plug Standup.Guardian.AuthPipeline.Authenticate
-    plug Standup.Auth.CurrentUser
   end
 
   # pipeline :authorize_admin do
