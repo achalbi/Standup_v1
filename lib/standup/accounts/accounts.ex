@@ -12,7 +12,7 @@ defmodule Standup.Accounts do
 
   alias Standup.Repo
 
-  alias Standup.Accounts.{User, Credential}
+  alias Standup.Accounts.{User, Credential, Role, UserRole}
   alias Ueberauth.Auth
 
   @doc """
@@ -28,6 +28,7 @@ defmodule Standup.Accounts do
     User
     |> Repo.all
     |> Repo.preload(:credential)
+    |> Repo.preload(:roles)
   end
 
   @doc """
@@ -48,6 +49,7 @@ defmodule Standup.Accounts do
     User
     |> Repo.get!(id)
     |> Repo.preload(:credential)
+    |> Repo.preload(:roles)
   end
   @doc """
   Creates a user.
@@ -62,16 +64,20 @@ defmodule Standup.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
+    role = Repo.get_by(Role, key: "user")
     %User{}
     |> User.changeset(attrs)
     |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.create_changeset/2)
+    |> Ecto.Changeset.put_assoc(:roles, [role])
     |> Repo.insert()
   end
-
+  
   def create_oauth_user(attrs \\ %{}) do
+    role = Repo.get_by(Role, key: "user")
     %User{}
     |> User.changeset(attrs)
     |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.strategy_changeset/2)
+    |> Ecto.Changeset.put_assoc(:roles, [role])
     |> Repo.insert()
   end
 
@@ -301,4 +307,103 @@ defmodule Standup.Accounts do
 
   def logged_in?(conn), do: !!current_user(conn) #Guardian.Plug.authenticated?(conn)
 
+  @doc """
+  Returns the list of roles.
+
+  ## Examples
+
+      iex> list_roles()
+      [%Role{}, ...]
+
+  """
+  def list_roles do
+    Repo.all(Role)
+  end
+
+  @doc """
+  Gets a single role.
+
+  Raises `Ecto.NoResultsError` if the Role does not exist.
+
+  ## Examples
+
+      iex> get_role!(123)
+      %Role{}
+
+      iex> get_role!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_role!(id), do: Repo.get!(Role, id)
+
+  @doc """
+  Creates a role.
+
+  ## Examples
+
+      iex> create_role(%{field: value})
+      {:ok, %Role{}}
+
+      iex> create_role(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_role(attrs \\ %{}) do
+    %Role{}
+    |> Role.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a role.
+
+  ## Examples
+
+      iex> update_role(role, %{field: new_value})
+      {:ok, %Role{}}
+
+      iex> update_role(role, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_role(%Role{} = role, attrs) do
+    role
+    |> Role.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Role.
+
+  ## Examples
+
+      iex> delete_role(role)
+      {:ok, %Role{}}
+
+      iex> delete_role(role)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_role(%Role{} = role) do
+    Repo.delete(role)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking role changes.
+
+  ## Examples
+
+      iex> change_role(role)
+      %Ecto.Changeset{source: %Role{}}
+
+  """
+  def change_role(%Role{} = role) do
+    Role.changeset(role, %{})
+  end
+
+  def create_user_role(attrs \\ %{}) do
+    %UserRole{}
+    |> UserRole.changeset(attrs)
+    |> Repo.insert()
+  end
 end

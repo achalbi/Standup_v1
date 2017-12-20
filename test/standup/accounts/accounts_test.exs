@@ -128,4 +128,68 @@ defmodule Standup.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_credential(credential)
     end
   end
+
+  describe "roles" do
+    alias Standup.Accounts.Role
+
+    @valid_attrs %{description: "some description", key: "some key", name: "some name"}
+    @update_attrs %{description: "some updated description", key: "some updated key", name: "some updated name"}
+    @invalid_attrs %{description: nil, key: nil, name: nil}
+
+    def role_fixture(attrs \\ %{}) do
+      {:ok, role} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_role()
+
+      role
+    end
+
+    test "list_roles/0 returns all roles" do
+      role = role_fixture()
+      assert Accounts.list_roles() == [role]
+    end
+
+    test "get_role!/1 returns the role with given id" do
+      role = role_fixture()
+      assert Accounts.get_role!(role.id) == role
+    end
+
+    test "create_role/1 with valid data creates a role" do
+      assert {:ok, %Role{} = role} = Accounts.create_role(@valid_attrs)
+      assert role.description == "some description"
+      assert role.key == "some key"
+      assert role.name == "some name"
+    end
+
+    test "create_role/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_role(@invalid_attrs)
+    end
+
+    test "update_role/2 with valid data updates the role" do
+      role = role_fixture()
+      assert {:ok, role} = Accounts.update_role(role, @update_attrs)
+      assert %Role{} = role
+      assert role.description == "some updated description"
+      assert role.key == "some updated key"
+      assert role.name == "some updated name"
+    end
+
+    test "update_role/2 with invalid data returns error changeset" do
+      role = role_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_role(role, @invalid_attrs)
+      assert role == Accounts.get_role!(role.id)
+    end
+
+    test "delete_role/1 deletes the role" do
+      role = role_fixture()
+      assert {:ok, %Role{}} = Accounts.delete_role(role)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_role!(role.id) end
+    end
+
+    test "change_role/1 returns a role changeset" do
+      role = role_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_role(role)
+    end
+  end
 end

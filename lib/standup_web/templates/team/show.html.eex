@@ -1,0 +1,46 @@
+<h2>Show Team</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @team.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @team.description %>
+  </li>
+
+  <li>
+    <strong>Organization:</strong>
+    <%= @team.organization.name %>
+  </li>
+
+  <ul class="collection with-header">
+    <li class="collection-header"><h4><%= ngettext("Moderator", "Moderators", Enum.count(@moderators)) %></h4></li>
+    <%= for user <- @moderators do %>
+      <li class="collection-item avatar">
+        <img src="" alt="" class="circle">
+        <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>
+        <a href="#!" class="secondary-content"><i class="material-icons ">cancel</i></a>
+      </li>
+    <% end %>
+  </ul>
+
+  <%= if Enum.count(@members) > 0 do %>
+    <ul class="collection with-header">
+      <li class="collection-header"><h4><%= ngettext("Member", "Members", Enum.count(@members)) %></h4></li>
+      <%= for user <- @members do %>
+        <li class="collection-item avatar">
+          <img src="" alt="" class="circle">
+          <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>
+          <a href="#!" class="secondary-content"><i class="material-icons">person_add</i></a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</ul>
+
+<span><%= link "Edit", to: team_path(@conn, :edit, @team) %></span>
+<span><%= link "Back", to: team_path(@conn, :index) %></span>

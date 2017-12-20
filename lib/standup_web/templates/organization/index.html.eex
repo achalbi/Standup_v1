@@ -1,0 +1,30 @@
+<h2>Listing Organizations</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for organization <- @organizations do %>
+    <tr>
+      <td><%= organization.id %></td>
+      <td><%= organization.name %></td>
+      <td><%= organization.description %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: organization_path(@conn, :show, organization), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: organization_path(@conn, :edit, organization), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: organization_path(@conn, :delete, organization), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Organization", to: organization_path(@conn, :new) %></span>

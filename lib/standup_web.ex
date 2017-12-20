@@ -23,6 +23,7 @@ defmodule StandupWeb do
       import Plug.Conn
       import StandupWeb.Router.Helpers
       import StandupWeb.Gettext
+      action_fallback StandupWeb.FallbackController
     end
   end
 

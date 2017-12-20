@@ -47,17 +47,20 @@ defmodule StandupWeb.Router do
     delete "/delete", AuthController, :delete
   end
   
-  scope "/users", StandupWeb do
+  scope "/", StandupWeb do
     pipe_through [:browser, :browser_session]
     
-    get "/new", UserController, :new
+    resources "/users", UserController, only: [:new, :create]
   end
 
   scope "/", StandupWeb do
     pipe_through [:browser, :browser_session, :login_required] # Use the default browser stack
     
     get "/", PageController, :index
-    resources "/users", UserController, except: [:new]
+    resources "/users", UserController, except: [:new, :create]
+    resources "/roles", RoleController
+    resources "/organizations", OrganizationController
+    resources "/teams", TeamController
   end
   # Other scopes may use custom stacks.
   # scope "/api", StandupWeb do

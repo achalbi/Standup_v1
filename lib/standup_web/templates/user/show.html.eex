@@ -17,6 +17,10 @@
     <%= @user.credential.email %>
   </li>
 
+  <li>
+    <strong><%= ngettext("Role", "Roles", Enum.count(@user.roles)) %>:</strong>
+    <%= Enum.map_join(@user.roles, " , ", &(&1.name)) %>
+  </li>
 </ul>
 
 <span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>

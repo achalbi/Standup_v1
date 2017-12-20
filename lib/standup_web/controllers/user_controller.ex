@@ -1,10 +1,9 @@
 defmodule StandupWeb.UserController do
   use StandupWeb, :controller
 
-  require IEx
-
   alias Standup.Accounts
   alias Standup.Accounts.User
+  alias Standup.Guardian
 
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -22,7 +21,7 @@ defmodule StandupWeb.UserController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User created successfully.")
-        |> put_session(:current_user, user.id)
+        |> Guardian.Plug.sign_in(user)
         |> redirect(to: user_path(conn, :show, user))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -36,15 +35,15 @@ defmodule StandupWeb.UserController do
 
   def edit(conn, %{"id" => id}) do
     current_user = conn.assigns.current_user
-    if current_user.id == String.to_integer(id) do
-      user = Accounts.get_user!(id)
-      changeset = Accounts.change_user(user)
-      render(conn, "edit.html", user: user, changeset: changeset)
-    else
-      conn
-        |> put_flash(:error, "Don't have permission to edit other users")
-        |> redirect(to: user_path(conn, :edit, current_user))
+    case Standup.UserAuthorizer.authorize(:edit_user, id, current_user) do
+      :ok ->
+        user = Accounts.get_user!(id)
+        changeset = Accounts.change_user(user)
+        render(conn, "edit.html", user: user, changeset: changeset)
+      {:error, :unauthorized} ->
+        unauthorized_user(conn)
     end
+
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
@@ -68,4 +67,12 @@ defmodule StandupWeb.UserController do
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
   end
+
+  defp unauthorized_user(conn) do
+    [url] = get_req_header(conn, "referer")
+        conn
+          |> put_flash(:error, "You do not have permission for this request")
+          |> redirect(external: url)
+  end
+
 end

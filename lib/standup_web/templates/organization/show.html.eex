@@ -1,0 +1,62 @@
+<h2>Show Organization</h2>
+
+<ul>
+
+  <li>
+    <strong>Id:</strong>
+    <%= @organization.id %>
+  </li>
+  <li>
+    <strong>Name:</strong>
+    <%= @organization.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @organization.description %>
+  </li>
+
+  <li>
+    <strong><%= ngettext("Moderator", "Moderators", Enum.count(@moderators)) %>:</strong>
+    <%= Enum.map_join(@moderators, " , ", fn user -> user.firstname <> " " <> user.lastname end) %>
+  </li>
+  <%= if Enum.count(@members) > 0 do %>
+  <li>
+    <strong><%= ngettext("Member", "Members", Enum.count(@members)) %>:</strong>
+    <%= Enum.map_join(@members, " , ", fn user -> user.firstname <> " " <> user.lastname end) %>
+  </li>
+  <% end %>
+
+  <h2>Listing Teams</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for team <- @teams do %>
+    <tr>
+      <td><%= team.name %></td>
+      <td><%= team.description %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: team_path(@conn, :show, team), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: team_path(@conn, :edit, team), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: team_path(@conn, :delete, team), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Team", to: team_path(@conn, :new, organization_id: @organization.id ) %></span>
+
+</ul>
+
+<span><%= link "Edit", to: organization_path(@conn, :edit, @organization) %></span>
+<span><%= link "Back", to: organization_path(@conn, :index) %></span>
