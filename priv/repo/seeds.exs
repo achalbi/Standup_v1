@@ -9,3 +9,13 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+Standup.Repo.insert!(%Standup.Accounts.Role{
+    key: "admin",
+    name: "Administrator"
+})
+
+Standup.Repo.insert!(%Standup.Accounts.Role{
+    key: "user",
+    name: "Regular user"
+})
