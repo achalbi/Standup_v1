@@ -32,7 +32,7 @@ config :ueberauth, Ueberauth,
 #    request_path: "/auth/new",
 #    callback_path: "/auth/identity/callback",
     ]},
-    google: {Ueberauth.Strategy.Google, []},
+    google: {Ueberauth.Strategy.Google, [default_scope: "email profile"]},
 
   ]
 

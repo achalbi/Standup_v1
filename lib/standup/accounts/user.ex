@@ -8,6 +8,7 @@ defmodule Standup.Accounts.User do
     field :firstname, :string
     field :lastname, :string
     field :username, :string
+    field :avatar, :string
     belongs_to :photo, Photo 
     has_one :credential, Credential
     many_to_many :roles, Role, join_through: UserRole
@@ -20,8 +21,8 @@ defmodule Standup.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:firstname, :lastname, :username])
-    |> validate_required([:firstname, :lastname])
+    |> cast(attrs, [:firstname, :lastname, :username, :avatar])
+    |> validate_required([])
   #  |> unique_constraint(:username)
   end
 end

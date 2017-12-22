@@ -94,11 +94,35 @@ defmodule Standup.Accounts do
   
   def create_oauth_user(attrs \\ %{}) do
     role = Repo.get_by(Role, key: "user")
-    %User{}
+    result = %User{}
     |> User.changeset(attrs)
     |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.strategy_changeset/2)
     |> Ecto.Changeset.put_assoc(:roles, [role])
     |> Repo.insert()
+
+    case result do
+      {:ok, user } ->
+        if user.avatar do
+          case Cloudex.upload(user.avatar) do
+            {:ok, %Cloudex.UploadedImage{public_id: public_id, secure_url: secure_url}} ->
+              photo_params = %{public_id: public_id, secure_url: secure_url}
+              case Galleries.create_photo(photo_params) do
+                {:ok, photo} -> 
+                          user
+                          |> Repo.preload(:photo)
+                          |> User.changeset(attrs)
+                          |> Ecto.Changeset.put_assoc(:photo, photo)
+                          |> Repo.update()
+                {:error, reason} -> {:error, reason}
+              end
+              _ -> result
+            end
+        else
+          result  
+        end
+      _ -> result
+    end
+
   end
 
   @doc """
@@ -292,7 +316,8 @@ defmodule Standup.Accounts do
     case Repo.one(query) do
       nil ->
         credentials_params = %{token: auth.credentials.token, email: auth.info.email, provider: Atom.to_string(auth.provider), avatar: avatar_from_auth(auth)}
-        %{firstname: auth.info.first_name, lastname: auth.info.last_name, credential: credentials_params}
+        
+        %{firstname: auth.info.first_name, lastname: auth.info.last_name, credential: credentials_params, avatar: avatar_from_auth(auth)}
         |> create_oauth_user()
       user ->
         {:ok, user}

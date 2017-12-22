@@ -36,9 +36,10 @@ defmodule StandupWeb.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, user.firstname <> " " <> user.lastname <> " Successfully authenticated.")
-       # |> put_session(:current_user_id, user.id)
         |> Guardian.Plug.sign_in(user)
         |> redirect(to: "/")
+      {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset, callback_url: Helpers.callback_url(conn))
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)
