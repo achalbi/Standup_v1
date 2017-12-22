@@ -13,6 +13,7 @@ defmodule Standup.Accounts do
   alias Standup.Repo
 
   alias Standup.Accounts.{User, Credential, Role, UserRole}
+  alias Standup.Galleries
   alias Ueberauth.Auth
 
   @doc """
@@ -29,6 +30,7 @@ defmodule Standup.Accounts do
     |> Repo.all
     |> Repo.preload(:credential)
     |> Repo.preload(:roles)
+    |> Repo.preload(:photo)
   end
 
   @doc """
@@ -50,6 +52,7 @@ defmodule Standup.Accounts do
     |> Repo.get!(id)
     |> Repo.preload(:credential)
     |> Repo.preload(:roles)
+    |> Repo.preload(:photo)
   end
   @doc """
   Creates a user.
@@ -65,12 +68,29 @@ defmodule Standup.Accounts do
   """
   def create_user(attrs \\ %{}) do
     role = Repo.get_by(Role, key: "user")
-    %User{}
+    result = %User{}
     |> User.changeset(attrs)
     |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.create_changeset/2)
     |> Ecto.Changeset.put_assoc(:roles, [role])
     |> Repo.insert()
+
+    case result do
+      {:ok, user} ->
+        case update_profile_photo(attrs) do
+          {:ok, photo} ->
+            user
+            |> Repo.preload(:photo)
+            |> User.changeset(attrs)
+            |> Ecto.Changeset.put_assoc(:photo, photo)
+            |> Repo.update()
+          :ok -> result
+          _ -> result
+        end  
+      {:error, _changeset} ->  
+        result
+    end
   end
+      
   
   def create_oauth_user(attrs \\ %{}) do
     role = Repo.get_by(Role, key: "user")
@@ -94,9 +114,29 @@ defmodule Standup.Accounts do
 
   """
   def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+    case update_profile_photo(attrs) do
+      {:ok, photo} ->
+        user
+        |> User.changeset(attrs)
+        |> Ecto.Changeset.put_assoc(:photo, photo)
+        |> Repo.update()
+      :ok -> 
+        user
+        |> User.changeset(attrs)
+        |> Repo.update()
+    end
+  end
+
+  defp update_profile_photo(attrs) do
+    case attrs["photo"] do
+      %{"image" => %Plug.Upload{content_type: _type, filename: _filename, path: multipart_path}} ->
+        case Cloudex.upload(multipart_path) do
+            {:ok, %Cloudex.UploadedImage{public_id: public_id, secure_url: secure_url}} ->
+                photo_params = %{public_id: public_id, secure_url: secure_url}
+                Galleries.create_photo(photo_params)
+        end
+      _ -> :ok
+    end
   end
 
   @doc """

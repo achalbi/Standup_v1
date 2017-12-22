@@ -12,8 +12,24 @@
   <tbody>
 <%= for user <- @users do %>
     <tr>
-      <td><%= user.firstname %>  <%= user.lastname %></td>
-     
+      <td>
+
+     <div class="col s12 m8 offset-m2 l6 offset-l3">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <%= unless is_nil(user.photo) do %>
+                <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 70}) %>
+              <% end %> 
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+                <%= user.firstname %>  <%= user.lastname %>
+              </span>
+            </div>
+          </div>
+      </div>
+      </td>
+            
 
       <td class="text-right right">
         <span><%= link "Show", to: user_path(@conn, :show, user), class: "waves-effect waves-light btn blue" %></span>

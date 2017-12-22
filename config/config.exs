@@ -49,6 +49,10 @@ config :standup, Standup.Guardian,
   error_handler: Standup.AuthErrorHandler
   #serializer: Standup.GuardianSerializer
 
+config :cloudex,
+  api_key: System.get_env("CLOUDINARY_API_KEY"),
+  secret: System.get_env("CLOUDINARY_SECRET"),
+  cloud_name: System.get_env("CLOUDINARY_NAME")
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

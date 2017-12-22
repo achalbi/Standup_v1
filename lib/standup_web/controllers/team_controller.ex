@@ -29,7 +29,8 @@ defmodule StandupWeb.TeamController do
     team = Organizations.get_team!(id)
     members = Organizations.get_team_members(id)
     moderators = Organizations.get_team_moderators(id)
-    render(conn, "show.html", team: team, members: members, moderators: moderators)
+    users = Organizations.get_org_users_for_team(id)
+    render(conn, "show.html", team: team, members: members, moderators: moderators, users: users)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -58,5 +59,9 @@ defmodule StandupWeb.TeamController do
     conn
     |> put_flash(:info, "Team deleted successfully.")
     |> redirect(to: team_path(conn, :index))
+  end
+
+  def add_users do
+    
   end
 end

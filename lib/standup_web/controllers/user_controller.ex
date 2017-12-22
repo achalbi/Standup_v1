@@ -16,7 +16,6 @@ defmodule StandupWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-   # IEx.pry
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         conn
@@ -48,7 +47,6 @@ defmodule StandupWeb.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
-
     case Accounts.update_user(user, user_params) do
       {:ok, user} ->
         conn

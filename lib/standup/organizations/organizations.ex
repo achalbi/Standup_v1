@@ -144,7 +144,7 @@ defmodule Standup.Organizations do
       ** (Ecto.NoResultsError)
 
   """
-  def get_team!(id), do: Repo.get!(Team, id) |> Repo.preload(:organization)
+  def get_team!(id), do: Repo.get!(Team, id) |> Repo.preload([:organization, :users])
 
   @doc """
   Creates a team.
@@ -225,7 +225,6 @@ defmodule Standup.Organizations do
     Team.changeset(team, %{})
   end
 
-
   def get_org_members(org_id) do
     query = from uo in UserOrganization,
     join: u in User,
@@ -234,7 +233,6 @@ defmodule Standup.Organizations do
     select: u
     
     Repo.all(query)
-
   end
 
   def get_org_moderators(org_id) do
@@ -263,6 +261,29 @@ defmodule Standup.Organizations do
     join: u in User,
     where: ut.user_id == u.id,
     where: ut.is_moderator == true and ut.team_id == ^team_id, 
+    select: u
+    
+    Repo.all(query)
+  end
+
+  def get_org_users(org_id) do
+    query = from uo in UserOrganization,
+    join: u in User,
+    where: uo.user_id == u.id and uo.organization_id == ^org_id, 
+    select: u
+    
+    Repo.all(query)
+  end
+  
+  def get_org_users_for_team(team_id)  do
+    team = Repo.get!(Team, team_id) |> Repo.preload([:organization, :users])
+    org_id = team.organization.id
+    team_users = Enum.map(team.users, fn(user) -> user.id end)
+
+    query = from uo in UserOrganization,
+    join: u in User,
+    where: uo.user_id == u.id and uo.organization_id == ^org_id, 
+    where: uo.user_id not in ^team_users,
     select: u
     
     Repo.all(query)

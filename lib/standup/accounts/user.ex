@@ -3,11 +3,12 @@ defmodule Standup.Accounts.User do
   import Ecto.Changeset
   alias Standup.Accounts.{User, Credential, Role, UserRole}
   alias Standup.Organizations.{Team, UserTeam, Organization, UserOrganization}
-
+  alias Standup.Galleries.Photo
   schema "users" do
     field :firstname, :string
     field :lastname, :string
     field :username, :string
+    belongs_to :photo, Photo 
     has_one :credential, Credential
     many_to_many :roles, Role, join_through: UserRole
     many_to_many :organizations, Organization, join_through: UserOrganization  

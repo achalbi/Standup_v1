@@ -3,6 +3,17 @@
 <ul>
 
   <li>
+
+  <div class="row">
+    <div class="input-field col m6 s12">
+      <%= unless is_nil(@user.photo) do %>
+        <%= cl_image_tag(@user.photo.public_id, class: " materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 70}) %>
+      <% end %> 
+    </div>
+  </div>
+  </li>
+
+  <li>
     <strong>Firstname:</strong>
     <%= @user.firstname %>
   </li>
