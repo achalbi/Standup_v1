@@ -1,0 +1,30 @@
+<h2>Listing Work statuses</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User name</th>
+      <th>Task summary</th>
+      <th>On date</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for work_status <- @work_statuses do %>
+    <tr>
+      <td><%= work_status.user_name %></td>
+      <td class="html-newline"><%= work_status.task_summary %></td>
+      <td><%= work_status.on_date %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: work_status_path(@conn, :show, work_status), class: "btn btn-default btn-xs" %></span>
+        <span><%#= link "Edit", to: work_status_path(@conn, :edit, work_status), class: "btn btn-default btn-xs" %></span>
+        <span><%#= link "Delete", to: work_status_path(@conn, :delete, work_status), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Work status", to: work_status_path(@conn, :new) %></span>

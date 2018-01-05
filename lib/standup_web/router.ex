@@ -63,6 +63,8 @@ defmodule StandupWeb.Router do
     resources "/teams", TeamController
     get "/add_users", TeamController, :add_users
     post "/photos/upload", PhotoController, :upload 
+    resources "/work_statuses", WorkStatusController
+    resources "/tasks", TaskController
   end
   # Other scopes may use custom stacks.
   # scope "/api", StandupWeb do

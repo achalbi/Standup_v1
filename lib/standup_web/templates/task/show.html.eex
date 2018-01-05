@@ -1,0 +1,38 @@
+<h2>Show Task</h2>
+
+<ul>
+
+  <li>
+    <strong>Task number:</strong>
+    <%= @task.task_number %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @task.title %>
+  </li>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @task.url %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @task.status %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @task.notes %>
+  </li>
+
+  <li>
+    <strong>On date:</strong>
+    <%= NaiveDateTime.to_date(@task.on_date) %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: task_path(@conn, :edit, @task) %></span>
+<span><%= link "Back", to: task_path(@conn, :index) %></span>

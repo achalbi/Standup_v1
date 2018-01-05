@@ -1,0 +1,23 @@
+<h2>Show Work status</h2>
+
+<ul>
+
+  <li>
+    <strong>User name:</strong>
+    <%= @work_status.user_name %>
+  </li>
+
+  <li>
+    <strong>Task summary:</strong><br>
+    <span class="html-newline"><%= @work_status.task_summary %></span>
+  </li>
+
+  <li>
+    <strong>On date:</strong>
+    <%= @work_status.on_date %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: work_status_path(@conn, :edit, @work_status) %></span>
+<span><%= link "Back", to: work_status_path(@conn, :index) %></span>

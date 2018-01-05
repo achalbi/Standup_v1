@@ -1,0 +1,36 @@
+<h2>Listing Tasks</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Task number</th>
+      <th>Title</th>
+      <th>Url</th>
+      <th>Status</th>
+      <th>Notes</th>
+      <th>On date</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for task <- @tasks do %>
+    <tr>
+      <td><%= task.task_number %></td>
+      <td><%= task.title %></td>
+      <td><%= task.url %></td>
+      <td><%= task.status %></td>
+      <td><%= task.notes %></td>
+      <td><%= NaiveDateTime.to_date(task.on_date) %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Task", to: task_path(@conn, :new) %></span>

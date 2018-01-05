@@ -20,7 +20,7 @@ defmodule Standup.Mixfile do
   def application do
     [
       mod: {Standup.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_google, :ueberauth_identity, :cloudex, :arc_ecto]
+      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_google, :ueberauth_identity, :cloudex, :arc_ecto, :timex]
     ]
   end
 
@@ -49,7 +49,8 @@ defmodule Standup.Mixfile do
       {:bcrypt_elixir, "~> 1.0"},
       {:cloudex, "~> 1.0.0"},
       {:arc, "~> 0.8.0"},
-      {:arc_ecto, "~> 0.7.0"}
+      {:arc_ecto, "~> 0.7.0"},
+      {:timex, "~> 3.1"}
 
     ]
   end
