@@ -8,6 +8,11 @@
   </li>
 
   <li>
+    <strong>User email:</strong>
+    <%= @work_status.user_email %>
+  </li>
+
+  <li>
     <strong>Task summary:</strong><br>
     <span class="html-newline"><%= @work_status.task_summary %></span>
   </li>

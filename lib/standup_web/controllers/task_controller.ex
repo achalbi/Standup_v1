@@ -11,8 +11,9 @@ defmodule StandupWeb.TaskController do
   end
 
   def new(conn, _params) do
+    today = Date.utc_today
     changeset = StatusTrack.change_task(conn, %Task{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, today: today)
   end
 
   def create(conn, %{"task" => task_params}) do
@@ -33,8 +34,9 @@ defmodule StandupWeb.TaskController do
 
   def edit(conn, %{"id" => id}) do
     task = StatusTrack.get_task!(id)
+    today = task.on_date
     changeset = StatusTrack.change_task(conn, task)
-    render(conn, "edit.html", task: task, changeset: changeset)
+    render(conn, "edit.html", task: task, changeset: changeset, today: today)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do

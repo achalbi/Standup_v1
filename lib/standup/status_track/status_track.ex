@@ -153,19 +153,20 @@ defmodule Standup.StatusTrack do
     date = Timex.parse!(attrs["on_date"], "%Y-%m-%d", :strftime)
     attrs = Map.put(attrs, "on_date", date)
     {:ok, task} = %Task{}
-    |> Task.changeset(attrs)
+        |> Task.changeset(attrs)
 		|> Repo.insert()
 
 		#current_user = Guardian.Plug.current_resource(conn)
 		user = User
-		|> Repo.get!(task.user_id)
+        |> Repo.get!(task.user_id)
+        |> Repo.preload(:credential)
 
 		user_name  = user.firstname <> " " <> user.lastname
 		task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
 
-		work_status_attrs = %{"on_date" => date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name }
+		work_status_attrs = %{"on_date" => date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name, "user_email" => user.credential.email }
 		case create_or_update_work_status(date, task.user_id, work_status_attrs) do
-			{:ok, work_status} ->
+    	{:ok, work_status} ->
 				task
 				|> Repo.preload(:work_status) 
 				|> Task.changeset(attrs)
@@ -199,11 +200,11 @@ defmodule Standup.StatusTrack do
 
 		case update_task_result do
 			{:ok, task} -> 
-						task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
-						attrs = Map.put(attrs, "task_summary", task_summary)
+                task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
+                attrs = Map.put(attrs, "task_summary", task_summary)
 
-						update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs)
-						update_task_result
+                update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs)
+                update_task_result
 
 			{:error, %Ecto.Changeset{} = changeset} -> {:error, changeset}
 		end 
@@ -244,11 +245,19 @@ defmodule Standup.StatusTrack do
   end
 
 	def create_or_update_work_status(date, user_id, attrs \\ %{}) do
-			case get_work_status_by_date_and_user_id(date, user_id) do
-				%WorkStatus{} = work_status ->
-					update_work_status_from_tasks(work_status,date, user_id, attrs)
-				nil ->
-					create_work_status(attrs)
+		case get_work_status_by_date_and_user_id(date, user_id) do
+			%WorkStatus{} = work_status ->
+				case update_work_status_from_tasks(work_status, date, user_id, attrs) do
+					{:ok, work_status} ->
+						sync_with_spreadsheet(work_status)
+						{:ok, work_status}
+				end
+			nil ->
+				case create_work_status(attrs) do
+					{:ok, work_status} ->
+						sync_with_spreadsheet(work_status)
+						{:ok, work_status}
+				end
 		end
 	end
 
@@ -269,8 +278,34 @@ defmodule Standup.StatusTrack do
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
 			end
 
-		attrs = Map.put(attrs, "task_summary", task_summary)
-		
+		attrs = Map.put(attrs, "task_summary", task_summary)	
 		update_work_status(work_status, attrs)
-  end
+	end
+    
+	def sync_with_spreadsheet(%WorkStatus{} = work_status) do
+		case GSS.Spreadsheet.Supervisor.spreadsheet(System.get_env("SPREADSHEET_ID")) do
+			{:ok, pid} ->
+				{:ok, row_count} = GSS.Spreadsheet.rows(pid)
+					if row_count == 0, do: GSS.Spreadsheet.write_row(pid, 1, ["Name", "Date", "Task Summary"])
+				 
+				row_no = work_status.sheet_row_id
+				update_spreadsheet(work_status, pid, row_no)
+			{:error, reason} -> reason
+		end
+	end
+
+	def update_spreadsheet(%WorkStatus{} = work_status, pid, row_no) when row_no == nil do
+		on_date = Timex.format!(work_status.on_date, "%m-%d-%Y", :strftime)
+		GSS.Spreadsheet.append_row(pid, 1, [work_status.user_name, on_date, work_status.task_summary])
+		case GSS.Spreadsheet.rows(pid) do
+			{:ok, row_id} -> 
+						update_work_status(work_status, %{sheet_row_id: row_id} )
+			{:error, reason} -> reason
+		end
+	end
+
+	def update_spreadsheet(%WorkStatus{} = work_status, pid, row_no) do
+		on_date = Timex.format!(work_status.on_date, "%m-%d-%Y", :strftime)
+		GSS.Spreadsheet.write_row(pid, row_no, [work_status.user_name, on_date, work_status.task_summary])
+	end
 end

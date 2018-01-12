@@ -20,7 +20,7 @@ defmodule Standup.Mixfile do
   def application do
     [
       mod: {Standup.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_google, :ueberauth_identity, :cloudex, :arc_ecto, :timex]
+      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_google, :ueberauth_identity, :cloudex, :arc_ecto, :timex, :elixir_google_spreadsheets]
     ]
   end
 
@@ -50,6 +50,9 @@ defmodule Standup.Mixfile do
       {:cloudex, "~> 1.0.0"},
       {:arc, "~> 0.8.0"},
       {:arc_ecto, "~> 0.7.0"},
+      {:elixir_google_spreadsheets, "~> 0.1.9"},
+      {:ecto_gss, "~> 0.1"},
+      {:json_web_token, git: "https://github.com/starbuildr/json_web_token_ex.git", override: true},
       {:timex, "~> 3.1"}
 
     ]

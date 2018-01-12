@@ -3,17 +3,21 @@
 <table class="table">
   <thead>
     <tr>
+      <th></th>
       <th>User name</th>
+      <th>User email</th>
       <th>Task summary</th>
       <th>On date</th>
 
       <th></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="collection">
 <%= for work_status <- @work_statuses do %>
-    <tr>
+    <tr class="collection-item">
+      <td></td>
       <td><%= work_status.user_name %></td>
+      <td><%= work_status.user_email %></td>
       <td class="html-newline"><%= work_status.task_summary %></td>
       <td><%= work_status.on_date %></td>
 
