@@ -51,12 +51,12 @@ defmodule StandupWeb.Router do
     pipe_through [:browser, :browser_session]
     
     resources "/users", UserController, only: [:new, :create]
+    get "/", PageController, :index
   end
 
   scope "/", StandupWeb do
     pipe_through [:browser, :browser_session, :login_required] # Use the default browser stack
     
-    get "/", PageController, :index
     resources "/users", UserController, except: [:new, :create]
     resources "/roles", RoleController
     resources "/organizations", OrganizationController
