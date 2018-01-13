@@ -9,16 +9,9 @@ defmodule Standup.CloudexImageHelper do
 
     image_tag_options = Keyword.delete(options, :transforms)
 
-    picture_width = 
-        case transformation_options.width do
-            nil -> 100
-            _ -> transformation_options.width
-        end
-    picture_height = 
-         case transformation_options.height do
-            nil -> 100
-            _ -> transformation_options.height
-         end
+    picture_width = transformation_options[:width] || 100
+    picture_height = transformation_options[:height] || 100
+
     defaults = [
       src: Cloudex.Url.for(public_id, transformation_options),
       width: picture_width,

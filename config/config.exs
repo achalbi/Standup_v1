@@ -54,7 +54,7 @@ config :cloudex,
   secret: System.get_env("CLOUDINARY_SECRET"),
   cloud_name: System.get_env("CLOUDINARY_NAME")
 
-config :goth, json: "./config/service_account.json" |> File.read!
+config :goth, json: System.get_env("GCP_CREDENTIALS")
 
 config :elixir_google_spreadsheets, :client,
   request_workers: 50,
