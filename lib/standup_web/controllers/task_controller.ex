@@ -15,15 +15,23 @@ defmodule StandupWeb.TaskController do
     changeset = StatusTrack.change_task(conn, %Task{})
     render(conn, "new.html", changeset: changeset, today: today)
   end
-
+  
   def create(conn, %{"task" => task_params}) do
+    today = Date.utc_today
+    date = Timex.parse!(task_params["on_date"], "%Y-%m-%d", :strftime)
+    task_params = Map.put(task_params, "on_date", date)
     case StatusTrack.create_task(task_params) do
       {:ok, task} ->
-        conn
-        |> put_flash(:info, "Task created successfully.")
-        |> redirect(to: task_path(conn, :show, task))
+        case StatusTrack.prepare_work_status_from_task(task, task_params) do
+          {:ok, task} ->
+            conn
+            |> put_flash(:info, "Task created successfully.")
+            |> redirect(to: task_path(conn, :show, task))
+          {:error, %Ecto.Changeset{} = changeset} ->
+            render(conn, "new.html", changeset: changeset, today: today)
+        end
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, today: today)
     end
   end
 

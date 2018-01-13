@@ -150,12 +150,12 @@ defmodule Standup.StatusTrack do
 
   """
   def create_task(attrs \\ %{}) do
-    date = Timex.parse!(attrs["on_date"], "%Y-%m-%d", :strftime)
-    attrs = Map.put(attrs, "on_date", date)
-    {:ok, task} = %Task{}
-        |> Task.changeset(attrs)
-		|> Repo.insert()
+    %Task{}
+			|> Task.changeset(attrs)
+			|> Repo.insert()
+	end
 
+def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		#current_user = Guardian.Plug.current_resource(conn)
 		user = User
         |> Repo.get!(task.user_id)
@@ -164,15 +164,15 @@ defmodule Standup.StatusTrack do
 		user_name  = user.firstname <> " " <> user.lastname
 		task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
 
-		work_status_attrs = %{"on_date" => date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name, "user_email" => user.credential.email }
-		case create_or_update_work_status(date, task.user_id, work_status_attrs) do
+		work_status_attrs = %{"on_date" => task.on_date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name, "user_email" => user.credential.email }
+		case create_or_update_work_status(task.on_date, task.user_id, work_status_attrs) do
     	{:ok, work_status} ->
 				task
 				|> Repo.preload(:work_status) 
 				|> Task.changeset(attrs)
 				|> Ecto.Changeset.put_assoc(:work_status, work_status)
 				|> Repo.update()
-			{:error, _} -> task
+			{:error, changeset} -> {:error, changeset}
 		end
   end
 
@@ -203,9 +203,12 @@ defmodule Standup.StatusTrack do
                 task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
                 attrs = Map.put(attrs, "task_summary", task_summary)
 
-                update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs)
-                update_task_result
-
+                case update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs) do
+                    {:ok, work_status} ->
+                        sync_with_spreadsheet(work_status)
+                        {:ok, task}
+                    {:error, _reason} -> {:error, "could not update Work Status"}
+                end
 			{:error, %Ecto.Changeset{} = changeset} -> {:error, changeset}
 		end 
 
@@ -223,10 +226,17 @@ defmodule Standup.StatusTrack do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_task(%Task{} = task) do
+	def delete_task(%Task{} = task) do
+		work_status_id = task.work_status.id
 		delete_task_result = Repo.delete(task)
-		
-		update_work_status_from_tasks(task.work_status, task.on_date, task.user_id)
+		work_status = get_work_status!(work_status_id)
+
+		case update_work_status_from_tasks(work_status, task.on_date, task.user_id) do
+			{:ok, work_status} ->
+					sync_with_spreadsheet(work_status)
+					{:ok, task}
+			{:error, _reason} -> {:error, "could not update Work Status"}
+    end
 		delete_task_result
   end
 
@@ -272,7 +282,7 @@ defmodule Standup.StatusTrack do
 
 	def update_work_status_from_tasks(%WorkStatus{} = work_status, date, user_id, attrs \\ %{}) do
 		task_summary = case get_tasks_by_date_and_user_id(date, user_id) do
-				[] -> attrs["task_summary"]
+				[] -> attrs["task_summary"] || " "
 				tasks ->
 					formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
@@ -283,14 +293,30 @@ defmodule Standup.StatusTrack do
 	end
     
 	def sync_with_spreadsheet(%WorkStatus{} = work_status) do
-		case GSS.Spreadsheet.Supervisor.spreadsheet(System.get_env("SPREADSHEET_ID")) do
-			{:ok, pid} ->
-				{:ok, row_count} = GSS.Spreadsheet.rows(pid)
-					if row_count == 0, do: GSS.Spreadsheet.write_row(pid, 1, ["Name", "Date", "Task Summary"])
-				 
-				row_no = work_status.sheet_row_id
-				update_spreadsheet(work_status, pid, row_no)
-			{:error, reason} -> reason
+		try do
+	  	case GSS.Spreadsheet.Supervisor.spreadsheet(System.get_env("SPREADSHEET_ID")) do
+				{:ok, pid} ->
+					case GSS.Spreadsheet.rows(pid) do
+						{:ok, row_count} ->
+							if row_count == 0, do: GSS.Spreadsheet.write_row(pid, 1, ["Name", "Date", "Task Summary"])
+							
+							row_no = work_status.sheet_row_id
+							update_spreadsheet(work_status, pid, row_no)
+						{:error, reason} -> reason
+					end
+				{:error, reason} -> reason
+			end
+		rescue
+			_error -> {:error}
+		catch
+			_error -> {:error}
+		end
+	end
+
+	def sync_with_spreadsheet_and_handle_error(%WorkStatus{} = work_status) do
+		case sync_with_spreadsheet(work_status) do
+			{:error} -> sync_with_spreadsheet_and_handle_error(work_status)
+			response -> response
 		end
 	end
 

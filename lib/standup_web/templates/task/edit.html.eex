@@ -1,3 +1,91 @@
 <h2>Edit Task</h2>
 
-<%= render "form.html", Map.put(assigns, :action, task_path(@conn, :update, @task)) %>
+<%= form_for @changeset, task_path(@conn, :update, @task), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="input-field col m3 s12">
+      <%= label f, :task_number %>
+      <%= text_input f, :task_number %>
+      <%= error_tag f, :task_number %>
+    </div>
+
+    <div class="input-field col m9 s12">
+      <%= label f, :title %>
+      <%= text_input f, :title %>
+      <%= error_tag f, :title %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :url %>
+      <%= text_input f, :url %>
+      <%= error_tag f, :url %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col m6 s12">
+      <%= label f, :status %>
+      <%= text_input f, :status %>
+      <%= error_tag f, :status %>
+    </div>
+
+    <div class="input-field col m6 s12">
+      <%= label f, :on_date %>
+      <%= text_input f, :on_date, class: "datepicker", "data-value": @today, disabled: "disabled" %>
+      <%= error_tag f, :on_date %>
+    </div>
+  </div>
+  <%= hidden_input f, :user_id %>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :notes %>
+      <%= textarea f, :notes, class: "materialize-textarea" %>
+      <%= error_tag f, :notes %>
+    </div>
+  </div>
+
+  <div class="">
+    <%#= label f, :on_date %>
+    <%#= datetime_select f, :on_date, class: "" %>
+    <%#= error_tag f, :on_date %>
+  </div>
+
+
+  <div class="row">
+    <div class="col s12">
+      <%= submit "Submit", class: "btn waves-effect waves-light" %>
+      <%= link "Back", to: task_path(@conn, :index), class: "waves-effect waves-light btn" %>
+    </div>
+  </div>
+<% end %>
+
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+  
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: 'Today',
+      clear: 'Clear',
+      close: 'Ok',
+      max: true,
+      formatSubmit: 'yyyy-mm-dd',
+      hiddenName: true,
+      closeOnSelect: true // Close upon selecting a date,
+    });
+
+  });
+  
+</script>

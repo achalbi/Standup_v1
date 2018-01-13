@@ -1,38 +1,42 @@
 <h2>Show Task</h2>
 
-<ul>
+  <div class="row">
+    <div class="input-field col m3 s12">
+      <input id="task_number" type="text" class="validate" disabled value="<%= @task.task_number %>">
+      <label class="active black-text "for="task_number">Task No.</label>
+    </div>
 
-  <li>
-    <strong>Task number:</strong>
-    <%= @task.task_number %>
-  </li>
+    <div class="input-field col m9 s12">
+      <input id="title" type="text" class="validate" disabled value="<%= @task.title %>">
+      <label class="active black-text "for="title">Title</label>
+    </div>
+  </div>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @task.title %>
-  </li>
+  <div class="row">
+    <div class="input-field col s12">
+      <input id="url" type="text" class="validate" disabled value="<%= @task.url %>">
+      <label class="active black-text "for="url">URL</label>
+    </div>
+  </div>
 
-  <li>
-    <strong>Url:</strong>
-    <%= @task.url %>
-  </li>
+  <div class="row">
+    <div class="input-field col m6 s12">
+      <input id="status" type="text" class="validate" disabled value="<%= @task.status %>">
+      <label class="active black-text "for="status">Status</label>
+    </div>
 
-  <li>
-    <strong>Status:</strong>
-    <%= @task.status %>
-  </li>
+    <div class="input-field col m6 s12">
+          <input id="on_date" type="text" class="validate" disabled value="<%= NaiveDateTime.to_date(@task.on_date) %>">
+          <label class="active black-text "for="on_date">Date</label>
+    </div>
+  </div>
 
-  <li>
-    <strong>Notes:</strong>
-    <%= @task.notes %>
-  </li>
+  <div class="row">
+    <div class="input-field col s12">
+        <textarea id="notes" class="materialize-textarea" disabled><%= @task.notes %></textarea>
+        <label class="active black-text "for="notes">Notes</label>
+    </div>
+  </div>
 
-  <li>
-    <strong>On date:</strong>
-    <%= NaiveDateTime.to_date(@task.on_date) %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: task_path(@conn, :edit, @task) %></span>
-<span><%= link "Back", to: task_path(@conn, :index) %></span>
+<span><%= link "Edit", to: task_path(@conn, :edit, @task), class: "btn waves" %></span>
+<span><%= link "Back", to: task_path(@conn, :index), class: "btn waves" %></span>

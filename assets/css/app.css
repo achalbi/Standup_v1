@@ -23,3 +23,7 @@
 .html-newline {
     white-space: pre-line;    
 }
+
+.help-block {
+  color: red
+}
