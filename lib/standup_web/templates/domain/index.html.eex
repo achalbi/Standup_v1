@@ -1,0 +1,29 @@
+<h2>Listing Domains</h2>
+
+<h5>Organization: <%= @org.name %> </h5>
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for domain <- @domains do %>
+    <tr>
+      <td><%= domain.name %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: organization_domain_path(@conn, :show, @org, domain), class: "btn btn-default btn-xs hide" %></span>
+        <span><%= link "Edit", to: organization_domain_path(@conn, :edit, @org, domain), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: organization_domain_path(@conn, :delete, @org, domain), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Domain", to: organization_domain_path(@conn, :new, @org) %></span>

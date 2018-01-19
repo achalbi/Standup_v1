@@ -1,0 +1,13 @@
+<h2>Show Domain</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @domain.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: organization_domain_path(@conn, :edit, @org_id, @domain) %></span>
+<span><%= link "Back", to: organization_domain_path(@conn, :index, @org_id) %></span>

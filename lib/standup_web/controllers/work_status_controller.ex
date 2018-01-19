@@ -5,7 +5,7 @@ defmodule StandupWeb.WorkStatusController do
   alias Standup.StatusTrack.WorkStatus
 
   def index(conn, _params) do
-    work_statuses = StatusTrack.list_work_statuses()
+    work_statuses = StatusTrack.list_work_statuses(conn)
     render(conn, "index.html", work_statuses: work_statuses)
   end
 

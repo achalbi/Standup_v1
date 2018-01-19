@@ -1,27 +1,34 @@
 <div class="jumbotron">
 <%= if logged_in?(@conn) do %>
-  <h2><%= gettext "Welcome to %{name}!", name: current_user_fullname(@conn) %></h2>
+  <h2><%= gettext "Welcome, %{name}!", name: current_user_fullname(@conn) %></h2>
 <% end %>
-  <h4>List of pages</h4>
 </div>
 <div class="row marketing">
-  <div class="col-lg-6">
+  <div class="col s12 m6">
+  <h4>Pages:</h4>
     <ul>
       <li>
-        <a href="/organizations">Organizations</a>
+        <h5><a class="medium" href="/organizations">Organizations</a></h5>
       </li>
       <li>
-        <a href="/teams">Teams</a>
+        <h5><a class="medium" href="/users">Users</a></h5>
       </li>
       <li>
-        <a href="/users">Users</a>
+        <h5><a class="medium" href="/tasks">Tasks</a></h5>
       </li>
       <li>
-        <a href="/tasks">Tasks</a>
-      </li>
-      <li>
-        <a href="/work_statuses">Work Status</a>
+        <h5><a class="medium" href="/work_statuses">Work Status</a></h5>
       </li>
     </ul>
+  </div>
+  <div class="col s12 m6">
+    <%= if @task.on_date do %>
+      <h4>Last task updated on:</h4>
+      <h5><%= NaiveDateTime.to_date(@task.on_date) %></h5>
+    <%= else %>
+      <h5>No task created yet!</h5>
+    <% end %>
+    <br>
+  <div><%= link "New Task", to: task_path(@conn, :new), class: "btn" %></div>
   </div>
 </div>

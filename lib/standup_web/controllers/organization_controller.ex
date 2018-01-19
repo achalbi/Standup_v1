@@ -5,7 +5,8 @@ defmodule StandupWeb.OrganizationController do
   alias Standup.Organizations.Organization
 
   def index(conn, _params) do
-    organizations = Organizations.list_organizations()
+    current_user = conn.assigns.current_user
+    organizations = Organizations.list_organizations(current_user)
     render(conn, "index.html", organizations: organizations)
   end
 

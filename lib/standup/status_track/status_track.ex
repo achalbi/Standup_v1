@@ -21,8 +21,14 @@ defmodule Standup.StatusTrack do
       [%WorkStatus{}, ...]
 
   """
-  def list_work_statuses do
-    Repo.all(WorkStatus)
+	def list_work_statuses(conn) do
+		current_user = Guardian.Plug.current_resource(conn)
+
+		work_status = from w in WorkStatus,
+		where: w.user_id == ^current_user.id,
+		preload: [:tasks],
+     order_by: [desc: w.on_date]
+		Repo.all(work_status)
   end
 
   @doc """
@@ -39,7 +45,7 @@ defmodule Standup.StatusTrack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_work_status!(id), do: Repo.get!(WorkStatus, id)
+  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload(:tasks)
 
   @doc """
   Creates a work_status.
@@ -117,8 +123,13 @@ defmodule Standup.StatusTrack do
       [%Task{}, ...]
 
   """
-  def list_tasks do
-    Repo.all(Task)
+	def list_tasks(conn) do
+		current_user = Guardian.Plug.current_resource(conn)
+		tasks = from t in Task,
+		where: t.user_id == ^current_user.id,
+		preload: [:work_status],
+     order_by: [desc: t.on_date]
+    Repo.all(tasks)
   end
 
   @doc """
@@ -333,5 +344,14 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 	def update_spreadsheet(%WorkStatus{} = work_status, pid, row_no) do
 		on_date = Timex.format!(work_status.on_date, "%m-%d-%Y", :strftime)
 		GSS.Spreadsheet.write_row(pid, row_no, [work_status.user_name, on_date, work_status.task_summary])
+	end
+
+	def task_last_updated_on(conn) do
+		current_user = Guardian.Plug.current_resource(conn)
+		tasks = from t in Task,
+		where: t.user_id == ^current_user.id,
+		order_by: [desc: t.on_date],
+		limit: 1
+    Repo.one(tasks)
 	end
 end

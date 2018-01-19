@@ -126,4 +126,64 @@ defmodule Standup.OrganizationsTest do
       assert %Ecto.Changeset{} = Organizations.change_team(team)
     end
   end
+
+  describe "domains" do
+    alias Standup.Organizations.Domain
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def domain_fixture(attrs \\ %{}) do
+      {:ok, domain} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Organizations.create_domain()
+
+      domain
+    end
+
+    test "list_domains/0 returns all domains" do
+      domain = domain_fixture()
+      assert Organizations.list_domains() == [domain]
+    end
+
+    test "get_domain!/1 returns the domain with given id" do
+      domain = domain_fixture()
+      assert Organizations.get_domain!(domain.id) == domain
+    end
+
+    test "create_domain/1 with valid data creates a domain" do
+      assert {:ok, %Domain{} = domain} = Organizations.create_domain(@valid_attrs)
+      assert domain.name == "some name"
+    end
+
+    test "create_domain/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Organizations.create_domain(@invalid_attrs)
+    end
+
+    test "update_domain/2 with valid data updates the domain" do
+      domain = domain_fixture()
+      assert {:ok, domain} = Organizations.update_domain(domain, @update_attrs)
+      assert %Domain{} = domain
+      assert domain.name == "some updated name"
+    end
+
+    test "update_domain/2 with invalid data returns error changeset" do
+      domain = domain_fixture()
+      assert {:error, %Ecto.Changeset{}} = Organizations.update_domain(domain, @invalid_attrs)
+      assert domain == Organizations.get_domain!(domain.id)
+    end
+
+    test "delete_domain/1 deletes the domain" do
+      domain = domain_fixture()
+      assert {:ok, %Domain{}} = Organizations.delete_domain(domain)
+      assert_raise Ecto.NoResultsError, fn -> Organizations.get_domain!(domain.id) end
+    end
+
+    test "change_domain/1 returns a domain changeset" do
+      domain = domain_fixture()
+      assert %Ecto.Changeset{} = Organizations.change_domain(domain)
+    end
+  end
 end

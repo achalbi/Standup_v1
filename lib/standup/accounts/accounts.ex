@@ -54,6 +54,12 @@ defmodule Standup.Accounts do
     |> Repo.preload(:roles)
     |> Repo.preload(:photo)
   end
+
+  def get_user_with_organization!(id) do
+    User
+    |> Repo.get!(id)
+    |> Repo.preload(:organization)
+  end
   @doc """
   Creates a user.
 

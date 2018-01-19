@@ -1,28 +1,38 @@
 <h2>Show Work status</h2>
 
-<ul>
+<table class="responsive-table highlight">
+  <thead>
+    <tr>
+      <th style="width: 100px;">On date</th>
+      <th>Task number - Title<br>
+          Url<br>
+          Status<br>
+          Notes</th>
 
-  <li>
-    <strong>User name:</strong>
-    <%= @work_status.user_name %>
-  </li>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
 
-  <li>
-    <strong>User email:</strong>
-    <%= @work_status.user_email %>
-  </li>
+<%= for task <- @work_status.tasks do %>
+  <% date = NaiveDateTime.to_date(task.on_date) %>
+    <tr>
+      <td><%= date %></td>
+      <td><%= task.task_number %> - 
+        <%= task.title %><br>
+        <%= task.url %><br>
+        <%= task.status %><br>
+        <%= task.notes %></td>
 
-  <li>
-    <strong>Task summary:</strong><br>
-    <span class="html-newline"><%= @work_status.task_summary %></span>
-  </li>
+      <td class="text-right">
+        <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
 
-  <li>
-    <strong>On date:</strong>
-    <%= @work_status.on_date %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: work_status_path(@conn, :edit, @work_status) %></span>
+<span class="hide"><%= link "Edit", to: work_status_path(@conn, :edit, @work_status) %></span>
 <span><%= link "Back", to: work_status_path(@conn, :index) %></span>

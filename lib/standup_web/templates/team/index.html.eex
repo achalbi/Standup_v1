@@ -25,4 +25,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Team", to: team_path(@conn, :new) %></span>
+<span><%= link "New Team", to: team_path(@conn, :new, organization_id: @organization.id ) %></span>

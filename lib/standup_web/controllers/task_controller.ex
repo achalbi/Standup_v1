@@ -6,7 +6,7 @@ defmodule StandupWeb.TaskController do
   alias Standup.StatusTrack.Task
 
   def index(conn, _params) do
-    tasks = StatusTrack.list_tasks()
+    tasks = StatusTrack.list_tasks(conn)
     render(conn, "index.html", tasks: tasks)
   end
 

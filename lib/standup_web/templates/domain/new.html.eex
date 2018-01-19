@@ -1,0 +1,28 @@
+<h2>New Domain</h2>
+<h5>Organization: <%= @org.name %> </h5>
+<h6>Create domain to auto-validate Users's email id against organization.</h6>
+<h6>e.g. smartzip.com, reach150.com, etc...</h6>
+<br>
+<%= form_for @changeset,  organization_domain_path(@conn, :create, @org), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="input-field col s12">
+  <i class="material-icons prefix">domain</i>
+    <%= text_input f, :name, class: "validate" %>
+    <%= label f, :name %>
+    <%= error_tag f, :name %>
+  </div>
+ <%= hidden_input f, :organization_id, value: @org.id %>
+  <div>
+    <%= submit "Submit", class: "btn" %>
+    <span><%= link "Back", to: organization_domain_path(@conn, :index, @org), class: "btn" %></span>
+  </div>
+<% end %>
+
+

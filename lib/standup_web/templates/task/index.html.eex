@@ -1,27 +1,29 @@
 <h2>Listing Tasks</h2>
+<span><%= link "Create Task", to: task_path(@conn, :new), class: "btn right" %></span>
 
-<table class="table">
+<table class="responsive-table highlight">
   <thead>
     <tr>
-      <th>Task number</th>
-      <th>Title</th>
-      <th>Url</th>
-      <th>Status</th>
-      <th>Notes</th>
-      <th>On date</th>
+      <th style="width: 100px;">On date</th>
+      <th>Task number - Title<br>
+          Url<br>
+          Status<br>
+          Notes</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
+
 <%= for task <- @tasks do %>
+  <% date = NaiveDateTime.to_date(task.on_date) %>
     <tr>
-      <td><%= task.task_number %></td>
-      <td><%= task.title %></td>
-      <td><%= task.url %></td>
-      <td><%= task.status %></td>
-      <td><%= task.notes %></td>
-      <td><%= NaiveDateTime.to_date(task.on_date) %></td>
+      <td><%= link date, to: work_status_path(@conn, :show, task.work_status) %></td>
+      <td><%= task.task_number %> - 
+        <%= task.title %><br>
+        <%= task.url %><br>
+        <%= task.status %><br>
+        <%= task.notes %></td>
 
       <td class="text-right">
         <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
@@ -33,4 +35,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Task", to: task_path(@conn, :new) %></span>
+

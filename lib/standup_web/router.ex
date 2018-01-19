@@ -59,7 +59,9 @@ defmodule StandupWeb.Router do
     
     resources "/users", UserController, except: [:new, :create]
     resources "/roles", RoleController
-    resources "/organizations", OrganizationController
+    resources "/organizations", OrganizationController do
+      resources "/domains", DomainController
+    end
     resources "/teams", TeamController
     get "/add_users", TeamController, :add_users
     post "/photos/upload", PhotoController, :upload 

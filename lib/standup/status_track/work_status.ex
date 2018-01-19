@@ -1,7 +1,7 @@
 defmodule Standup.StatusTrack.WorkStatus do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Standup.StatusTrack.WorkStatus
+  alias Standup.StatusTrack.{WorkStatus, Task}
   alias Standup.Accounts.User
 
   schema "work_statuses" do
@@ -11,6 +11,7 @@ defmodule Standup.StatusTrack.WorkStatus do
     field :user_email, :string
     field :sheet_row_id, :integer
     belongs_to :user, User
+    has_many :tasks, Task
 
     timestamps()
   end
