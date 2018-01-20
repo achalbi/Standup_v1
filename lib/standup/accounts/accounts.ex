@@ -16,6 +16,9 @@ defmodule Standup.Accounts do
   alias Standup.Galleries
   alias Ueberauth.Auth
 
+  alias Standup.Organizations
+  alias Standup.Organizations.{UserOrganization}
+
   @doc """
   Returns the list of users.
 
@@ -476,5 +479,26 @@ defmodule Standup.Accounts do
     %UserRole{}
     |> UserRole.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def link_user_to_org!(user) do
+    user = user |> Repo.preload([:organizations, :credential])
+    [domain] = get_domain_by_user_email(user)
+    organization = Organizations.get_organization_from_domain!(domain)
+    # one user -> one org logic: will change it soon 
+    if organization do
+      unless Repo.get_by(UserOrganization, user_id: user.id, organization_id: organization.id) do
+        %UserOrganization{}
+        |> UserOrganization.changeset(%{})
+        |> Ecto.Changeset.put_assoc(:user, user)
+        |> Ecto.Changeset.put_assoc(:organization, organization)
+        |> Repo.insert()
+      end
+    end
+  end
+
+  def get_domain_by_user_email(user) do
+    [_head|domain] = Regex.split(~r{@}, user.credential.email)
+    domain
   end
 end

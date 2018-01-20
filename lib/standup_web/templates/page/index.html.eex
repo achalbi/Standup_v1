@@ -22,10 +22,10 @@
     </ul>
   </div>
   <div class="col s12 m6">
-    <%= if @task.on_date do %>
+    <%= if @task do %>
       <h4>Last task updated on:</h4>
       <h5><%= NaiveDateTime.to_date(@task.on_date) %></h5>
-    <%= else %>
+    <% else %>
       <h5>No task created yet!</h5>
     <% end %>
     <br>

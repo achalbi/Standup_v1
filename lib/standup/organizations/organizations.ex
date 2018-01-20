@@ -9,6 +9,7 @@ defmodule Standup.Organizations do
   alias Standup.Repo
   alias Standup.Accounts.User
 
+  alias Standup.Organizations.Domain
   alias Standup.Organizations.{Organization, UserOrganization, UserTeam, Team}
 
   @doc """
@@ -47,6 +48,12 @@ defmodule Standup.Organizations do
   def get_organization!(id), do: Repo.get!(Organization, id) |> Repo.preload([:users, :teams])
 
   def get_organization_with_domains!(id), do: Repo.get!(Organization, id) |> Repo.preload([:domains])
+  
+  def get_organization_from_domain!(domain_name) do
+    domain = Repo.get_by(Domain, name: domain_name) |> Repo.preload([:organization])
+    if domain, do: domain.organization, else: nil
+  end
+
   @doc """
   Creates a organization.
 
@@ -295,8 +302,6 @@ defmodule Standup.Organizations do
     
     Repo.all(query)
   end
-
-  alias Standup.Organizations.Domain
 
   @doc """
   Returns the list of domains.

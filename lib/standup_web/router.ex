@@ -39,6 +39,10 @@ defmodule StandupWeb.Router do
   end
   
   scope "/auth", StandupWeb do
+    pipe_through [:browser]
+  end
+  
+  scope "/auth", StandupWeb do
     pipe_through [:browser, :browser_session]
     
     get "/:provider", AuthController, :new

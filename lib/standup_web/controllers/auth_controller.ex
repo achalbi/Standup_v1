@@ -34,6 +34,7 @@ defmodule StandupWeb.AuthController do
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     case Accounts.insert_or_update(auth) do
       {:ok, user} ->
+        Accounts.link_user_to_org!(user)
         conn
         |> put_flash(:info, user.firstname <> " " <> user.lastname <> " Successfully authenticated.")
         |> Guardian.Plug.sign_in(user)
@@ -51,6 +52,7 @@ defmodule StandupWeb.AuthController do
     when not is_nil(email) and not is_nil(password) do
     case Accounts.authenticate(auth) do
       {:ok, user} ->
+        #Accounts.link_user_to_org!(user)
         conn
         |> put_flash(:info, "Successfully authenticated.")
        # |> put_session(:current_user_id, user.id)
