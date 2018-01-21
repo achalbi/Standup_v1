@@ -28,6 +28,8 @@
               <%# <%= img_tag(current_user(@conn).credential.avatar, class: "circle user-avatar-sm ") %>
             </li>
             <li>
+            <%#= link "Logout", to: auth_path(@conn, :delete), class: "waves-effect waves-blue btn-flat transparent white-text" %>
+
               <%= form_for @conn, auth_path(@conn, :delete), [method: :delete], fn _ -> %>
                     <%= submit "logout", class: "waves-effect waves-blue btn-flat transparent white-text" %>
               <% end %>

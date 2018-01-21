@@ -45,7 +45,7 @@ defmodule Standup.Organizations do
       ** (Ecto.NoResultsError)
 
   """
-  def get_organization!(id), do: Repo.get!(Organization, id) |> Repo.preload([:users, :teams])
+  def get_organization!(id), do: Repo.get!(Organization, id) |> Repo.preload([[users: :photo], :teams, :domains])
 
   def get_organization_with_domains!(id), do: Repo.get!(Organization, id) |> Repo.preload([:domains])
   

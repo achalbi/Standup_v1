@@ -21,10 +21,45 @@
     <%= Enum.map_join(@members, " , ", fn user -> user.firstname <> " " <> user.lastname end) %>
   </li>
   <% end %>
+<br>
+<br>
+<span><%= link "New Domain", to: organization_domain_path(@conn, :new, @organization), class: "btn right" %></span>
+<h4>Domains</h4>
 
-  <h4>Listing Teams</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <%= if Enum.count(@organization.domains) == 0 do %>
+  <tr>
+      <td colspan="2">
+        <h6 class="center">No domains created yet!</h6>
+      </td>
+  </tr>
+  <% end %>
+<%= for domain <- @organization.domains do %>
+    <tr>
+      <td><%= domain.name %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: organization_domain_path(@conn, :show, @organization, domain), class: "btn btn-default btn-xs hide" %></span>
+        <span><%= link "Edit", to: organization_domain_path(@conn, :edit, @organization, domain), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: organization_domain_path(@conn, :delete, @organization, domain), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+<br>
+<br>
 
 <span><%= link "Create Team", to: team_path(@conn, :new, organization_id: @organization.id ), class: "btn right" %></span>
+<h4>Teams</h4>
 
 <table class="table">
   <thead>
@@ -63,5 +98,48 @@
 
 </ul>
 
+<h4>Users</h4>
+<table class=" bordered highlight ">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <%# <th>Username</th> %>
 
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user <- @organization.users do %>
+    <tr>
+      <td>
+
+     <div class="col s12 m8 offset-m2 l6 offset-l3">
+          <div class="row valign-wrapper m-b-0">
+            <div class="col s2">
+              <%= unless is_nil(user.photo) do %>
+                <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 70}) %>
+              <% end %> 
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+                <%= user.firstname %>  <%= user.lastname %>
+              </span>
+            </div>
+          </div>
+      </div>
+      </td>
+            
+
+      <td class="text-right right">
+        <span><%= link "Show", to: user_path(@conn, :show, user), class: "waves-effect waves-light btn " %></span>
+        <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "waves-effect waves-light btn " %></span>
+        <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "waves-effect waves-light btn" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<br>
+<br>
 <span><%= link "Back", to: organization_path(@conn, :index), class: "btn" %></span>
