@@ -27,8 +27,9 @@ defmodule Standup.StatusTrack do
 		work_status = from w in WorkStatus,
 		where: w.user_id == ^current_user.id,
 		preload: [:tasks],
-     order_by: [desc: w.on_date]
-		Repo.all(work_status)
+        order_by: [desc: w.on_date]
+		
+        Repo.all(work_status)
   end
 
   @doc """
@@ -128,7 +129,8 @@ defmodule Standup.StatusTrack do
 		tasks = from t in Task,
 		where: t.user_id == ^current_user.id,
 		preload: [:work_status],
-     order_by: [desc: t.on_date]
+    order_by: [desc: t.on_date]
+		
     Repo.all(tasks)
   end
 

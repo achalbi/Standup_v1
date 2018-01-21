@@ -53,8 +53,8 @@ defmodule Standup.Mixfile do
       {:elixir_google_spreadsheets, "~> 0.1.9"},
       {:ecto_gss, "~> 0.1"},
       {:json_web_token, git: "https://github.com/starbuildr/json_web_token_ex.git", override: true},
-      {:timex, "~> 3.1"}
-
+      {:timex, "~> 3.1"},
+      {:sphinx, "~> 0.1.0"}
     ]
   end
 

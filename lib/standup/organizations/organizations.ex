@@ -259,25 +259,26 @@ defmodule Standup.Organizations do
     Repo.all(query)
   end
 
-    def get_team_members(team_id) do
+  def get_team_members(team_id) do
     query = from ut in UserTeam,
     join: u in User,
     where: ut.user_id == u.id,
-    where: ut.is_moderator == false and ut.team_id == ^team_id, 
+    where: ut.is_moderator == false and ut.team_id == ^team_id,
     select: u
     
-    Repo.all(query)
-
+    users = Repo.all(query)
+    users |> Repo.preload(:photo)
   end
 
   def get_team_moderators(team_id) do
     query = from ut in UserTeam,
     join: u in User,
     where: ut.user_id == u.id,
-    where: ut.is_moderator == true and ut.team_id == ^team_id, 
+    where: ut.is_moderator == true and ut.team_id == ^team_id,
     select: u
     
-    Repo.all(query)
+    users = Repo.all(query)
+    users |> Repo.preload(:photo)
   end
 
   def get_org_users(org_id) do

@@ -62,6 +62,8 @@ config :elixir_google_spreadsheets, :client,
   max_interval: :timer.minutes(1),
   interval: 100
 
+config :sphinx, :repo, Standup.Repo
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
