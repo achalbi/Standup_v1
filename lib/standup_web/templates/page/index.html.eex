@@ -1,32 +1,15 @@
-<div class="jumbotron">
-<%= if logged_in?(@conn) do %>
-  <h3>
-  <%= unless is_nil(@current_user.photo) do %>
-    <%= cl_image_tag(@current_user.photo.public_id, class: " materialboxed responsive-img", transforms: %{width: 200, height: 200, sign_url: true, quality: 100}) %>
-  <% end %> 
-  <%= gettext "Welcome, %{name}!", name: current_user_fullname(@conn) %></h3>
-<% end %>
-</div>
 <div class="row marketing">
   <div class="col s12 m6">
-  <h4>Pages:</h4>
-    <ul>
-      <li>
-        <h5><a class="medium" href="/organizations">Organizations</a></h5>
-      </li>
-      <li>
-        <h5><a class="medium" href="/work_statuses">Work Status</a></h5>
-      </li>
-    </ul>
-  </div>
-  <div class="col s12 m6">
     <%= if @task do %>
-      <h4>Last task updated on:</h4>
-      <h5><%= NaiveDateTime.to_date(@task.on_date) %></h5>
+      <h4>Last task updated on:
+      <span class="small"><%= NaiveDateTime.to_date(@task.on_date) %></span></h4>
     <% else %>
       <h5>No task created yet!</h5>
     <% end %>
     <br>
-  <div><%= link "Create Task", to: task_path(@conn, :new), class: "btn" %></div>
+    <div><%= link "Create Task", to: task_path(@conn, :new), class: "btn" %></div>
+  </div>
+  <div class="col s12 m6">
+
   </div>
 </div>

@@ -45,7 +45,7 @@ defmodule StandupWeb.TaskController do
 
   def edit(conn, %{"id" => id}) do
     task = StatusTrack.get_task!(id)
-    today = task.on_date
+    today = NaiveDateTime.to_date(task.on_date)
     changeset = StatusTrack.change_task(conn, task)
     render(conn, "edit.html", task: task, changeset: changeset, today: today)
   end
