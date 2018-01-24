@@ -1,6 +1,10 @@
-<h2>Work status summary</h2>
+<div><%= link "Create Task", to: task_path(@conn, :new), class: "btn right" %></div>
+<h3>Work status summary</h3>
 
-<table class="table">
+<div class="divider"></div> 
+<br>
+
+<table class="table hide">
   <thead>
     <tr>
       <th></th>
@@ -26,5 +30,17 @@
 <% end %>
   </tbody>
 </table>
+
+<%= for work_status <- @work_statuses do %>
+
+      <h4><%= work_status.on_date %></h4>
+      <span><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn right" %></span>
+      <div class="html-newline"><%= work_status.task_summary %></div>
+      <br>
+      <div class="divider"></div> 
+      <br>
+      
+
+<% end %>
 
 <span class="hide"><%= link "New Work status", to: work_status_path(@conn, :new) %></span>

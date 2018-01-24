@@ -9,9 +9,12 @@ defmodule StandupWeb.TaskController do
     tasks = StatusTrack.list_tasks(conn)
     render(conn, "index.html", tasks: tasks)
   end
-
-  def new(conn, _params) do
+  
+  def new(conn, task_params) do
     today = Date.utc_today
+    if task_params["on_date"] do
+      today = Timex.parse!(task_params["on_date"], "%Y-%m-%d", :strftime)  
+    end
     changeset = StatusTrack.change_task(conn, %Task{})
     render(conn, "new.html", changeset: changeset, today: today)
   end

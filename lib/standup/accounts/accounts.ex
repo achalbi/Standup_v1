@@ -374,7 +374,7 @@ defmodule Standup.Accounts do
   def current_user(conn) do
     #id = Plug.Conn.get_session(conn, :current_user_id)
     current_user = Guardian.Plug.current_resource(conn)
-    if current_user, do: Standup.Repo.get(User, current_user.id) |> Repo.preload(:credential)
+    if current_user, do: Standup.Repo.get(User, current_user.id) |> Repo.preload([:credential, :photo])
     #id = Guardian.Plug.current_resource(conn)
     #Guardian.Plug.current_resource(conn)
   end

@@ -1,38 +1,43 @@
-<h2>Show Work status</h2>
 
-<table class="responsive-table highlight">
+<% task_date = Enum.at(@work_status.tasks,0) %>
+<% date = NaiveDateTime.to_date(task_date.on_date) %>
+<div class="divider"></div>
+<table class="bordered highlight">
   <thead>
     <tr>
-      <th style="width: 100px;">On date</th>
-      <th>Task number - Title<br>
-          Url<br>
-          Status<br>
-          Notes</th>
-
-      <th></th>
+      <th>
+        <h4>Work status: <%= date %>
+          <div><%= link "Create Task", to: task_path(@conn, :new, on_date: Date.to_string(date)), class: "btn right" %></div>
+        </h4>
+      </th>
     </tr>
   </thead>
   <tbody>
-
 <%= for task <- @work_status.tasks do %>
-  <% date = NaiveDateTime.to_date(task.on_date) %>
-    <tr>
-      <td><%= date %></td>
-      <td><%= task.task_number %> - 
-        <%= task.title %><br>
-        <%= task.url %><br>
-        <%= task.status %><br>
-        <%= task.notes %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
+  <tr>
+    <td>
+      <div class="row">
+        <div class="col s12 m10">
+          <div class="html-newline">
+            <b><%= task.task_number %> - <%= task.title %></b>
+            <b>URL:</b> <%= task.url %>
+            <b>Status:</b> <%= task.status %>
+            <b>Notes:</b> <%= task.notes %>
+            
+          </div>
+        </div>
+        <div class="col s12 m2 text-right">
+        <br>
+          <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+          <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+          <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        </div>
+      </div>
+    </td>
+  </tr>
 <% end %>
-  </tbody>
+</tbody>
 </table>
-
+<br>
 <span class="hide"><%= link "Edit", to: work_status_path(@conn, :edit, @work_status) %></span>
-<span><%= link "Back", to: work_status_path(@conn, :index) %></span>
+<span><%= link "Back", to: work_status_path(@conn, :index), class: "btn" %></span>

@@ -1,6 +1,10 @@
 <div class="jumbotron">
 <%= if logged_in?(@conn) do %>
-  <h2><%= gettext "Welcome, %{name}!", name: current_user_fullname(@conn) %></h2>
+  <h3>
+  <%= unless is_nil(@current_user.photo) do %>
+    <%= cl_image_tag(@current_user.photo.public_id, class: " materialboxed responsive-img", transforms: %{width: 200, height: 200, sign_url: true, quality: 100}) %>
+  <% end %> 
+  <%= gettext "Welcome, %{name}!", name: current_user_fullname(@conn) %></h3>
 <% end %>
 </div>
 <div class="row marketing">
@@ -9,12 +13,6 @@
     <ul>
       <li>
         <h5><a class="medium" href="/organizations">Organizations</a></h5>
-      </li>
-      <li>
-        <h5><a class="medium" href="/users">Users</a></h5>
-      </li>
-      <li>
-        <h5><a class="medium" href="/tasks">Tasks</a></h5>
       </li>
       <li>
         <h5><a class="medium" href="/work_statuses">Work Status</a></h5>
@@ -29,6 +27,6 @@
       <h5>No task created yet!</h5>
     <% end %>
     <br>
-  <div><%= link "New Task", to: task_path(@conn, :new), class: "btn" %></div>
+  <div><%= link "Create Task", to: task_path(@conn, :new), class: "btn" %></div>
   </div>
 </div>
