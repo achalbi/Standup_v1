@@ -1,6 +1,8 @@
 
 <% task_date = Enum.at(@work_status.tasks,0) %>
-<% date = NaiveDateTime.to_date(task_date.on_date) %>
+
+<% date = if task_date, do: NaiveDateTime.to_date(task_date.on_date), else: @work_status.on_date %>
+
 <div class="divider"></div>
 <table class="bordered highlight">
   <thead>

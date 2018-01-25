@@ -31,16 +31,15 @@
   </tbody>
 </table>
 
+<ul class="collapsible popout" data-collapsible="accordion">
 <%= for work_status <- @work_statuses do %>
-
-      <h4><%= work_status.on_date %></h4>
-      <span><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn right" %></span>
+<li>
+      <h5 class="collapsible-header"><%= work_status.on_date %></h5>
+      <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn" %></span>
       <div class="html-newline"><%= work_status.task_summary %></div>
-      <br>
-      <div class="divider"></div> 
-      <br>
-      
-
+      </div>
+</li>
 <% end %>
+</ul>
 
 <span class="hide"><%= link "New Work status", to: work_status_path(@conn, :new) %></span>
