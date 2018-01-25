@@ -5,7 +5,7 @@ exports.config = {
       //joinTo: "js/app.js"
       joinTo: {
         'js/app.js': /(web\/static\/js)/,
-        'js/vendor.js': /(web\/static\/vendor)/
+        'js/vendor.js': /(web\/static\/js)/
       }
       // To use a separate vendor.js bundle, specify two files path
       // http://brunch.io/docs/config#-files-
@@ -26,7 +26,8 @@ exports.config = {
       joinTo: "css/app.css"
     },
     templates: {
-      joinTo: "js/app.js"
+      joinTo: "js/app.js",
+      joinTo: "js/vendor.js"
     }
   },
 
