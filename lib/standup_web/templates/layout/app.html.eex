@@ -22,8 +22,12 @@
 
     <nav class="light-blue lighten-1">
       <div class="nav-wrapper">
+        <%= if logged_in?(@conn) do %>
+          <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        <% end %>
+
         <a class="brand-logo" href="/">Stand up</a>
-        <ul class="right hide-on-med-and-down">
+        <ul class="right">
           <%= if logged_in?(@conn) do %>
             <li>
               <%# <%= img_tag(current_user(@conn).credential.avatar, class: "circle user-avatar-sm ") %>
@@ -32,7 +36,7 @@
             <%#= link "Logout", to: auth_path(@conn, :delete), class: "waves-effect waves-blue btn-flat transparent white-text" %>
 
               <%= form_for @conn, auth_path(@conn, :delete), [method: :delete], fn _ -> %>
-                    <%= submit "logout", class: "waves-effect waves-blue btn-flat transparent white-text" %>
+                    <%= submit "logout", class: "waves-effect waves-blue btn-flat transparent white-text " %>
               <% end %>
             </li>
           <% else %>
@@ -55,9 +59,15 @@
       padding-left: 330px;
       padding-right: 30px;
     }
+
     @media only screen and (max-width : 992px) {
-      header, .container, footer {
+      header, footer, nav {
         padding-left: 0;
+        padding-right: 0;
+      }
+      .container-main{
+        padding-left: 20px;
+        padding-right: 20px;
       }
     }
 </style>
@@ -72,14 +82,13 @@
         </div>
         <%# <a href="#!user"><img class="circle" src=""></a> %>
         <div style="margin-top:200px;">
-          <a href="#!name"><span class="white-text name text-grey-shadow"><%= current_user_fullname(@conn) %></span></a>
-          <a href="#!email"><span class="white-text email text-grey-shadow"><%= @current_user.credential.email %></span></a>
+          <span class="white-text name text-grey-shadow"><%= current_user_fullname(@conn) %></span>
+          <span class="white-text email text-grey-shadow"><%= @current_user.credential.email %></span>
         </div>
       </div>
     </li>
     <li><a class="waves-effect" href="/organizations"><i class="material-icons">business</i>Organizations</a></li>
-    <li class="m-b-10"><a class="waves-effect" href="/work_statuses"><i class="material-icons">library_books</i>Work Status</a></li>
-     <li>
+    <li><a class="waves-effect" href="/work_statuses"><i class="material-icons">library_books</i>Work Status</a></li>
     </li>
       <div id="v-cal">
         <div class="vcal-header">
@@ -112,14 +121,30 @@
       padding-left: 200px;
       padding-right: 200px;
     }
+
      nav{
       padding-left: 30px;
       padding-right: 30px;
     }
+
+    @media only screen and (max-width : 992px) {
+      header, footer, nav {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .container-main{
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
 </style>
 <% end %>
-
-  <div class="">
+<%= if logged_in?(@conn) do %>
+  <div>
+<% else %>
+  <div class="container">
+<% end %>
+    <main role="main">
     <div class="container-main">
       <%= if(get_flash(@conn, :info)) do %>
       <div class="card green lighten-5" role="alert">
@@ -135,7 +160,6 @@
         </div>
       </div>
       <% end %>
-      <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
 
@@ -150,6 +174,8 @@
 <%= if logged_in?(@conn) do %>
   <script>
     $(document).ready(function(){
+       // Initialize collapse button
+      $(".button-collapse").sideNav();
       vanillaCalendar.init();
 
     });
