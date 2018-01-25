@@ -1,7 +1,7 @@
+<br>
 <div><%= link "Create Task", to: task_path(@conn, :new), class: "btn right" %></div>
-<h3>Work status summary</h3>
+<h4>Work summary</h4>
 
-<div class="divider"></div> 
 <br>
 
 <table class="table hide">
@@ -34,7 +34,7 @@
 <ul class="collapsible popout" data-collapsible="accordion">
 <%= for work_status <- @work_statuses do %>
 <li>
-      <h5 class="collapsible-header"><%= work_status.on_date %></h5>
+      <h5 class="collapsible-header"><%= work_status.on_date %> </h5>
       <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn" %></span>
       <div class="html-newline"><%= work_status.task_summary %></div>
       </div>
