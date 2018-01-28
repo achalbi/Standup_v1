@@ -1,8 +1,12 @@
-<br>
-<div><%= link "Create Task", to: task_path(@conn, :new), class: "btn right" %></div>
-<h4>Work summary</h4>
 
+<h4>Work summary</h4>
 <br>
+
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large teal waves-effect waves-light" href="<%= task_path(@conn, :new) %>">
+      <i class='large material-icons'>add</i>
+    </a>
+  </div>
 
 <table class="table hide">
   <thead>
@@ -33,8 +37,8 @@
 
 <ul class="collapsible popout" data-collapsible="accordion">
 <%= for work_status <- @work_statuses do %>
-<li>
-      <h5 class="collapsible-header"><%= work_status.on_date %> </h5>
+<li class="m-0">
+      <h5 class="collapsible-header"><%= work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
       <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn" %></span>
       <div class="html-newline"><%= work_status.task_summary %></div>
       </div>

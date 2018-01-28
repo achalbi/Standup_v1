@@ -1,38 +1,24 @@
-<h2>Listing Tasks</h2>
+<h3>Listing Tasks</h3>
 <span><%= link "Create Task", to: task_path(@conn, :new), class: "btn right" %></span>
-
-<table class="responsive-table highlight">
-  <thead>
-    <tr>
-      <th style="width: 100px;">On date</th>
-      <th>Task number - Title<br>
-          Url<br>
-          Status<br>
-          Notes</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
 
 <%= for task <- @tasks do %>
   <% date = NaiveDateTime.to_date(task.on_date) %>
-    <tr>
-      <td><%= link date, to: work_status_path(@conn, :show, task.work_status) %></td>
-      <td><%= task.task_number %> - 
-        <%= task.title %><br>
-        <%= task.url %><br>
-        <%= task.status %><br>
-        <%= task.notes %></td>
+    <div class="row">
+      <div class="col s12">
+        <h5><%= link date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) , to: work_status_path(@conn, :show, task.work_status) %></h5>
+        <b><%= task.task_number %> - <%= task.title %></b> <br>
+          <b>URL: </b><%= task.url %><br>
+          <b>status: </b><%= task.status %><br>
+          <b>notes: </b><%= task.notes %><br>
 
-      <td class="text-right">
-        <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
+        <div class="left">
+          <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn" %></span>
+          <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn" %></span>
+          <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %></span>
+        </div>
+      </div>
+    </div>
 <% end %>
-  </tbody>
-</table>
+
 
 

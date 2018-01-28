@@ -22,5 +22,6 @@
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
+    <a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
   </div>
 <% end %>

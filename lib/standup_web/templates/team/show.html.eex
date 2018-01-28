@@ -69,4 +69,4 @@
 </ul>
 
 <span><%= link "Edit", to: team_path(@conn, :edit, @team), class: "btn" %></span>
-<span><%= link "Back", to: team_path(@conn, :index), class: "btn" %></span>
+<a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>

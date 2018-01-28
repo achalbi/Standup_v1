@@ -8,7 +8,7 @@
   <thead>
     <tr>
       <th>
-        <h4>Work status: <%= date %>
+        <h4>Work status: <%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %>
           <div><%= link "Create Task", to: task_path(@conn, :new, on_date: Date.to_string(date)), class: "btn right" %></div>
         </h4>
       </th>

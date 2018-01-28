@@ -1,8 +1,8 @@
 <div class="row marketing">
   <div class="col s12 m6">
     <%= if @task do %>
-      <h4>Last task updated on:
-      <span class="small"><%= NaiveDateTime.to_date(@task.on_date) %></span></h4>
+      <h4>Last task updated on:</h4>
+      <h5><span class="small"><%= @task.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %></span></h5>
     <% else %>
       <h5>No task created yet!</h5>
     <% end %>
