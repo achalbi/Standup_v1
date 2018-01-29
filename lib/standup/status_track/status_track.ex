@@ -61,9 +61,27 @@ defmodule Standup.StatusTrack do
 
   """
   def create_work_status(attrs \\ %{}) do
-    %WorkStatus{}
+    attrs = case attrs do
+        %{"notes" => notes, "status_type" => status_type, "user_id" => user_id} ->
+            user = User
+            |> Repo.get!(user_id)
+            |> Repo.preload(:credential)
+
+            user_name  = user.firstname <> " " <> user.lastname
+            task_summary = status_type <> "\n" <> notes <> "\n"
+            Map.merge(attrs, %{"task_summary" => task_summary, "user_id" => user_id, "user_name" => user_name, "user_email" => user.credential.email })
+		end
+		
+   	work_status_result = %WorkStatus{}
     |> WorkStatus.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.callbackinsert_or_update()
+
+    case work_status_result do
+       {:ok, work_status} ->
+            sync_with_spreadsheet(work_status)
+            work_status_result
+        _ -> work_status_result
+    end
   end
 
   @doc """
@@ -79,9 +97,16 @@ defmodule Standup.StatusTrack do
 
   """
   def update_work_status(%WorkStatus{} = work_status, attrs) do
-    work_status
+    work_status_result = work_status
     |> WorkStatus.changeset(attrs)
     |> Repo.update()
+
+    case work_status_result do
+       {:ok, work_status} ->
+            sync_with_spreadsheet(work_status)
+            work_status_result
+        _ -> work_status_result
+    end
   end
 
   @doc """
@@ -217,8 +242,8 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
                 attrs = Map.put(attrs, "task_summary", task_summary)
 
                 case update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs) do
-                    {:ok, work_status} ->
-                        sync_with_spreadsheet(work_status)
+                    {:ok, _work_status} ->
+                       # sync_with_spreadsheet(work_status)
                         {:ok, task}
                     {:error, _reason} -> {:error, "could not update Work Status"}
                 end
@@ -245,8 +270,8 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		work_status = get_work_status!(work_status_id)
 
 		case update_work_status_from_tasks(work_status, task.on_date, task.user_id) do
-			{:ok, work_status} ->
-					sync_with_spreadsheet(work_status)
+			{:ok, _work_status} ->
+					#sync_with_spreadsheet(work_status)
 					{:ok, task}
 			{:error, _reason} -> {:error, "could not update Work Status"}
     end
@@ -269,12 +294,13 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 
 	def create_or_update_work_status(date, user_id, attrs \\ %{}) do
 		case get_work_status_by_date_and_user_id(date, user_id) do
-			%WorkStatus{} = work_status ->
-				case update_work_status_from_tasks(work_status, date, user_id, attrs) do
-					{:ok, work_status} ->
-						sync_with_spreadsheet(work_status)
-						{:ok, work_status}
-				end
+            %WorkStatus{} = work_status ->
+                update_work_status_from_tasks(work_status, date, user_id, attrs)
+				# case update_work_status_from_tasks(work_status, date, user_id, attrs) do
+				# 	{:ok, work_status} ->
+				# 		sync_with_spreadsheet(work_status)
+				# 		{:ok, work_status}
+				# end
 			nil ->
 				case create_work_status(attrs) do
 					{:ok, work_status} ->
@@ -300,10 +326,22 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 					formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
 			end
-
-		attrs = Map.put(attrs, "task_summary", task_summary)	
+        work_status_details = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, work_status.status_type) <> "\n" <> work_status.notes <> "\n\n"
+		attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
+		attrs = Map.put(attrs, "notes", work_status.notes)	
 		update_work_status(work_status, attrs)
-	end
+    end
+    
+		def update_work_status_with_tasks(%WorkStatus{} = work_status, attrs \\ %{}) do
+			#todo:
+			tasks = Enum.map(work_status.tasks, fn(t) -> [t.task_number, t.title, t.status, t.notes] end)
+			formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
+      task_summary = Enum.map_join(formatted_tasks, "\n\n", &(&1))
+      work_status_details = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, attrs["status_type"]) <> "\n" <>  attrs["notes"] <> "\n\n"
+			attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
+		#	attrs = Map.put(attrs, "notes", work_status.notes)	
+			update_work_status(work_status, attrs)
+    end
     
 	def sync_with_spreadsheet(%WorkStatus{} = work_status) do
 		try do

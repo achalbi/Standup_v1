@@ -10,18 +10,29 @@ defmodule StandupWeb.WorkStatusController do
   end
 
   def new(conn, _params) do
-    changeset = StatusTrack.change_work_status(%WorkStatus{})
-    render(conn, "new.html", changeset: changeset)
+    today = Date.utc_today
+    current_user = conn.assigns.current_user
+    
+    case StatusTrack.get_work_status_by_date_and_user_id(today, current_user.id) do
+      %WorkStatus{} = work_status -> 
+        changeset = StatusTrack.change_work_status(work_status)
+        render(conn, "edit.html", work_status: work_status, changeset: changeset, today: today)
+      _ -> 
+        changeset = StatusTrack.change_work_status(%WorkStatus{user_id: current_user.id})
+        render(conn, "new.html", changeset: changeset, today: today)
+    end
+    
   end
 
   def create(conn, %{"work_status" => work_status_params}) do
+    today = Timex.parse!(work_status_params["on_date"], "%Y-%m-%d", :strftime)
     case StatusTrack.create_work_status(work_status_params) do
       {:ok, work_status} ->
         conn
         |> put_flash(:info, "Work status created successfully.")
         |> redirect(to: work_status_path(conn, :show, work_status))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, today: today)
     end
   end
 
@@ -32,14 +43,15 @@ defmodule StandupWeb.WorkStatusController do
 
   def edit(conn, %{"id" => id}) do
     work_status = StatusTrack.get_work_status!(id)
+    today = work_status.on_date
     changeset = StatusTrack.change_work_status(work_status)
-    render(conn, "edit.html", work_status: work_status, changeset: changeset)
+    render(conn, "edit.html", work_status: work_status, changeset: changeset, today: today)
   end
 
   def update(conn, %{"id" => id, "work_status" => work_status_params}) do
     work_status = StatusTrack.get_work_status!(id)
 
-    case StatusTrack.update_work_status(work_status, work_status_params) do
+    case StatusTrack.update_work_status_with_tasks(work_status, work_status_params) do
       {:ok, work_status} ->
         conn
         |> put_flash(:info, "Work status updated successfully.")

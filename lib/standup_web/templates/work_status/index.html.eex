@@ -3,7 +3,7 @@
 <br>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large teal waves-effect waves-light" href="<%= task_path(@conn, :new) %>">
+    <a class="btn-floating btn-large teal waves-effect waves-light" href="<%= work_status_path(@conn, :new) %>">
       <i class='large material-icons'>add</i>
     </a>
   </div>
@@ -40,10 +40,10 @@
 <li class="m-0">
       <h5 class="collapsible-header"><%= work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
       <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn" %></span>
-      <div class="html-newline"><%= work_status.task_summary %></div>
+        <div class="html-newline hide"><b><%= Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, work_status.status_type, "Work from Office") %></b></div>
+        <div class="html-newline hide"><%= work_status.notes %></div>
+        <div class="html-newline"><%= work_status.task_summary %></div>
       </div>
 </li>
 <% end %>
 </ul>
-
-<span class="hide"><%= link "New Work status", to: work_status_path(@conn, :new) %></span>

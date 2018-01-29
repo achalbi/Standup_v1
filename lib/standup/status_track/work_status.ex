@@ -6,6 +6,8 @@ defmodule Standup.StatusTrack.WorkStatus do
 
   schema "work_statuses" do
     field :on_date, :date
+    field :status_type, :string
+    field :notes, :string
     field :task_summary, :string
     field :user_name, :string
     field :user_email, :string
@@ -19,7 +21,7 @@ defmodule Standup.StatusTrack.WorkStatus do
   @doc false
   def changeset(%WorkStatus{} = work_status, attrs) do
     work_status
-    |> cast(attrs, [:user_name, :task_summary, :on_date, :user_id, :user_email, :sheet_row_id])
-    |> validate_required([:user_id, :on_date, :user_email])
+    |> cast(attrs, [:user_name, :task_summary, :on_date, :user_id, :user_email, :sheet_row_id, :status_type, :notes])
+    |> validate_required([:user_id, :on_date,])
   end
 end

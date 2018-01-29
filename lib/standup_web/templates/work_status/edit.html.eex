@@ -1,5 +1,62 @@
 <h2>Edit Work status</h2>
 
-<%= render "form.html", Map.put(assigns, :action, work_status_path(@conn, :update, @work_status)) %>
+<%= form_for @changeset, work_status_path(@conn, :update, @work_status), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
 
-<span><%= link "Back", to: work_status_path(@conn, :index) %></span>
+<div class="row">
+  <div class="input-field col s6">
+    <label class="active">Type</label>
+    <%= select f, :status_type, ["Work from Office": "WFO", "Working Remotely or Work From Home": "WFH", "Vacation or Paid-Time-Off": "PTO"] %>
+    <%= error_tag f, :status_type %>
+  </div>
+
+  <div class="input-field col s6">
+    <%= label f, :on_date %>
+    <%= text_input f, :on_date, class: "datepicker", "data-value": @today, disabled: "disabled" %>
+    <%= error_tag f, :on_date %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= label f, :notes %>
+    <%= textarea f, :notes, class: "materialize-textarea"  %>
+    <%= error_tag f, :notes %>
+  </div>
+</div>
+
+<%= hidden_input f, :user_id %>
+
+<div class="row">
+  <div class="input-field col s12">
+    <%= submit "Submit", class: "btn" %>
+    <a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
+  </div>
+</div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+  
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: 'Today',
+      clear: 'Clear',
+      close: 'Ok',
+      max: true,
+      formatSubmit: 'yyyy-mm-dd',
+      hiddenName: true,
+      closeOnSelect: true // Close upon selecting a date,
+    });
+
+  });
+  
+</script>

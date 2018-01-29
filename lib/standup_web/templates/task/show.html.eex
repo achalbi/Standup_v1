@@ -40,4 +40,4 @@
   </div>
 
 <span><%= link "Edit", to: task_path(@conn, :edit, @task), class: "btn waves" %></span>
-<span><%= link "Back", to: task_path(@conn, :index), class: "btn waves" %></span>
+<span><%= link "Work status", to: work_status_path(@conn, :show, @task.work_status.id), class: "btn waves" %></span>
