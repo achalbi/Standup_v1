@@ -74,7 +74,7 @@ defmodule Standup.StatusTrack do
 		
    	work_status_result = %WorkStatus{}
     |> WorkStatus.changeset(attrs)
-    |> Repo.callbackinsert_or_update()
+    |> Repo.insert()
 
     case work_status_result do
        {:ok, work_status} ->
