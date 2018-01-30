@@ -1,6 +1,7 @@
 defmodule StandupWeb.WorkStatusController do
   use StandupWeb, :controller
 
+  require IEx
   alias Standup.StatusTrack
   alias Standup.StatusTrack.WorkStatus
 
@@ -9,10 +10,10 @@ defmodule StandupWeb.WorkStatusController do
     render(conn, "index.html", work_statuses: work_statuses)
   end
 
-  def new(conn, _params) do
-    today = Date.utc_today
+  def new(conn, params) do
+    today = if params["on_date"], do: Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime), else: Date.utc_today
     current_user = conn.assigns.current_user
-    
+    IEx.pry
     case StatusTrack.get_work_status_by_date_and_user_id(today, current_user.id) do
       %WorkStatus{} = work_status -> 
         changeset = StatusTrack.change_work_status(work_status)

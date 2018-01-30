@@ -16,7 +16,7 @@
 
   <div class="input-field col s6">
     <%= label f, :on_date %>
-    <%= text_input f, :on_date, class: "datepicker", "data-value": @today %>
+    <%= text_input f, :on_date, class: "datepicker", "data-value": @today, id: "date_select" %>
     <%= error_tag f, :on_date %>
   </div>
 </div>
@@ -53,6 +53,10 @@
       formatSubmit: 'yyyy-mm-dd',
       hiddenName: true,
       closeOnSelect: true // Close upon selecting a date,
+    });
+
+    $("#date_select").change(function () {
+        location.href = "/work_statuses/new?on_date=" + $("[name='work_status[on_date]']").val();
     });
 
   });

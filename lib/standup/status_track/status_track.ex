@@ -68,7 +68,7 @@ defmodule Standup.StatusTrack do
             |> Repo.preload(:credential)
 
             user_name  = user.firstname <> " " <> user.lastname
-            task_summary = status_type <> "\n" <> notes <> "\n"
+            task_summary = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, status_type) <> "\n" <> notes <> "\n"
             Map.merge(attrs, %{"task_summary" => task_summary, "user_id" => user_id, "user_name" => user_name, "user_email" => user.credential.email })
 		end
 		
