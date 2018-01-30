@@ -17,7 +17,7 @@ defmodule Standup.Organizations.UserTeam do
   @doc false
   def changeset(%UserTeam{} = user_team, attrs) do
     user_team
-    |> cast(attrs, [:is_moderator])
-    |> validate_required([:is_moderator])
+    |> cast(attrs, [:is_moderator, :team_id, :user_id])
+    |> validate_required([:is_moderator, :team_id, :user_id])
   end
 end

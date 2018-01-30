@@ -62,8 +62,10 @@ defmodule StandupWeb.Router do
     resources "/organizations", OrganizationController do
       resources "/domains", DomainController
     end
-    resources "/teams", TeamController
-    get "/add_users", TeamController, :add_users
+    resources "/teams", TeamController do
+      get "/add_users", TeamController, :add_users, as: :add_users
+      get "/remove_users", TeamController, :remove_users, as: :remove_users
+    end
     post "/photos/upload", PhotoController, :upload 
     resources "/work_statuses", WorkStatusController
     resources "/tasks", TaskController

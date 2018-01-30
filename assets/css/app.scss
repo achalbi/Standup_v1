@@ -36,6 +36,10 @@
   margin:0px!important; 
 }
 
+.m-t-0 {
+  margin-top:0px!important; 
+}
+
 .m-b-0 {
   margin-bottom:0px!important; 
 }
@@ -48,5 +52,9 @@
   text-shadow: rgb(49, 49, 48) 3px 0 10px;
 }
 
+.fab-relative{
+  transform: scaleY(0.4) scaleX(0.4) translateY(0px) translateX(40px); 
+  opacity: 0;
+}
 
 /* vanilla calendar css */

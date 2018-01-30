@@ -185,7 +185,7 @@ defmodule Standup.Organizations do
       {:ok , team} -> 
         attrs = %{is_moderator: true}
         UserTeam
-        |> Repo.get_by(team_id: team.id)
+        |> Repo.get_by(team_id: team.id, user_id: current_user.id)
         |> UserTeam.changeset(attrs)
         |> Repo.update() 
     end
@@ -237,6 +237,19 @@ defmodule Standup.Organizations do
   """
   def change_team(%Team{} = team) do
     Team.changeset(team, %{})
+  end
+
+  def add_users_to_team(team, user) do
+    attrs = %{"team_id" => team.id, "user_id" => user.id}
+    %UserTeam{}
+    |> UserTeam.changeset(attrs)
+    |> Repo.insert() 
+  end
+
+  def remove_users_from_team(team, user) do
+    UserTeam
+    |> Repo.get_by(team_id: team.id, user_id: user.id)
+    |> Repo.delete() 
   end
 
   def get_org_members(org_id) do
@@ -302,6 +315,7 @@ defmodule Standup.Organizations do
     select: u
     
     Repo.all(query)
+    |> Repo.preload(:photo)
   end
 
   @doc """

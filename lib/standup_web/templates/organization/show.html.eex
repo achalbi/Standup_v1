@@ -98,10 +98,25 @@
       <td><%= team.name %></td>
       <td><%= team.description %></td>
 
-      <td class="right">
-        <span><%= link "Show", to: team_path(@conn, :show, team), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: team_path(@conn, :edit, team), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: team_path(@conn, :delete, team), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      <td>
+
+        <div style="position: relative; height: 90px;">
+          <div class="fixed-action-btn horizontal" style="position: absolute; display: inline-block; right: 24px;">
+            <a class="btn-floating btn-large teal">
+              <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul>
+              <li><a href="<%= team_path(@conn, :show, team) %>" class="btn-floating blue fab-relative"><i class="material-icons">open_in_browser</i></a></li>
+              <li><a href="<%= team_path(@conn, :edit, team) %>" class="btn-floating yellow darken-1 fab-relative"><i class="material-icons">mode_edit</i></a></li>
+              <li><%= link to: team_path(@conn, :delete, team), method: :delete, data: [confirm: "Are you sure?"], class: "btn-floating red fab-relative" do %>
+                    <i class="material-icons">delete</i>
+                  <% end %>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="right">
+        </div>
       </td>
     </tr>
 <% end %>
