@@ -1,7 +1,7 @@
-<br>
+<div class="card-panel"> 
 <h4>Organizations</h4>
-
-<table class="table">
+<br>
+<table class="bordered highlight">
   <thead>
     <tr>
       <th>Id</th>
@@ -28,4 +28,5 @@
   </tbody>
 </table>
 <br>
+</div>
 <span><%= link "New Organization", to: organization_path(@conn, :new), class: "btn" %></span>

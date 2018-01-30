@@ -1,7 +1,10 @@
-<br>
+<div class="card-panel"> 
 <h4>Organization:  <%= @organization.name %></h4>
 <%= @organization.description %>
 <span><%= link "Edit", to: organization_path(@conn, :edit, @organization), class: "btn right" %></span>
+<br>
+<br>
+</div>
 <ul class="hide">
   <li>
     <strong>Name:</strong>
@@ -26,10 +29,11 @@
 
 </ul>
 <br>
-<br>
+<div class="row">
+<div class="col s12 m6">
+<div class="card-panel"> 
 <h5>Domains</h5>
-
-<table class="table">
+<table class="bordered highlight">
   <thead>
     <tr>
       <th>Name</th>
@@ -63,11 +67,12 @@
   </tbody>
 </table>
 <br>
-<br>
-
+</div>
+</div>
+<div class="col s12 m6"> 
+<div class="card-panel"> 
 <h5>Teams</h5>
-
-<table class="table">
+<table class="bordered highlight">
   <thead>
     <tr>
       <th>Name</th>
@@ -102,9 +107,13 @@
 <% end %>
   </tbody>
 </table>
+<br>
+</div>
+</div>
+</div>
 
-
-
+<br>
+<div class="card-panel"> 
 <h5>Users</h5>
 <table class=" bordered highlight ">
   <thead>
@@ -119,20 +128,21 @@
 <%= for user <- @organization.users do %>
     <tr>
       <td>
-
-     <div class="col s12 m8 offset-m2 l6 offset-l3">
-          <div class="row valign-wrapper m-b-0">
-            <div class="col s2">
-              <%= unless is_nil(user.photo) do %>
-                <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 50, height: 50, sign_url: true, quality: 70}) %>
-              <% end %> 
+      <div class="row">
+        <div class="col s12">
+            <div class="row valign-wrapper m-b-0">
+              <div class="col s12 m3">
+                <%= unless is_nil(user.photo) do %>
+                  <%= cl_image_tag(user.photo.public_id, class: "circle", transforms: %{width: 50, height: 50, sign_url: true, quality: 70}) %>
+                <% end %> 
+              </div>
+              <div class="col s12 m9">
+                <span class="black-text">
+                  <%= user.firstname %>  <%= user.lastname %>
+                </span>
+              </div>
             </div>
-            <div class="col s10">
-              <span class="black-text">
-                <%= user.firstname %>  <%= user.lastname %>
-              </span>
-            </div>
-          </div>
+        </div>
       </div>
       </td>
             
@@ -146,7 +156,7 @@
 <% end %>
   </tbody>
 </table>
-
 <br>
+</div>
 <br>
 <span><%= link "Back", to: organization_path(@conn, :index), class: "btn" %></span>

@@ -87,6 +87,7 @@
         </div>
       </div>
     </li>
+    <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
     <li><a class="waves-effect" href="/organizations"><i class="material-icons">business</i>Organizations</a></li>
     <li><a class="waves-effect" href="/work_statuses"><i class="material-icons">library_books</i>Work Status</a></li>
     </li>
@@ -160,6 +161,7 @@
         </div>
       </div>
       <% end %>
+      <br>
         <%= render @view_module, @view_template, assigns %>
       </main>
 

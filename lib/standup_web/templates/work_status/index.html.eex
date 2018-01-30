@@ -1,9 +1,9 @@
 
-<h4>Work summary</h4>
+<h4>Work Status summary</h4>
 <br>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large teal waves-effect waves-light" href="<%= work_status_path(@conn, :new) %>">
+    <a id="add_ws" class="btn-floating btn-large red darken-2 z-depth-5 waves-effect waves-light" href="<%= work_status_path(@conn, :new) %>">
       <i class='large material-icons'>add</i>
     </a>
   </div>
@@ -36,9 +36,18 @@
 </table>
 
 <ul class="collapsible popout" data-collapsible="accordion">
-<%= for work_status <- @work_statuses do %>
-<li class="m-0">
-      <h5 class="collapsible-header"><%= work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
+<% work_status_first = hd(@work_statuses) %>
+<li class="m-0 active blue-grey lighten-5">
+      <h5 class="collapsible-header active blue-grey white-text"><%= work_status_first.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
+      <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status_first), class: "btn" %></span>
+        <div class="html-newline hide"><b><%= Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, work_status_first.status_type, "Work from Office") %></b></div>
+        <div class="html-newline hide"><%= work_status_first.notes %></div>
+        <div class="html-newline"><%= work_status_first.task_summary %></div>
+      </div>
+</li>
+<%= for work_status <- tl(@work_statuses) do %>
+<li class="m-0 blue-grey lighten-5">
+      <h5 class="collapsible-header blue-grey white-text"><%= work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
       <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn" %></span>
         <div class="html-newline hide"><b><%= Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, work_status.status_type, "Work from Office") %></b></div>
         <div class="html-newline hide"><%= work_status.notes %></div>
@@ -47,3 +56,9 @@
 </li>
 <% end %>
 </ul>
+
+<script>
+$(document).ready(function(){
+  $('#add_ws').addClass('animated bounce');
+});
+</script>

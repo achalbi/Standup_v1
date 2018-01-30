@@ -1,4 +1,4 @@
-<h2>New Domain</h2>
+<h4>New Domain</h4>
 <h5>Organization: <%= @org.name %> </h5>
 <h6>Create domain to auto-validate Users's email id against organization.</h6>
 <h6>e.g. smartzip.com, reach150.com, etc...</h6>

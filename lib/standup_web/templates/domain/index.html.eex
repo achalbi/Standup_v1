@@ -1,4 +1,4 @@
-<h2>Listing Domains</h2>
+<h4>Domains</h4>
 
 <h5>Organization: <%= @org.name %> </h5>
 <br>

@@ -386,9 +386,9 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		GSS.Spreadsheet.write_row(pid, row_no, [work_status.user_name, on_date, work_status.task_summary])
 	end
 
-	def task_last_updated_on(conn) do
+	def work_status_last_updated_on(conn) do
 		current_user = Guardian.Plug.current_resource(conn)
-		tasks = from t in Task,
+		tasks = from t in WorkStatus,
 		where: t.user_id == ^current_user.id,
 		order_by: [desc: t.on_date],
 		limit: 1

@@ -1,4 +1,4 @@
-<h2>Edit Work status</h2>
+<h4>Edit Work status</h4>
 
 <%= form_for @changeset, work_status_path(@conn, :update, @work_status), fn f -> %>
   <%= if @changeset.action do %>

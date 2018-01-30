@@ -501,4 +501,8 @@ defmodule Standup.Accounts do
     [_head|domain] = Regex.split(~r{@}, user.credential.email)
     domain
   end
+
+  def get_dashboard(current_user) do
+    current_user |> Repo.preload([:organizations, :credential])
+  end
 end

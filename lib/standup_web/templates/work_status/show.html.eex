@@ -3,7 +3,6 @@
 
 <% date = if task_date, do: NaiveDateTime.to_date(task_date.on_date), else: @work_status.on_date %>
 
-<div class="divider"></div>
 <table class="bordered highlight">
   <thead>
     <tr>

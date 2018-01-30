@@ -4,14 +4,15 @@ defmodule StandupWeb.PageController do
   alias Standup.Accounts
   alias Standup.StatusTrack
 
-  def index(conn, _params) do
-    task = nil
+  def index(conn, _params) do   
     cond do
       Accounts.logged_in?(conn) -> 
-        task = StatusTrack.task_last_updated_on(conn)
-        render(conn, "index.html", task: task)
+        work_status = StatusTrack.work_status_last_updated_on(conn)
+        current_user = conn.assigns.current_user
+        current_user = Accounts.get_dashboard(current_user)
+        organizations = current_user.organizations
+        render(conn, "index.html", current_user: current_user, work_status: work_status, organizations: organizations)
       true -> conn |> redirect(to: "/auth/identity")
     end 
-    render conn, "index.html", task: task
   end
 end

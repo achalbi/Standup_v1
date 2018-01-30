@@ -1,15 +1,42 @@
 <div class="row marketing">
   <div class="col s12 m6">
-    <%= if @task do %>
-      <h4>Last task updated on:</h4>
-      <h5><span class="small"><%= @task.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %></span></h5>
-    <% else %>
-      <h5>No task created yet!</h5>
-    <% end %>
-    <br>
-    <div><%= link "Create Task", to: task_path(@conn, :new), class: "btn" %></div>
+    <div class="card amber accent-4">
+      <div class="card-content white-text">
+        <span class="card-title">Organization</span>
+        <ul>
+        <%= for org <- @organizations do %>
+          <li><%= org.name %></li>
+          <li><%= org.description %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="col s12 m6">
-
+       <div class="card cyan darken-1">
+          <div class="card-content white-text">
+          <%= if @work_status do %>
+            <span class="card-title">Last Work status updated on:</span>
+            <h5><span class="small"><%= @work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %></span></h5>
+          <% else %>
+            <span class="card-title">No work_status created yet!</span>
+          <% end %>
+        </div>
+      </div>
+    <br>
+  </div>
+</div>
+<div class="row marketing">
+  <div class="col s12">
+    <ul class="collapsible popout" data-collapsible="accordion">
+      <li class="m-0 active blue-grey lighten-5">
+        <h5 class="collapsible-header active blue-grey darken-1 white-text"><%= @work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
+        <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, @work_status), class: "btn " %></span>
+          <div class="html-newline hide"><b><%= Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, @work_status.status_type, "Work from Office") %></b></div>
+          <div class="html-newline hide"><%= @work_status.notes %></div>
+          <div class="html-newline"><%= @work_status.task_summary %></div>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
