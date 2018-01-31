@@ -32,7 +32,9 @@ defmodule StandupWeb.TeamController do
     members = Organizations.get_team_members(id)
     moderators = Organizations.get_team_moderators(id)
     users = Organizations.get_org_users_for_team(id)
-    render(conn, "show.html", team: team, members: members, moderators: moderators, users: users)
+    current_user = conn.assigns.current_user
+    current_user_is_team_moderator = Organizations.is_moderator?(team, current_user)
+    render(conn, "show.html", team: team, members: members, moderators: moderators, users: users, current_user_is_team_moderator: current_user_is_team_moderator)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -84,6 +86,34 @@ defmodule StandupWeb.TeamController do
       {:ok, _team} ->
         conn
         |> put_flash(:info, "User removed successfully.")
+        |> redirect(to: team_path(conn, :show, id))
+      {:error, _changeset} ->
+        conn 
+        |> redirect(to: team_path(conn, :show, id))
+    end
+  end
+
+  def set_as_moderator(conn, %{"team_id" => id, "user_id" => user_id}) do
+    team = Organizations.get_team!(id)
+    user = Accounts.get_user!(user_id)
+    case Organizations.set_as_moderator(team, user) do
+      {:ok, _team} ->
+        conn
+        |> put_flash(:info, "Set as Moderator successfully.")
+        |> redirect(to: team_path(conn, :show, id))
+      {:error, _changeset} ->
+        conn 
+        |> redirect(to: team_path(conn, :show, id))
+    end
+  end
+
+  def set_as_member(conn, %{"team_id" => id, "user_id" => user_id}) do
+    team = Organizations.get_team!(id)
+    user = Accounts.get_user!(user_id)
+    case Organizations.set_as_member(team, user) do
+      {:ok, _team} ->
+        conn
+        |> put_flash(:info, "Set as Member successfully.")
         |> redirect(to: team_path(conn, :show, id))
       {:error, _changeset} ->
         conn 

@@ -183,11 +183,7 @@ defmodule Standup.Organizations do
 
     case result do
       {:ok , team} -> 
-        attrs = %{is_moderator: true}
-        UserTeam
-        |> Repo.get_by(team_id: team.id, user_id: current_user.id)
-        |> UserTeam.changeset(attrs)
-        |> Repo.update() 
+         set_as_moderator(team, current_user)
     end
     result
   end
@@ -250,6 +246,30 @@ defmodule Standup.Organizations do
     UserTeam
     |> Repo.get_by(team_id: team.id, user_id: user.id)
     |> Repo.delete() 
+  end
+
+  def get_user_team(team,user) do
+    UserTeam
+    |> Repo.get_by(team_id: team.id, user_id: user.id)
+  end
+
+  def is_moderator?(team,user) do
+    ut = get_user_team(team,user)
+    if ut, do: ut.is_moderator, else: nil
+  end
+
+  def set_as_moderator(team,user) do
+    attrs = %{is_moderator: true}
+    get_user_team(team,user)
+    |> UserTeam.changeset(attrs)
+    |> Repo.update() 
+  end
+
+  def set_as_member(team,user) do
+    attrs = %{is_moderator: false}
+    get_user_team(team,user)
+    |> UserTeam.changeset(attrs)
+    |> Repo.update()
   end
 
   def get_org_members(org_id) do

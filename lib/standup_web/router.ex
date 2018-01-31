@@ -65,6 +65,8 @@ defmodule StandupWeb.Router do
     resources "/teams", TeamController do
       get "/add_users", TeamController, :add_users, as: :add_users
       get "/remove_users", TeamController, :remove_users, as: :remove_users
+      get "/set_as_moderator", TeamController, :set_as_moderator, as: :set_as_moderator
+      get "/set_as_member", TeamController, :set_as_member, as: :set_as_member
     end
     post "/photos/upload", PhotoController, :upload 
     resources "/work_statuses", WorkStatusController

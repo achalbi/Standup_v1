@@ -14,26 +14,52 @@
     <li class="collection-header blue-grey darken-1 white-text"><h5>Team Members</h5></li>
     <%= for user <- @moderators do %>
       <li class="collection-item avatar blue-grey lighten-5">
-        <%= unless is_nil(user.photo) do %>
-          <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
-        <% end %> 
+        <div style="margin-top: 6px;">
+          <%= unless is_nil(user.photo) do %>
+            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
+          <% end %> 
+        </div>
         <h4 class="title"><%= user.firstname <> " " <> user.lastname %> 
-        <span class="new badge orange" data-badge-caption="Moderator"></span>
-        <a href="#!" class="secondary-content hide"><i class="material-icons ">close</i></a>
-        <%= unless @conn.assigns.current_user.id == user.id do %>
-        <% end %>
+        <span class="new badge orange" style="margin-right: 45px;" data-badge-caption="Moderator"></span>
+
+          <%= if (@current_user_is_team_moderator) && @current_user.id != user.id do %>
+            <div class="secondary-content fixed-action-btn toolbar">
+              <a class="btn-floating ">
+                <i class="material-icons">more_vert</i>
+              </a>
+              <ul>
+                <li class="m-t-0"><a class="btn green darken-1" href="/teams/<%= @team.id %>/set_as_member?user_id=<%= user.id %>">Set as member</a></li>
+                <%= unless @current_user.id == user.id do %>
+                  <li class="m-t-0"><a class="btn red" href="/teams/<%= @team.id %>/remove_users?user_id=<%= user.id %>">Remove from team</a></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
         </h4>
       </li>
     <% end %>
   <%= if Enum.count(@members) > 0 do %>
       <%= for user <- @members do %>
         <li class="collection-item avatar blue-grey lighten-5">
+          <div style="margin-top: 6px;">
           <%= unless is_nil(user.photo) do %>
             <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
           <% end %> 
+          </div>
           <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>
-          <%= unless @conn.assigns.current_user.id == user.id do %>
-            <a href="/teams/<%= @team.id %>/remove_users?user_id=<%= user.id %>" class="secondary-content btn">Remove</a>
+
+          <%= if (@current_user.id == user.id) || (@current_user_is_team_moderator) do %>
+            <div class="secondary-content fixed-action-btn toolbar">
+              <a class="btn-floating ">
+                <i class="material-icons">more_vert</i>
+              </a>
+              <ul>
+                <%= if @current_user_is_team_moderator do %>
+                  <li><a <a class="btn green darken-1"  href="/teams/<%= @team.id %>/set_as_moderator?user_id=<%= user.id %>">Set as Moderator</a></li>
+                <% end %>
+                  <li><a class="btn red" href="/teams/<%= @team.id %>/remove_users?user_id=<%= user.id %>">Remove</a></li>
+              </ul>
+            </div>
           <% end %>
         </li>
       <% end %>
@@ -46,12 +72,14 @@
       <li class="collection-header blue-grey darken-1 white-text"><h5>Organization <%= ngettext("Member", "Members", Enum.count(@users)) %></h5></li>
       <%= for user <- @users do %>
         <li class="collection-item avatar blue-grey lighten-5">
+          <div style="margin-top: 6px;">
           <%= unless is_nil(user.photo) do %>
             <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
           <% end %> 
+          </div>
           <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>
-            <a href="/teams/<%= @team.id %>/add_users?user_id=<%= user.id %>" class="secondary-content btn">Add</a>
-          <%= unless @conn.assigns.current_user.id == user.id do %>
+          <%= if (@current_user.id == user.id) || (@current_user_is_team_moderator) do %>
+            <a href="/teams/<%= @team.id %>/add_users?user_id=<%= user.id %>" class="secondary-content btn-floating"> <i class="material-icons small">add</i></a>
           <% end %>
         </li>
       <% end %>
@@ -61,4 +89,20 @@
 </div>
 </div>
 <span><%= link "Edit", to: team_path(@conn, :edit, @team), class: "btn" %></span>
-<a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
+<span><%= link "Back", to: organization_path(@conn, :show, @team.organization.id), class: "btn" %></span>
+<script>
+$(function(){
+
+  $('.dropdown-button').dropdown({
+    //  inDuration: 300,
+    //  outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+   //   hover: false, // Activate on hover
+      gutter: 40, // Spacing from edge
+      belowOrigin: true, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the right of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+});
+</script>

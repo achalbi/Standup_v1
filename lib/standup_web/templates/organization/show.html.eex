@@ -57,9 +57,12 @@
       <td><%= domain.name %></td>
       <td>
         <div class="right">
-          <span><%= link "Show", to: organization_domain_path(@conn, :show, @organization, domain), class: "btn btn-default btn-xs hide" %></span>
-          <span><%= link "Edit", to: organization_domain_path(@conn, :edit, @organization, domain), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Delete", to: organization_domain_path(@conn, :delete, @organization, domain), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+          <a class='dropdown-button btn' href='#' data-activates='dropdown_<%= domain.id %>'>Action</a>
+          <ul id='dropdown_<%= domain.id %>' class='dropdown-content'>
+            <li><%= link "Show", to: organization_domain_path(@conn, :show, @organization, domain), class: "" %></li>
+            <li><%= link "Edit", to: organization_domain_path(@conn, :edit, @organization, domain), class: "" %></li>
+            <li><%= link "Delete", to: organization_domain_path(@conn, :delete, @organization, domain), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+          </ul>
         </div>
       </td>
     </tr>
@@ -79,7 +82,7 @@
       <th>Description</th>
 
       <th class="right">
-        <span><%= link "Create Team", to: team_path(@conn, :new, organization_id: @organization.id ), class: "btn right light" %></span>
+        <span><%= link "Create", to: team_path(@conn, :new, organization_id: @organization.id ), class: "btn right light" %></span>
       </th>
     </tr>
   </thead>
@@ -97,26 +100,16 @@
     <tr>
       <td><%= team.name %></td>
       <td><%= team.description %></td>
-
-      <td>
-
-        <div style="position: relative; height: 90px;">
-          <div class="fixed-action-btn horizontal" style="position: absolute; display: inline-block; right: 24px;">
-            <a class="btn-floating btn-large teal">
-              <i class="large material-icons">mode_edit</i>
-            </a>
-            <ul>
-              <li><a href="<%= team_path(@conn, :show, team) %>" class="btn-floating blue fab-relative"><i class="material-icons">open_in_browser</i></a></li>
-              <li><a href="<%= team_path(@conn, :edit, team) %>" class="btn-floating yellow darken-1 fab-relative"><i class="material-icons">mode_edit</i></a></li>
-              <li><%= link to: team_path(@conn, :delete, team), method: :delete, data: [confirm: "Are you sure?"], class: "btn-floating red fab-relative" do %>
-                    <i class="material-icons">delete</i>
-                  <% end %>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="right">
-        </div>
+      <td class="right">
+        <a class='dropdown-button btn' href='#' data-activates='dropdown_<%= team.id %>'>Action</a>
+        <ul id='dropdown_<%= team.id %>' class='dropdown-content'>
+          <li><a href="<%= team_path(@conn, :show, team) %>" class="">Show</a></li>
+          <li><a href="<%= team_path(@conn, :edit, team) %>" class="">Edit</a></li>
+          <li><%= link to: team_path(@conn, :delete, team), method: :delete, data: [confirm: "Are you sure?"], class: "" do %>
+                Delete
+              <% end %>
+          </li>
+        </ul>
       </td>
     </tr>
 <% end %>
@@ -142,29 +135,24 @@
 <%= for user <- @organization.users do %>
     <tr>
       <td>
-      <div class="row">
-        <div class="col s12">
-            <div class="row valign-wrapper m-b-0">
-              <div class="col s12 m3">
-                <%= unless is_nil(user.photo) do %>
-                  <%= cl_image_tag(user.photo.public_id, class: "circle", transforms: %{width: 50, height: 50, sign_url: true, quality: 70}) %>
-                <% end %> 
-              </div>
-              <div class="col s12 m9">
-                <span class="black-text">
-                  <%= user.firstname %>  <%= user.lastname %>
-                </span>
-              </div>
-            </div>
+        <div class="m-b-0">
+          <div class="left avatar">
+            <%= unless is_nil(user.photo) do %>
+              <%= cl_image_tag(user.photo.public_id, class: "circle responsive-img", transforms: %{width: 50, height: 50, sign_url: true, quality: 80}) %>
+            <% end %> 
+          </div>
+          <div class="left" style="margin: 15px 10px; ">
+            <b class="blue-grey-text text-darken-4"> <%= user.firstname %>  <%= user.lastname %></b>
+          </div>
         </div>
-      </div>
       </td>
-            
-
-      <td class="text-right right">
-        <span><%= link "Show", to: user_path(@conn, :show, user), class: "waves-effect waves-light btn " %></span>
-        <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "waves-effect waves-light btn " %></span>
-        <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "waves-effect waves-light btn" %></span>
+      <td class="right">
+        <a class='dropdown-button btn ' style="margin-top: 15px; " href='#' data-activates='dropdown_<%= user.id %>'>Action</a>
+          <ul id='dropdown_<%= user.id %>' class='dropdown-content'>
+            <li><%= link "Show", to: user_path(@conn, :show, user), class: "" %></li>
+            <li><%= link "Edit", to: user_path(@conn, :edit, user), class: "" %></li>
+            <li><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+          </ul>
       </td>
     </tr>
 <% end %>

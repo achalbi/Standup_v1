@@ -17,7 +17,7 @@
 
   <div class="form-group">
     <span><%= submit "Submit", class: "btn btn-primary" %><span>
-    <span><%= link "Back", to: organization_domain_path(@conn, :index, @org), class: "btn" %></span>
+    <span><%= link "Back", to: organization_path(@conn, :show, @org), class: "btn" %></span>
   </div>
 <% end %>
 
