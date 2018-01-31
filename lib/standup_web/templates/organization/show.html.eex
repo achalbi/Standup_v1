@@ -1,7 +1,11 @@
 <div class="card-panel"> 
+<div class="valign-wrapper right">
+  <%= link "Edit", to: organization_path(@conn, :edit, @organization), class: "btn ", style: "margin-right: 5px;" %>
+  <%= link "Delete", to: organization_path(@conn, :delete, @organization), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %>
+</div>
+
 <h4>Organization:  <%= @organization.name %></h4>
 <%= @organization.description %>
-<span><%= link "Edit", to: organization_path(@conn, :edit, @organization), class: "btn right" %></span>
 <br>
 <br>
 </div>
@@ -57,8 +61,8 @@
       <td><%= domain.name %></td>
       <td>
         <div class="right">
-          <a class='dropdown-button btn' href='#' data-activates='dropdown_<%= domain.id %>'>Action</a>
-          <ul id='dropdown_<%= domain.id %>' class='dropdown-content'>
+          <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= domain.id %>'>Action</a>
+          <ul id='dropdown_domain_<%= domain.id %>' class='dropdown-content'>
             <li><%= link "Show", to: organization_domain_path(@conn, :show, @organization, domain), class: "" %></li>
             <li><%= link "Edit", to: organization_domain_path(@conn, :edit, @organization, domain), class: "" %></li>
             <li><%= link "Delete", to: organization_domain_path(@conn, :delete, @organization, domain), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
@@ -101,8 +105,8 @@
       <td><%= team.name %></td>
       <td><%= team.description %></td>
       <td class="right">
-        <a class='dropdown-button btn' href='#' data-activates='dropdown_<%= team.id %>'>Action</a>
-        <ul id='dropdown_<%= team.id %>' class='dropdown-content'>
+        <a class='dropdown-button btn' href='#' data-activates='dropdown_team_<%= team.id %>'>Action</a>
+        <ul id='dropdown_team_<%= team.id %>' class='dropdown-content'>
           <li><a href="<%= team_path(@conn, :show, team) %>" class="">Show</a></li>
           <li><a href="<%= team_path(@conn, :edit, team) %>" class="">Edit</a></li>
           <li><%= link to: team_path(@conn, :delete, team), method: :delete, data: [confirm: "Are you sure?"], class: "" do %>
@@ -147,8 +151,8 @@
         </div>
       </td>
       <td class="right">
-        <a class='dropdown-button btn ' style="margin-top: 15px; " href='#' data-activates='dropdown_<%= user.id %>'>Action</a>
-          <ul id='dropdown_<%= user.id %>' class='dropdown-content'>
+        <a class='dropdown-button btn ' style="margin-top: 15px; " href='#' data-activates='dropdown_user_<%= user.id %>'>Action</a>
+          <ul id='dropdown_user_<%= user.id %>' class='dropdown-content'>
             <li><%= link "Show", to: user_path(@conn, :show, user), class: "" %></li>
             <li><%= link "Edit", to: user_path(@conn, :edit, user), class: "" %></li>
             <li><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
