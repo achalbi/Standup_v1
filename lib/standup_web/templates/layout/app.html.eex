@@ -89,7 +89,19 @@
     </li>
     <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
     <li><a class="waves-effect" href="/organizations"><i class="material-icons">business</i>Organizations</a></li>
-    <li><a class="waves-effect" href="/work_statuses"><i class="material-icons">library_books</i>Work Status</a></li>
+    <li class="no-padding">
+      <ul class="collapsible collapsible-accordion">
+        <li>
+          <a class="collapsible-header" style="padding: 0 32px;"><i class="material-icons">event_note</i>Work Status</a>
+          <div class="collapsible-body">
+            <ul>
+              <li><a href="/work_statuses" style="padding: 0 48px;"><i class="material-icons">face</i>Your</a></li>
+              <li><a href="/team_work_statuses" style="padding: 0 48px;"><i class="material-icons">people</i>Your Team</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
     </li>
       <div id="v-cal">
         <div class="vcal-header">

@@ -27,4 +27,6 @@
 </table>
 <br>
 </div>
+<%= if Enum.count(@conn.assigns.current_user.organizations) == 0 do %>
 <span><%= link "New Organization", to: organization_path(@conn, :new), class: "btn" %></span>
+<% end %>

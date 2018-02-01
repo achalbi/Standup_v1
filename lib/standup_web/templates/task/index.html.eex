@@ -7,6 +7,7 @@
       <div class="col s12">
         <h5><%= link date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) , to: work_status_path(@conn, :show, task.work_status) %></h5>
         <b><%= task.task_number %> - <%= task.title %></b> <br>
+          <b>Team: </b><%= task.team.name %><br>
           <b>URL: </b><%= task.url %><br>
           <b>status: </b><%= task.status %><br>
           <b>notes: </b><%= task.notes %><br>

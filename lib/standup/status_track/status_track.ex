@@ -46,7 +46,7 @@ defmodule Standup.StatusTrack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload(:tasks)
+  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload([tasks: :team])
 
   @doc """
   Creates a work_status.
@@ -173,7 +173,7 @@ defmodule Standup.StatusTrack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id) |> Repo.preload(:work_status)
+  def get_task!(id), do: Repo.get!(Task, id) |> Repo.preload([:work_status, :team])
 
   @doc """
   Creates a task.
@@ -191,7 +191,12 @@ defmodule Standup.StatusTrack do
     %Task{}
 			|> Task.changeset(attrs)
 			|> Repo.insert()
-	end
+    end
+    
+defp task_summary(task) do
+    task = task |> Repo.preload(:team)
+    task.task_number <> ": " <> task.title <> "\n" <> "Team: " <> task.team.name <>"\n" <> "status: " <> task.status <> "\n" <> task.notes 
+end
 
 def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		#current_user = Guardian.Plug.current_resource(conn)
@@ -200,7 +205,7 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
         |> Repo.preload(:credential)
 
 		user_name  = user.firstname <> " " <> user.lastname
-		task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
+		task_summary = task_summary(task)
 
 		work_status_attrs = %{"on_date" => task.on_date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name, "user_email" => user.credential.email }
 		case create_or_update_work_status(task.on_date, task.user_id, work_status_attrs) do
@@ -238,7 +243,7 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 
 		case update_task_result do
 			{:ok, task} -> 
-                task_summary = task.task_number <> ": " <> task.title <> "\n" <> "status: " <> task.status <> "\n" <> task.notes 
+                task_summary = task_summary(task)
                 attrs = Map.put(attrs, "task_summary", task_summary)
 
                 case update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs) do
@@ -315,7 +320,7 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 	def get_tasks_by_date_and_user_id(date, user_id) do
 		query = from t in Task,
 			where: t.on_date == ^date and t.user_id == ^user_id,
-			select: [t.task_number, t.title, t.status, t.notes]
+			select: t
 		 Repo.all(query)
 	end
 
@@ -323,7 +328,8 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		task_summary = case get_tasks_by_date_and_user_id(date, user_id) do
 				[] -> attrs["task_summary"] || " "
 				tasks ->
-					formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
+					#formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
+					formatted_tasks = Enum.map(tasks, fn(task) -> task_summary(task) end)
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
 			end
         work_status_details = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, work_status.status_type) <> "\n" <> work_status.notes <> "\n\n"
@@ -332,11 +338,12 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		update_work_status(work_status, attrs)
     end
     
-		def update_work_status_with_tasks(%WorkStatus{} = work_status, attrs \\ %{}) do
+	def update_work_status_with_tasks(%WorkStatus{} = work_status, attrs \\ %{}) do
 			#todo:
-			tasks = Enum.map(work_status.tasks, fn(t) -> [t.task_number, t.title, t.status, t.notes] end)
-			formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
-      task_summary = Enum.map_join(formatted_tasks, "\n\n", &(&1))
+			#tasks = Enum.map(work_status.tasks, fn(t) -> [t.task_number, t.title, t.status, t.notes] end)
+			#formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
+			formatted_tasks = Enum.map(work_status.tasks, fn(task) -> task_summary(task) end)
+			task_summary = Enum.map_join(formatted_tasks, "\n\n", &(&1))
       work_status_details = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, attrs["status_type"]) <> "\n" <>  attrs["notes"] <> "\n\n"
 			attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
 		#	attrs = Map.put(attrs, "notes", work_status.notes)	
@@ -393,5 +400,17 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		order_by: [desc: t.on_date],
 		limit: 1
     Repo.one(tasks)
+	end
+
+	def list_work_statuses_by_team_and_date(team, date) do
+		query = from t in Task,
+			join: ws in WorkStatus,
+			where: t.on_date == ^date and t.team_id == ^team.id and t.work_status_id == ws.id,
+			distinct: true,
+   		order_by: [desc: ws.updated_at],
+			select: ws
+
+		 work_statuses = Repo.all(query)
+		 work_statuses |> Repo.preload([user: :photo])
 	end
 end

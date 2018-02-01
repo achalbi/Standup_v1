@@ -18,14 +18,15 @@
     </tr>
   </thead>
   <tbody>
-<%= for task <- @work_status.tasks do %>
+<%= for task <- @work_status.tasks  do %>
   <tr>
     <td>
       <div class="row">
         <div class="col s12 m10">
           <div class="html-newline">
             <b><%= task.task_number %> - <%= task.title %></b>
-            <b>URL:</b> <%= task.url %>
+            <b>Team: </b><%= task.team.name %>
+            <b>URL:</b> <%= if task.url, do: task.url, else: "--NA--"  %>
             <b>Status:</b> <%= task.status %>
             <b>Notes:</b> <%= task.notes %>
             

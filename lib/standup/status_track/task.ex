@@ -5,6 +5,7 @@ defmodule Standup.StatusTrack.Task do
 
   alias Standup.StatusTrack.WorkStatus
   alias Standup.Accounts.User
+  alias Standup.Organizations.Team
 
   schema "tasks" do
     field :notes, :string
@@ -14,6 +15,7 @@ defmodule Standup.StatusTrack.Task do
     field :title, :string
     field :url, :string
     belongs_to :user, User
+    belongs_to :team, Team
     belongs_to :work_status, WorkStatus
 
     timestamps()
@@ -22,7 +24,7 @@ defmodule Standup.StatusTrack.Task do
   @doc false
   def changeset(%Task{} = task, attrs) do
     task
-    |> cast(attrs, [:task_number, :title, :url, :status, :notes, :on_date, :user_id , :work_status_id])
-    |> validate_required([:title, :status, :on_date, :notes])
+    |> cast(attrs, [:task_number, :title, :url, :status, :notes, :on_date, :user_id , :work_status_id, :team_id])
+    |> validate_required([:title, :status, :on_date, :notes, :team_id])
   end
 end

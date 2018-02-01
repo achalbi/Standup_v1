@@ -4,6 +4,7 @@ defmodule StandupWeb.TaskController do
   require IEx
   alias Standup.StatusTrack
   alias Standup.StatusTrack.Task
+   alias Standup.Organizations
 
   def index(conn, _params) do
     tasks = StatusTrack.list_tasks(conn)
@@ -12,11 +13,14 @@ defmodule StandupWeb.TaskController do
   
   def new(conn, task_params) do
     today = Date.utc_today
+    current_user = conn.assigns.current_user
+    organization = hd(current_user.organizations)
+    teams = Organizations.get_teams_by_user_and_org(current_user.id, organization.id)
     if task_params["on_date"] do
       today = Timex.parse!(task_params["on_date"], "%Y-%m-%d", :strftime)  
     end
     changeset = StatusTrack.change_task(conn, %Task{})
-    render(conn, "new.html", changeset: changeset, today: today)
+    render(conn, "new.html", changeset: changeset, today: today, teams: teams)
   end
   
   def create(conn, %{"task" => task_params}) do
@@ -45,9 +49,12 @@ defmodule StandupWeb.TaskController do
 
   def edit(conn, %{"id" => id}) do
     task = StatusTrack.get_task!(id)
+    current_user = conn.assigns.current_user
+    organization = hd(current_user.organizations)
+    teams = Organizations.get_teams_by_user_and_org(current_user.id, organization.id)
     today = NaiveDateTime.to_date(task.on_date)
     changeset = StatusTrack.change_task(conn, task)
-    render(conn, "edit.html", task: task, changeset: changeset, today: today)
+    render(conn, "edit.html", task: task, changeset: changeset, today: today, teams: teams)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do

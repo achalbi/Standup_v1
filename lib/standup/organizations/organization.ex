@@ -3,6 +3,7 @@ defmodule Standup.Organizations.Organization do
   import Ecto.Changeset
   alias Standup.Organizations.{Organization, UserOrganization, Team, Domain}
   alias Standup.Accounts.User
+  alias Standup.StatusTrack.WorkStatus
 
 
   schema "organizations" do
@@ -10,6 +11,7 @@ defmodule Standup.Organizations.Organization do
     field :name, :string
     many_to_many :users, User, join_through: UserOrganization  
     has_many :teams, Team
+    has_many :work_statuses, WorkStatus
     has_many :domains, Domain
 
     timestamps()

@@ -4,6 +4,8 @@ defmodule StandupWeb.WorkStatusController do
   require IEx
   alias Standup.StatusTrack
   alias Standup.StatusTrack.WorkStatus
+  alias Standup.Organizations
+
 
   def index(conn, _params) do
     work_statuses = StatusTrack.list_work_statuses(conn)
@@ -13,13 +15,13 @@ defmodule StandupWeb.WorkStatusController do
   def new(conn, params) do
     today = if params["on_date"], do: Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime), else: Date.utc_today
     current_user = conn.assigns.current_user
-    IEx.pry
+    organization = hd(current_user.organizations)
     case StatusTrack.get_work_status_by_date_and_user_id(today, current_user.id) do
       %WorkStatus{} = work_status -> 
         changeset = StatusTrack.change_work_status(work_status)
         render(conn, "edit.html", work_status: work_status, changeset: changeset, today: today)
       _ -> 
-        changeset = StatusTrack.change_work_status(%WorkStatus{user_id: current_user.id})
+        changeset = StatusTrack.change_work_status(%WorkStatus{user_id: current_user.id, organization_id: organization.id})
         render(conn, "new.html", changeset: changeset, today: today)
     end
     
@@ -69,5 +71,21 @@ defmodule StandupWeb.WorkStatusController do
     conn
     |> put_flash(:info, "Work status deleted successfully.")
     |> redirect(to: work_status_path(conn, :index))
+  end
+
+  def team_work_statuses(conn, params) do
+    org = hd(conn.assigns.current_user.organizations)
+    teams = Organizations.get_teams_by_user_and_org(conn.assigns.current_user.id, org.id)
+    case params do
+      %{"team_id" => team_id, "on_date" => on_date} ->
+        date = Timex.parse!(on_date, "%Y-%m-%d", :strftime)
+        team = Organizations.get_team!(team_id)
+      _ ->
+        {:ok, time} = Time.new(0, 0, 0, 0)
+        {:ok, date} = NaiveDateTime.new(Date.utc_today, time)
+        team = hd(teams)
+    end
+    work_statuses = StatusTrack.list_work_statuses_by_team_and_date(team, date)
+    render(conn, "team_index.html", work_statuses: work_statuses, teams: teams, date: date, team: team)
   end
 end

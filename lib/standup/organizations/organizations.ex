@@ -338,6 +338,15 @@ defmodule Standup.Organizations do
     |> Repo.preload(:photo)
   end
 
+  def get_teams_by_user_and_org(user_id, org_id) do
+    query = from ut in UserTeam,
+    join: t in Team,
+    where: ut.team_id == t.id and ut.user_id == ^user_id and t.organization_id == ^org_id, 
+    select: t
+
+    Repo.all(query)
+  end
+
   @doc """
   Returns the list of domains.
 

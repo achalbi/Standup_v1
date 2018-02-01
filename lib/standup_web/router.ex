@@ -70,6 +70,7 @@ defmodule StandupWeb.Router do
     end
     post "/photos/upload", PhotoController, :upload 
     resources "/work_statuses", WorkStatusController
+    get "team_work_statuses", WorkStatusController, :team_work_statuses, as: :team_work_statuses
     resources "/tasks", TaskController
   end
   # Other scopes may use custom stacks.

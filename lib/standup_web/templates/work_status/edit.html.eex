@@ -32,6 +32,7 @@
 </div>
 
 <%= hidden_input f, :user_id %>
+<%= hidden_input f, :organization_id %>
 
 <div class="row">
   <div class="input-field col s12">
