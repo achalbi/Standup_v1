@@ -26,4 +26,6 @@
   </tbody>
 </table>
 
-<span><%= link "New Domain", to: organization_domain_path(@conn, :new, @org) %></span>
+<span><%= link "New Domain", to: organization_domain_path(@conn, :new, @org), class: "btn" %></span>
+<span><%= link "Back", to: organization_path(@conn, :show, @org), class: "btn" %></span>
+
