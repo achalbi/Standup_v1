@@ -25,8 +25,14 @@ defmodule StandupWeb.TaskController do
   
   def create(conn, %{"task" => task_params}) do
     today = Date.utc_today
-    date = Timex.parse!(task_params["on_date"], "%Y-%m-%d", :strftime)
-    task_params = Map.put(task_params, "on_date", date)
+    if task_params["on_date"] != "" do
+      today = task_params["on_date"]
+      date = Timex.parse!(task_params["on_date"], "%Y-%m-%d", :strftime)
+      task_params = Map.put(task_params, "on_date", date)
+    end
+    current_user = conn.assigns.current_user
+    organization = hd(current_user.organizations)
+    teams = Organizations.get_teams_by_user_and_org(current_user.id, organization.id)
     case StatusTrack.create_task(task_params) do
       {:ok, task} ->
         case StatusTrack.prepare_work_status_from_task(task, task_params) do
@@ -35,10 +41,10 @@ defmodule StandupWeb.TaskController do
             |> put_flash(:info, "Task created successfully.")
             |> redirect(to: task_path(conn, :show, task))
           {:error, %Ecto.Changeset{} = changeset} ->
-            render(conn, "new.html", changeset: changeset, today: today)
+            render(conn, "new.html", changeset: changeset, today: today, teams: teams)
         end
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, today: today)
+        render(conn, "new.html", changeset: changeset, today: today, teams: teams)
     end
   end
 

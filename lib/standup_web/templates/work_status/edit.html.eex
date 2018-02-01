@@ -37,9 +37,7 @@
 <div class="row">
   <div class="input-field col s12">
     <%= submit "Submit", class: "btn" %>
-    <a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
-    <a class="btn waves-effect waves-light right" href="<%= work_status_path(@conn, :new) %>">New Work Status</a>
-
+    <a href="/work_statuses" class="waves-effect waves-light btn">Back</a>
   </div>
 </div>
 <% end %>

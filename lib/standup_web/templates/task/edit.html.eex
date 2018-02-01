@@ -84,6 +84,7 @@
       selectYears: 15, // Creates a dropdown of 15 years to control year,
       today: 'Today',
       clear: 'Clear',
+      closeOnClear: false,
       close: 'Ok',
       max: true,
       formatSubmit: 'yyyy-mm-dd',

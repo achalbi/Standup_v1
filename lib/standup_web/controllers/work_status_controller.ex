@@ -13,7 +13,7 @@ defmodule StandupWeb.WorkStatusController do
   end
 
   def new(conn, params) do
-    today = if params["on_date"], do: Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime), else: Date.utc_today
+    today = unless params["on_date"] == nil || params["on_date"] == "", do: Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime), else: Date.utc_today
     current_user = conn.assigns.current_user
     organization = hd(current_user.organizations)
     case StatusTrack.get_work_status_by_date_and_user_id(today, current_user.id) do
