@@ -76,16 +76,22 @@ defmodule StandupWeb.WorkStatusController do
   def team_work_statuses(conn, params) do
     org = hd(conn.assigns.current_user.organizations)
     teams = Organizations.get_teams_by_user_and_org(conn.assigns.current_user.id, org.id)
-    case params do
-      %{"team_id" => team_id, "on_date" => on_date} ->
-        date = Timex.parse!(on_date, "%Y-%m-%d", :strftime)
-        team = Organizations.get_team!(team_id)
-      _ ->
-        {:ok, time} = Time.new(0, 0, 0, 0)
-        {:ok, date} = NaiveDateTime.new(Date.utc_today, time)
-        team = hd(teams)
+    if Enum.count(teams) > 0 do
+      case params do
+        %{"team_id" => team_id, "on_date" => on_date} ->
+          date = Timex.parse!(on_date, "%Y-%m-%d", :strftime)
+          team = Organizations.get_team!(team_id)
+        _ ->
+          {:ok, time} = Time.new(0, 0, 0, 0)
+          {:ok, date} = NaiveDateTime.new(Date.utc_today, time)
+          team = hd(teams)
+      end
+      work_statuses = StatusTrack.list_work_statuses_by_team_and_date(team, date)
+      render(conn, "team_index.html", work_statuses: work_statuses, teams: teams, date: date, team: team)
+    else
+      conn
+      |> put_flash(:info, "Please add your self as part of any team first")
+      |> redirect(to: team_path(conn, :index))
     end
-    work_statuses = StatusTrack.list_work_statuses_by_team_and_date(team, date)
-    render(conn, "team_index.html", work_statuses: work_statuses, teams: teams, date: date, team: team)
   end
 end
