@@ -90,8 +90,9 @@ defmodule StandupWeb.WorkStatusController do
       render(conn, "team_index.html", work_statuses: work_statuses, teams: teams, date: date, team: team)
     else
       conn
-      |> put_flash(:info, "Please add your self as part of any team first")
-      |> redirect(to: team_path(conn, :index))
+      |> put_flash(:error, "Please join a Team")
+      |> render(conn, "team_index.html", teams: teams)
+
     end
   end
 end
