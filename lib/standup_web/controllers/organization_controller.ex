@@ -7,7 +7,12 @@ defmodule StandupWeb.OrganizationController do
   def index(conn, _params) do
     current_user = conn.assigns.current_user
     organizations = Organizations.list_organizations(current_user)
-    render(conn, "index.html", organizations: organizations)
+    if Enum.count(organizations) > 0 do
+      conn
+      |> redirect(to: organization_path(conn, :show, hd(organizations)))
+    else
+      render(conn, "index.html", organizations: organizations)
+    end
   end
 
   def new(conn, _params) do
