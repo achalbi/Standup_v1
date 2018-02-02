@@ -25,6 +25,6 @@ defmodule Standup.StatusTrack.Task do
   def changeset(%Task{} = task, attrs) do
     task
     |> cast(attrs, [:task_number, :title, :url, :status, :notes, :on_date, :user_id , :work_status_id, :team_id])
-    |> validate_required([:task_number, :title, :status, :on_date, :team_id, :user_id, :work_status_id])
+    |> validate_required([:task_number, :title, :status, :on_date, :team_id, :user_id])
   end
 end

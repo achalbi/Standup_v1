@@ -43,7 +43,7 @@
 
     <div class="input-field col m6 s12">
       <%= label f, :on_date %>
-      <%= text_input f, :on_date, class: "datepicker validate", "data-value": @today %>
+      <%= text_input f, :on_date, class: "datepicker black-text", "data-value": @today, disabled: "disabled" %>
       <%= error_tag f, :on_date %>
     </div>
   </div>

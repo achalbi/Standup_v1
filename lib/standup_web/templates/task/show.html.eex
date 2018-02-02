@@ -31,7 +31,7 @@
     </div>
 
     <div class="input-field col m6 s12">
-          <input id="on_date" type="text"  readonly value="<%= NaiveDateTime.to_date(@task.on_date) %>">
+          <input id="on_date" type="text"  readonly value='<%= @task.work_status.on_date |> Timex.Format.DateTime.Formatter.format!("%d %B, %Y", :strftime) %>'>
           <label class="active  "for="on_date">Date</label>
     </div>
   </div>
