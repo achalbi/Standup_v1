@@ -91,7 +91,7 @@ defmodule StandupWeb.WorkStatusController do
     else
       conn
       |> put_flash(:error, "Please join a Team")
-      |> render(conn, "team_index.html", teams: teams)
+      |> render("team_index.html", teams: teams)
 
     end
   end
