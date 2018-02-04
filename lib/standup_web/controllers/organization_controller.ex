@@ -1,8 +1,14 @@
 defmodule StandupWeb.OrganizationController do
   use StandupWeb, :controller
 
+ # plug :authorize
+  plug Standup.Plugs.OrganizationAuthorizer
+
   alias Standup.Organizations
   alias Standup.Organizations.Organization
+
+ # @actions [:edit, :delete]
+
 
   def index(conn, _params) do
     current_user = conn.assigns.current_user
@@ -66,4 +72,14 @@ defmodule StandupWeb.OrganizationController do
     |> put_flash(:info, "Organization deleted successfully.")
     |> redirect(to: organization_path(conn, :index))
   end
+
+  # def authorize(%Plug.Conn{:private => %{:phoenix_action => action}} = conn, _default) when action in @actions do
+	# 	organization = hd(conn.assigns.current_user.organizations)
+	# 	if Organizations.is_org_moderator?(conn.assigns.current_user.id, organization.id) do
+	# 		assign(conn, :authorized, true)
+	# 	else
+	# 		assign(conn, :authorized, false)
+	# 		Standup.Plugs.Authorizer.unauthorized_user(conn)
+	# 	end
+	# end
 end

@@ -253,7 +253,7 @@ defmodule Standup.Organizations do
     |> Repo.get_by(team_id: team.id, user_id: user.id)
   end
 
-  def is_moderator?(team,user) do
+  def is_team_moderator?(team,user) do
     ut = get_user_team(team,user)
     if ut, do: ut.is_moderator, else: nil
   end
@@ -270,6 +270,12 @@ defmodule Standup.Organizations do
     get_user_team(team,user)
     |> UserTeam.changeset(attrs)
     |> Repo.update()
+  end
+
+  def is_org_moderator?(user_id, org_id) do
+    uo = UserOrganization
+    |> Repo.get_by(organization_id: org_id, user_id: user_id)
+    uo.is_moderator
   end
 
   def get_org_members(org_id) do

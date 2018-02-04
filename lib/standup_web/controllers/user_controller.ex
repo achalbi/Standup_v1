@@ -40,7 +40,7 @@ defmodule StandupWeb.UserController do
         changeset = Accounts.change_user(user)
         render(conn, "edit.html", user: user, changeset: changeset)
       {:error, :unauthorized} ->
-        unauthorized_user(conn)
+        Standup.Plugs.Authorizer.unauthorized_user(conn)
     end
 
   end
@@ -64,13 +64,6 @@ defmodule StandupWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
-  end
-
-  defp unauthorized_user(conn) do
-    [url] = get_req_header(conn, "referer")
-        conn
-          |> put_flash(:error, "You do not have permission for this request")
-          |> redirect(external: url)
   end
 
 end

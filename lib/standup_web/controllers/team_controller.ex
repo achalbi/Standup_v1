@@ -33,7 +33,7 @@ defmodule StandupWeb.TeamController do
     moderators = Organizations.get_team_moderators(id)
     users = Organizations.get_org_users_for_team(id)
     current_user = conn.assigns.current_user
-    current_user_is_team_moderator = Organizations.is_moderator?(team, current_user)
+    current_user_is_team_moderator = Organizations.is_team_moderator?(team, current_user)
     render(conn, "show.html", team: team, members: members, moderators: moderators, users: users, current_user_is_team_moderator: current_user_is_team_moderator)
   end
 
