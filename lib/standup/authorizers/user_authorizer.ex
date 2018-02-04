@@ -1,16 +1,30 @@
-defmodule Standup.UserAuthorizer do
+defmodule Standup.Plugs.UserAuthorizer do
 
-  alias Standup.Accounts.User
+	import Plug.Conn
 
-  def authorize(:edit_user, user_id, %User{} = current_user) do
-    if String.to_integer(user_id) == current_user.id do
-      :ok 
-    else
-      {:error, :unauthorized}
-    end
+	alias Standup.Organizations
+
+  def init(default), do: default
+
+  def call(%Plug.Conn{:private => %{:phoenix_action => :edit, :phoenix_controller => StandupWeb.UserController}} = conn, _default) do
+		organization = hd(conn.assigns.current_user.organizations)
+		if Organizations.is_org_moderator?(conn.assigns.current_user.id, organization.id) || (String.to_integer(conn.params["id"]) == conn.assigns.current_user.id)  do
+			assign(conn, :authorized, true)
+		else
+			assign(conn, :authorized, false)
+			Standup.Plugs.Authorizer.unauthorized_user(conn)
+		end
   end
+  
+  def call(%Plug.Conn{:private => %{:phoenix_action => :delete, :phoenix_controller => StandupWeb.UserController}} = conn, _default) do
+		organization = hd(conn.assigns.current_user.organizations)
+		if Organizations.is_org_moderator?(conn.assigns.current_user.id, organization.id) do
+			assign(conn, :authorized, true)
+		else
+			assign(conn, :authorized, false)
+			Standup.Plugs.Authorizer.unauthorized_user(conn)
+		end
+	end
 
-#   def authorize(:update, %CMS.Page{}, %User{}) do
-#     :ok
-#   end
+	def call(conn, _default), do: conn
 end

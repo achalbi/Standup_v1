@@ -6,6 +6,7 @@ defmodule Standup.Plugs.Authorizer do
         conn
           |> put_flash(:error, "You do not have permission for this request")
           |> redirect(external: url)
+          |> halt()
   end
 
 end

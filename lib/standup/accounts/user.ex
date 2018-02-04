@@ -11,7 +11,7 @@ defmodule Standup.Accounts.User do
     field :lastname, :string
     field :username, :string
     field :avatar, :string
-    belongs_to :photo, Photo 
+    belongs_to :photo, Photo, on_replace: :nilify 
     has_one :credential, Credential
     many_to_many :roles, Role, join_through: UserRole
     many_to_many :organizations, Organization, join_through: UserOrganization  

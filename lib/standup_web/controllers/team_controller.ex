@@ -1,6 +1,8 @@
 defmodule StandupWeb.TeamController do
   use StandupWeb, :controller
 
+  plug Standup.Plugs.TeamAuthorizer
+
   alias Standup.Organizations
   alias Standup.Organizations.Team
   alias Standup.Accounts

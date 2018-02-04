@@ -1,6 +1,8 @@
 defmodule StandupWeb.DomainController do
   use StandupWeb, :controller
 
+  plug Standup.Plugs.DomainAuthorizer
+
   alias Standup.Organizations
   alias Standup.Organizations.Domain
 

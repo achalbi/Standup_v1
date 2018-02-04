@@ -1,6 +1,8 @@
 defmodule StandupWeb.UserController do
   use StandupWeb, :controller
 
+  plug Standup.Plugs.UserAuthorizer
+
   alias Standup.Accounts
   alias Standup.Accounts.User
   alias Standup.Guardian
@@ -33,16 +35,9 @@ defmodule StandupWeb.UserController do
   end
 
   def edit(conn, %{"id" => id}) do
-    current_user = conn.assigns.current_user
-    case Standup.UserAuthorizer.authorize(:edit_user, id, current_user) do
-      :ok ->
-        user = Accounts.get_user!(id)
-        changeset = Accounts.change_user(user)
-        render(conn, "edit.html", user: user, changeset: changeset)
-      {:error, :unauthorized} ->
-        Standup.Plugs.Authorizer.unauthorized_user(conn)
-    end
-
+    user = Accounts.get_user!(id)
+    changeset = Accounts.change_user(user)
+    render(conn, "edit.html", user: user, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
