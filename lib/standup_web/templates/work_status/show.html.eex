@@ -13,7 +13,7 @@
          <h5><%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> 
          - <%= Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, @work_status.status_type) %></h5>
         <h6><%= @work_status.notes %></h6>
-        <h6><div><%= link "Create Task", to: task_path(@conn, :new, on_date: Date.to_string(date)), class: "btn right" %></div></h6>
+        <h6><div><%= link "Create Task", to: task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id), class: "btn right" %></div></h6>
       </th>
     </tr>
   </thead>

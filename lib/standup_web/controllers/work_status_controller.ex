@@ -1,7 +1,8 @@
 defmodule StandupWeb.WorkStatusController do
   use StandupWeb, :controller
 
-  require IEx
+  plug Standup.Plugs.WorkStatusAuthorizer
+  
   alias Standup.StatusTrack
   alias Standup.StatusTrack.WorkStatus
   alias Standup.Organizations

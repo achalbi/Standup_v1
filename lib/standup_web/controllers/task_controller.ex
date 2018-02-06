@@ -1,10 +1,11 @@
 defmodule StandupWeb.TaskController do
   use StandupWeb, :controller
 
-  require IEx
+  plug Standup.Plugs.TaskAuthorizer
+
   alias Standup.StatusTrack
   alias Standup.StatusTrack.Task
-   alias Standup.Organizations
+  alias Standup.Organizations
 
   def index(conn, _params) do
     tasks = StatusTrack.list_tasks(conn)
@@ -78,10 +79,11 @@ defmodule StandupWeb.TaskController do
 
   def delete(conn, %{"id" => id}) do
     task = StatusTrack.get_task!(id)
+    work_status_id = task.work_status.id
     {:ok, _task} = StatusTrack.delete_task(task)
 
     conn
     |> put_flash(:info, "Task deleted successfully.")
-    |> redirect(to: task_path(conn, :index))
+    |> redirect(to: work_status_path(conn, :show, work_status_id))
   end
 end
