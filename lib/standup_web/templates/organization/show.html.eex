@@ -36,7 +36,7 @@
 <div class="row">
 <div class="col s12 m6">
 <div class="card-panel"> 
-<h5>Domains</h5>
+<h5>Self signup email address domains</h5>
 <table class="bordered highlight">
   <thead>
     <tr>
