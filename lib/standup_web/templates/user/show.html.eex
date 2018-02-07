@@ -36,3 +36,4 @@
 
 <span><%= link "Edit", to: user_path(@conn, :edit, @user), class: "btn" %></span>
 <a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
+<span><%= link "connect to Jira", to: jira_path(@conn, :new), class: "btn right" %></span>

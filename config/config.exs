@@ -62,6 +62,12 @@ config :elixir_google_spreadsheets, :client,
   max_interval: :timer.minutes(1),
   interval: 100
 
+# config :ex_jira, [
+#   site: "https://standup-daily.atlassian.net",
+#   private_key_file: System.get_env("JIRA_CUSTOMER_SECRET"),
+#   consumer_key: "OauthKey"
+# ]
+
 config :sphinx, :repo, Standup.Repo
 
 # Import environment specific config. This must remain at the bottom

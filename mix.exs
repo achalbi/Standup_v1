@@ -54,7 +54,10 @@ defmodule Standup.Mixfile do
       {:ecto_gss, "~> 0.1"},
       {:json_web_token, git: "https://github.com/starbuildr/json_web_token_ex.git", override: true},
       {:timex, "~> 3.1"},
-      {:sphinx, "~> 0.1.0"}
+      {:sphinx, "~> 0.1.0"},
+			{:oauth, github: "tim/erlang-oauth"},
+			{:oauther, "~> 1.1"},
+      {:extwitter, "~> 0.1"}
     ]
   end
 

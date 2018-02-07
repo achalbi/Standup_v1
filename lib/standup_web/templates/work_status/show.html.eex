@@ -34,9 +34,14 @@
         </div>
         <div class="col s12 m2 text-right">
         <br>
-          <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn" %></span>
-          <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn" %></span>
-          <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %></span>
+        <div class="right">
+          <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
+          <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
+            <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
+            <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
+            <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+          </ul>
+        </div>
         </div>
       </div>
     </td>
