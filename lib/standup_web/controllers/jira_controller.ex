@@ -20,7 +20,7 @@ defmodule StandupWeb.JiraController do
     Logger.info("URL:")
     Logger.info(url)
     [back_url] = get_req_header(conn, "referer")
-    put_session(conn, :back_url, back_url)
+    conn = put_session(conn, :back_url, back_url)
     Logger.info(back_url)
    IEx.pry
     conn
@@ -42,6 +42,7 @@ defmodule StandupWeb.JiraController do
     url = get_session(conn, :back_url)
     Logger.info("Back_url:")
     Logger.info(url)
+    Logger.info(params)
     conn
       |> put_flash(:info, "You have successfully logged in")
       |> redirect(external: url)
