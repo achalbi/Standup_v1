@@ -56,7 +56,6 @@ defmodule Standup.Mixfile do
       {:timex, "~> 3.1"},
       {:sphinx, "~> 0.1.0"},
 			{:oauth, github: "tim/erlang-oauth"},
-#			{:oauther, "~> 1.1"},
       {:extwitter, "~> 0.1"}
     ]
   end
