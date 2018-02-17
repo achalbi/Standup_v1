@@ -458,10 +458,15 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 
   """
   def create_work_status_type(attrs \\ %{}) do
-    %WorkStatusType{}
+    result = %WorkStatusType{}
     |> WorkStatusType.changeset(attrs)
     |> Repo.insert()
-    |> Repo.preload([:organization])
+    case result do
+        {:ok, work_status_type } -> 
+            work_status_type =  work_status_type |> Repo.preload([:organization])
+            {:ok, work_status_type }
+        result -> result
+    end
   end
 
   @doc """
