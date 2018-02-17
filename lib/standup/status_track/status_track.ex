@@ -69,7 +69,7 @@ defmodule Standup.StatusTrack do
             |> Repo.preload(:credential)
 
             user_name  = user.firstname <> " " <> user.lastname
-            task_summary = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, status_type) <> "\n" <> notes <> "\n"
+            task_summary = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, status_type) <> "\n" <> notes <> "\n"
             Map.merge(attrs, %{"task_summary" => task_summary, "user_id" => user_id, "user_name" => user_name, "user_email" => user.credential.email })
 		end
 		
@@ -333,7 +333,7 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 					formatted_tasks = Enum.map(tasks, fn(task) -> task_summary(task) end)
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
 			end
-        work_status_details = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, work_status.status_type) <> "\n" <> work_status.notes <> "\n\n"
+        work_status_details = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, work_status.status_type) <> "\n" <> work_status.notes <> "\n\n"
 		attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
 		attrs = Map.put(attrs, "notes", work_status.notes)	
 		update_work_status(work_status, attrs)
@@ -345,7 +345,7 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 			#formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
 			formatted_tasks = Enum.map(work_status.tasks, fn(task) -> task_summary(task) end)
 			task_summary = Enum.map_join(formatted_tasks, "\n\n", &(&1))
-      work_status_details = Map.get(%{"WFO" => "Work from Office" ,"WFH" =>  "Work Remotely or Work From Home", "PTO" => "Vacation or Paid-Time-Off"}, attrs["status_type"]) <> "\n" <>  attrs["notes"] <> "\n\n"
+            work_status_details = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, attrs["status_type"]) <> "\n" <>  attrs["notes"] <> "\n\n"
 			attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
 		#	attrs = Map.put(attrs, "notes", work_status.notes)	
 			update_work_status(work_status, attrs)

@@ -17,13 +17,15 @@ defmodule StandupWeb.WorkStatusController do
     today = unless params["on_date"] == nil || params["on_date"] == "", do: Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime), else: Date.utc_today
     current_user = conn.assigns.current_user
     organization = hd(current_user.organizations)
+    organization = Organizations.get_organization!(organization.id)
+    work_status_type_id = params["work_status_type"] || hd(organization.work_status_types).id
     case StatusTrack.get_work_status_by_date_and_user_id(today, current_user.id) do
       %WorkStatus{} = work_status -> 
         changeset = StatusTrack.change_work_status(work_status)
         render(conn, "edit.html", work_status: work_status, changeset: changeset, today: today)
       _ -> 
         changeset = StatusTrack.change_work_status(%WorkStatus{user_id: current_user.id, organization_id: organization.id})
-        render(conn, "new.html", changeset: changeset, today: today)
+        render(conn, "new.html", changeset: changeset, today: today, organization: organization, work_status_type_id: work_status_type_id)
     end
     
   end

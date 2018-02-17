@@ -1,6 +1,7 @@
 # App artifacts
 /_build
 /.history
+/.vscode
 /db
 /deps
 /*.ez

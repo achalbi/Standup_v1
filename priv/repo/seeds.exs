@@ -19,3 +19,9 @@ Standup.Repo.insert!(%Standup.Accounts.Role{
     key: "user",
     name: "Regular user"
 })
+
+Standup.Repo.insert!(%Standup.StatusTrack.WorkStatusType{
+    name: "Daily",
+    description: "This option is used to track Daily Work status",
+    period: "1",
+})
