@@ -7,9 +7,8 @@
   <thead>
     <tr>
       <th>
-        <h6><div><%= link "Edit", to: work_status_path(@conn, :edit, @work_status), class: "btn right" %></div></h6>
-        <h4>Work status
-        </h4>
+        <h6><div><%= link "Edit", to: work_status_path(@conn, :edit, @work_status, work_status_type_id: @work_status_type.id), class: "btn right" %></div></h6>
+        <h4>Your <%= @work_status_type.name %> Work status</h4>
          <h5><%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> 
          - <%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type) %></h5>
         <h6><%= @work_status.notes %></h6>
@@ -34,9 +33,14 @@
         </div>
         <div class="col s12 m2 text-right">
         <br>
-          <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn" %></span>
-          <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn" %></span>
-          <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %></span>
+          <div class="right">
+            <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
+            <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
+              <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
+              <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
+              <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+            </ul>
+          </div>
         </div>
       </div>
     </td>
@@ -45,4 +49,4 @@
 </tbody>
 </table>
 <br>
-<span><%= link "Back", to: work_status_path(@conn, :index), class: "btn" %></span>
+<span><%= link "Back", to: work_status_path(@conn, :index, work_status_type_id: @work_status_type.id), class: "btn" %></span>

@@ -47,7 +47,7 @@ defmodule Standup.StatusTrack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload([tasks: :team])
+  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload([:work_status_type, tasks: :team])
 
   @doc """
   Creates a work_status.

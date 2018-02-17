@@ -1,6 +1,6 @@
-<h4>Edit Work status</h4>
+<h4>Edit Your <%= @work_status_type.name %> Work status</h4>
 
-<%= form_for @changeset, work_status_path(@conn, :update, @work_status), fn f -> %>
+<%= form_for @changeset, work_status_path(@conn, :update, @work_status, work_status_type_id: @work_status_type.id), fn f -> %>
   <%= if @changeset.action do %>
     <div class="card red lighten-5" role="alert">
       <div class="card-content red-text">
@@ -10,13 +10,22 @@
   <% end %>
 
 <div class="row">
-  <div class="input-field col s6">
+  
+<%= if is_nil(@work_status.work_status_type) || @work_status.work_status_type.period == 1 do %>
+  <div class="input-field col s12 m6">
     <label class="active">Type</label>
     <%= select f, :status_type, Standup.StatusTrack.WorkStatus.working_at  %>
     <%= error_tag f, :status_type %>
   </div>
+<% end %>
 
-  <div class="input-field col s6">
+  <div class="input-field col s12 hide">
+    <label class="active">Work Status Frequency</label>
+    <%= select f, :work_status_type_id, Enum.map(@organization.work_status_types, &{&1.name, &1.id}) , selected: @work_status_type.id %>
+    <%= error_tag f, :work_status_type_id %>
+  </div>
+
+  <div class="input-field col s12 m6">
     <%= label f, :on_date %>
     <%= text_input f, :on_date, class: "datepicker", "data-value": @today, id: "date_select" %>
     <%= error_tag f, :on_date %>
@@ -37,7 +46,7 @@
 <div class="row">
   <div class="input-field col s12">
     <%= submit "Submit", class: "btn" %>
-    <a href="/work_statuses" class="waves-effect waves-light btn">Back</a>
+    <a href="/work_statuses?work_status_type_id=<%= @work_status_type.id %>" class="waves-effect waves-light btn">Back</a>
   </div>
 </div>
 <% end %>
@@ -59,7 +68,7 @@
     });
 
     $("#date_select").change(function () {
-        location.href = "/work_statuses/new?on_date=" + $("[name='work_status[on_date]']").val();
+        location.href = "/work_statuses/new?work_status_type_id=<%= @work_status_type.id %>&on_date=" + $("[name='work_status[on_date]']").val();
     });
 
 

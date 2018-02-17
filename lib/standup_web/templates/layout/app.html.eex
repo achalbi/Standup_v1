@@ -94,9 +94,17 @@
         <li>
           <a class="collapsible-header" style="padding: 0 32px;"><i class="material-icons">event_note</i>Work Status</a>
           <div class="collapsible-body">
-            <ul>
-              <li><a href="/work_statuses" style="padding: 0 48px;"><i class="material-icons">face</i>Your Work Status</a></li>
-              <li><a href="/team_work_statuses" style="padding: 0 48px;"><i class="material-icons">people</i>Team Work Status</a></li>
+            <ul class="collapsible collapsible-accordion">
+              <%= for work_status_type <- hd(@conn.assigns.current_user.organizations).work_status_types do %>
+                <li>          
+                  <a class="collapsible-header" style="padding: 0 48px;"><i class="material-icons">event_note</i><%= work_status_type.name %> Work Status</a>
+                  <div class="collapsible-body">
+                    <ul>
+                      <li><a href="/work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">face</i>Your</a></li>
+                      <li><a href="/team_work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">people</i>Your Team</a></li>
+                    </ul>
+                </li>
+              <% end %>
             </ul>
           </div>
         </li>

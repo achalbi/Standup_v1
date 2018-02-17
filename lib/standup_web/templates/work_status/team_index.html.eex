@@ -1,5 +1,5 @@
 <%= if Enum.count(@teams) > 0 do %>
-<h4>Work Status</h4>
+<h4>Your Team <%= @work_status_type.name %> Work Status</h4>
     <div class="row">
     <div class="input-field col s12 m6">
       <select id="team_ws">
@@ -83,7 +83,7 @@
 
     $("#date_ws, #team_ws").change(function () {
         if($("#date_ws").val() != ""){
-          location.href = "/team_work_statuses?on_date=" + $("[name='on_date']").val() + "&team_id=" + $("#team_ws").val();
+          location.href = "/team_work_statuses?work_status_type_id=<%= @work_status_type.id %>&on_date=" + $("[name='on_date']").val() + "&team_id=" + $("#team_ws").val();
         }
     });
   });

@@ -503,6 +503,6 @@ defmodule Standup.Accounts do
   end
 
   def get_dashboard(current_user) do
-    current_user |> Repo.preload([:organizations, :credential])
+    current_user |> Repo.preload([:credential, organizations: :work_status_types ])
   end
 end
