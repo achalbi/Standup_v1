@@ -13,7 +13,7 @@
   
 <%= if is_nil(@work_status.work_status_type) || @work_status.work_status_type.period == 1 do %>
   <div class="input-field col s12 m6">
-    <label class="active">Type</label>
+    <label class="active">Working At</label>
     <%= select f, :status_type, Standup.StatusTrack.WorkStatus.working_at  %>
     <%= error_tag f, :status_type %>
   </div>
