@@ -11,6 +11,7 @@ defmodule Standup.StatusTrack do
   alias Standup.Accounts.User
 
   alias Standup.StatusTrack.WorkStatus
+  alias Standup.StatusTrack.WorkStatusType
 
   @doc """
   Returns the list of work_statuses.
@@ -413,4 +414,100 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		 work_statuses = Repo.all(query)
 		 work_statuses |> Repo.preload([user: :photo])
 	end
+
+  @doc """
+  Returns the list of work_status_types.
+
+  ## Examples
+
+      iex> list_work_status_types()
+      [%WorkStatusType{}, ...]
+
+  """
+  def list_work_status_types(org_id) do
+    from(w in WorkStatusType, where: w.organization_id == ^org_id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single work_status_type.
+
+  Raises `Ecto.NoResultsError` if the Work status type does not exist.
+
+  ## Examples
+
+      iex> get_work_status_type!(123)
+      %WorkStatusType{}
+
+      iex> get_work_status_type!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_work_status_type!(id), do: Repo.get!(WorkStatusType, id) |> Repo.preload([:organization])
+
+  @doc """
+  Creates a work_status_type.
+
+  ## Examples
+
+      iex> create_work_status_type(%{field: value})
+      {:ok, %WorkStatusType{}}
+
+      iex> create_work_status_type(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_work_status_type(attrs \\ %{}) do
+    %WorkStatusType{}
+    |> WorkStatusType.changeset(attrs)
+    |> Repo.insert()
+    |> Repo.preload([:organization])
+  end
+
+  @doc """
+  Updates a work_status_type.
+
+  ## Examples
+
+      iex> update_work_status_type(work_status_type, %{field: new_value})
+      {:ok, %WorkStatusType{}}
+
+      iex> update_work_status_type(work_status_type, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_work_status_type(%WorkStatusType{} = work_status_type, attrs) do
+    work_status_type
+    |> WorkStatusType.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a WorkStatusType.
+
+  ## Examples
+
+      iex> delete_work_status_type(work_status_type)
+      {:ok, %WorkStatusType{}}
+
+      iex> delete_work_status_type(work_status_type)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_work_status_type(%WorkStatusType{} = work_status_type) do
+    Repo.delete(work_status_type)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking work_status_type changes.
+
+  ## Examples
+
+      iex> change_work_status_type(work_status_type)
+      %Ecto.Changeset{source: %WorkStatusType{}}
+
+  """
+  def change_work_status_type(%WorkStatusType{} = work_status_type) do
+    WorkStatusType.changeset(work_status_type, %{})
+  end
 end

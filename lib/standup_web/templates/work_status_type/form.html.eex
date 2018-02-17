@@ -1,0 +1,41 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="input-field col s12 m6">
+      <%= label f, :name %>
+      <%= text_input f, :name %>
+      <%= error_tag f, :name %>
+    </div>
+
+    <div class="input-field col s12 m6">
+      <%= label f, :period %>
+      <%= number_input f, :period %>
+      <%= error_tag f, :period %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :description %>
+      <%= textarea f, :description, class: "materialize-textarea" %>
+      <%= error_tag f, :description %>
+    </div>
+  </div>
+
+  <div>
+      <%= hidden_input f, :organization_id, value: @organization_id %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn" %>
+    <span><%= link "Back", to: organization_path(@conn, :show, @organization_id), class: "btn" %></span>
+
+  </div>
+<% end %>

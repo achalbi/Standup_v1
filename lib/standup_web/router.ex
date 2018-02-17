@@ -61,7 +61,9 @@ defmodule StandupWeb.Router do
     resources "/roles", RoleController
     resources "/organizations", OrganizationController do
       resources "/domains", DomainController
+      resources "/work_status_types", WorkStatusTypeController
     end
+
     resources "/teams", TeamController do
       get "/add_users", TeamController, :add_users, as: :add_users
       get "/remove_users", TeamController, :remove_users, as: :remove_users

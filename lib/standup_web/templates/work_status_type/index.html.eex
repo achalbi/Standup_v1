@@ -1,0 +1,30 @@
+<h2>Work status types</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Period</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for work_status_type <- @work_status_types do %>
+    <tr>
+      <td><%= work_status_type.name %></td>
+      <td><%= work_status_type.description %></td>
+      <td><%= work_status_type.period %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: organization_work_status_type_path(@conn, :show, @organization_id, work_status_type), class: "btn" %></span>
+        <span><%= link "Edit", to: organization_work_status_type_path(@conn, :edit, @organization_id, work_status_type), class: "btn" %></span>
+        <span><%= link "Delete", to: organization_work_status_type_path(@conn, :delete, @organization_id, work_status_type), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Work Status Type", to: organization_work_status_type_path(@conn, :new, @organization_id), class: "btn right light" %></span>

@@ -4,6 +4,7 @@ defmodule Standup.Organizations.Organization do
   alias Standup.Organizations.{Organization, UserOrganization, Team, Domain}
   alias Standup.Accounts.User
   alias Standup.StatusTrack.WorkStatus
+  alias Standup.StatusTrack.WorkStatusType
 
 
   schema "organizations" do
@@ -12,6 +13,7 @@ defmodule Standup.Organizations.Organization do
     many_to_many :users, User, join_through: UserOrganization  
     has_many :teams, Team
     has_many :work_statuses, WorkStatus
+    has_many :work_status_types, WorkStatusType
     has_many :domains, Domain
 
     timestamps()

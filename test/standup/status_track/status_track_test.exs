@@ -136,4 +136,68 @@ defmodule Standup.StatusTrackTest do
       assert %Ecto.Changeset{} = StatusTrack.change_task(task)
     end
   end
+
+  describe "work_status_types" do
+    alias Standup.StatusTrack.WorkStatusType
+
+    @valid_attrs %{description: "some description", name: "some name", period: 42}
+    @update_attrs %{description: "some updated description", name: "some updated name", period: 43}
+    @invalid_attrs %{description: nil, name: nil, period: nil}
+
+    def work_status_type_fixture(attrs \\ %{}) do
+      {:ok, work_status_type} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> StatusTrack.create_work_status_type()
+
+      work_status_type
+    end
+
+    test "list_work_status_types/0 returns all work_status_types" do
+      work_status_type = work_status_type_fixture()
+      assert StatusTrack.list_work_status_types() == [work_status_type]
+    end
+
+    test "get_work_status_type!/1 returns the work_status_type with given id" do
+      work_status_type = work_status_type_fixture()
+      assert StatusTrack.get_work_status_type!(work_status_type.id) == work_status_type
+    end
+
+    test "create_work_status_type/1 with valid data creates a work_status_type" do
+      assert {:ok, %WorkStatusType{} = work_status_type} = StatusTrack.create_work_status_type(@valid_attrs)
+      assert work_status_type.description == "some description"
+      assert work_status_type.name == "some name"
+      assert work_status_type.period == 42
+    end
+
+    test "create_work_status_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = StatusTrack.create_work_status_type(@invalid_attrs)
+    end
+
+    test "update_work_status_type/2 with valid data updates the work_status_type" do
+      work_status_type = work_status_type_fixture()
+      assert {:ok, work_status_type} = StatusTrack.update_work_status_type(work_status_type, @update_attrs)
+      assert %WorkStatusType{} = work_status_type
+      assert work_status_type.description == "some updated description"
+      assert work_status_type.name == "some updated name"
+      assert work_status_type.period == 43
+    end
+
+    test "update_work_status_type/2 with invalid data returns error changeset" do
+      work_status_type = work_status_type_fixture()
+      assert {:error, %Ecto.Changeset{}} = StatusTrack.update_work_status_type(work_status_type, @invalid_attrs)
+      assert work_status_type == StatusTrack.get_work_status_type!(work_status_type.id)
+    end
+
+    test "delete_work_status_type/1 deletes the work_status_type" do
+      work_status_type = work_status_type_fixture()
+      assert {:ok, %WorkStatusType{}} = StatusTrack.delete_work_status_type(work_status_type)
+      assert_raise Ecto.NoResultsError, fn -> StatusTrack.get_work_status_type!(work_status_type.id) end
+    end
+
+    test "change_work_status_type/1 returns a work_status_type changeset" do
+      work_status_type = work_status_type_fixture()
+      assert %Ecto.Changeset{} = StatusTrack.change_work_status_type(work_status_type)
+    end
+  end
 end

@@ -123,7 +123,8 @@
 </div>
 </div>
 </div>
-
+<div class="row">
+<div class="col s12 m6">
 <div class="card-panel"> 
 <h5>Users</h5>
 <table class=" bordered highlight ">
@@ -163,6 +164,49 @@
   </tbody>
 </table>
 <br>
+</div>
+</div>
+<div class="col s12 m6">
+<div class="card-panel"> 
+<h5>Add Work Status Type</h5>
+<table class="bordered highlight">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th class="right">
+      <span><%= link "New Work status type", to: organization_work_status_type_path(@conn, :new, @organization), class: "btn right light" %></span>
+
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  <%= if Enum.count(@organization.work_status_types) == 0 do %>
+  <tr>
+      <td colspan="2">
+        <h6 class="center">No work status type created yet!</h6>
+      </td>
+  </tr>
+  <% end %>
+<%= for work_status_type <- @organization.work_status_types do %>
+    <tr>
+      <td><%= work_status_type.name %></td>
+      <td>
+        <div class="right">
+          <a class='dropdown-button btn' href='#' data-activates='dropdown_work_status_type_<%= work_status_type.id %>'>Action</a>
+          <ul id='dropdown_work_status_type_<%= work_status_type.id %>' class='dropdown-content'>
+            <li><%= link "Show", to: organization_work_status_type_path(@conn, :show, @organization, work_status_type), class: "" %></li>
+            <li><%= link "Edit", to: organization_work_status_type_path(@conn, :edit, @organization, work_status_type), class: "" %></li>
+            <li><%= link "Delete", to: organization_work_status_type_path(@conn, :delete, @organization, work_status_type), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+</div>
+</div>
 </div>
 <br>
 <span><%= link "Back", to: organization_path(@conn, :index), class: "btn" %></span>

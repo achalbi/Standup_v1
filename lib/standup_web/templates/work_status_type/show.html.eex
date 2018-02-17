@@ -1,0 +1,24 @@
+<h2>Work status type</h2>
+
+  <div class="row">
+    <div class="input-field col s12 m6">
+      <%= tag :input, type: "text", value: @work_status_type.name, class: "black-text", readonly: "readonly" %>
+      <%= content_tag :label, :name, class: "active" %>
+    </div>
+
+    <div class="input-field col s12 m6">
+      <%= tag :input, type: "number", value: @work_status_type.period, class: "black-text", readonly: "readonly" %>
+      <%= content_tag :label, :period, class: "active" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <%= content_tag :textarea, @work_status_type.description, class: "materialize-textarea black-text", readonly: "readonly" %>
+      <%= content_tag :label, :description, class: "active" %>
+    </div>
+  </div>
+
+
+<span><%= link "Edit", to: organization_work_status_type_path(@conn, :edit, @work_status_type.organization, @work_status_type), class: "btn" %></span>
+<span><%= link "Back", to: organization_path(@conn, :show, @work_status_type.organization), class: "btn" %></span>
