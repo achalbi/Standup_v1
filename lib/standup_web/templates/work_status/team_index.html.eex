@@ -29,7 +29,7 @@
             <%= work_status_first.user.firstname <> " " <> work_status_first.user.lastname %>
           </div>
         </h5>
-        <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status_first), class: "btn" %></span>
+        <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status_first, work_status_type_id: @work_status_type.id), class: "btn" %></span>
           <div class="html-newline hide"><b><%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, work_status_first.status_type, "Working From Office") %></b></div>
           <div class="html-newline hide"><%= work_status_first.notes %></div>
           <div class="html-newline"><%= work_status_first.task_summary %></div>

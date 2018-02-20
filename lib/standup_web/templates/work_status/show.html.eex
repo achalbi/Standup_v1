@@ -3,7 +3,7 @@
 
 <% date = if task_date, do: NaiveDateTime.to_date(task_date.on_date), else: @work_status.on_date %>
 
-<table class="bordered highlight">
+<table class="bordered ">
   <thead>
     <tr>
       <th>
@@ -12,47 +12,117 @@
          <h5><%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> 
          - <%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type) %></h5>
         <h6><%= @work_status.notes %></h6>
-        <h6><div><%= link "Create Task", to: task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id), class: "btn right" %></div></h6>
       </th>
     </tr>
   </thead>
   <tbody>
-<%= for task <- @work_status.tasks  do %>
   <tr>
     <td>
-      <div class="row">
-        <div class="col s12 m10">
-          <div class="html-newline">
-            <b><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></b>
-            <b>Team: </b><%= task.team.name %>
-            <%= if task.url do %>
-              <b>URL:</b> <%= task.url %>
-            <% end %>
-            <b>Actual/Target:</b> <%= task.tense %>
-            <b>Status:</b> <%= task.status %>
-            <%= if task.notes do %>
-              <b>Notes:</b> <%= task.notes %>
-            <% end %>
-            
-          </div>
-              
-        </div>
-        <div class="col s12 m2 text-right">
-        <br>
-          <div class="right">
-            <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
-            <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
-              <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
-              <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
-              <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </td>
-  </tr>
-<% end %>
+    <div class="row">
+    <div class="col s12 m6">
+    <div class="card ">
+    <div class="card-content blue lighten-5" style="position: relative">
+      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Actual") %>'><i class="material-icons">add</i></a>
+      <span class="card-title ">Actual</span>
+    </div>
+    <div class="card-content blue darken-1 white-text">
+    <%= if Enum.count(@actual_tasks) > 0 do %>
+      <table class=" ">
+      <tbody>
+      <%= for task <- @actual_tasks do %>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col s12 m8">
+                <div class="html-newline">
+                  <span class="BOLD"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
+                  <span>Team: </span><%= task.team.name %>
+                  <%= if task.url do %>
+                    <span class="bold">URL:</span> <%= task.url %>
+                  <% end %>
+                  <span class="bold">Status:</span> <%= task.status %>
+                  <%= if task.notes do %>
+                    <span class="bold">Notes:</span> <%= task.notes %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="col s12 m4 text-right">
+              <br>
+                <div class="right">
+                  <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
+                  <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
+                    <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
+                    <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
+                    <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+      </table>
+    <% else %>
+      <p>Please create Actual tasks</p>
+    <% end %>
+    </div>
+    </div>
+    </div>
+    <div class="col s12 m6">
+    <div class="card ">
+    <div class="card-content amber lighten-5" style="position: relative">
+      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Target") %>'><i class="material-icons">add</i></a>
+      <span class="card-title ">Target</span>
+    </div>
+    <div class="card-content amber darken-1 white-text">
+    <%= if Enum.count(@target_tasks) > 0 do %>
+      <table class="">
+      <tbody>
+      <%= for task <- @target_tasks do %>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col s12 m8">
+                <div class="html-newline">
+                  <span class="bold"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
+                  <span class="bold">Team: </span><%= task.team.name %>
+                  <%= if task.url do %>
+                    <span>URL:</span> <%= task.url %>
+                  <% end %>
+                  <span>Status:</span> <%= task.status %>
+                  <%= if task.notes do %>
+                    <span>Notes:</span> <%= task.notes %>
+                  <% end %>     
+                </div>
+              </div>
+              <div class="col s12 m4 text-right">
+              <br>
+                <div class="right">
+                  <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
+                  <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
+                    <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
+                    <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
+                    <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+      </table>
+    <% else %>
+    <p>Please create target tasks</p>
+    <% end %>
+    </div>
+    </div>
+    </div>
+  </div>
+  </td>
+  <tr>
 </tbody>
 </table>
 <br>
-<span><%= link "Back", to: work_status_path(@conn, :index, work_status_type_id: @work_status_type.id), class: "btn" %></span>
+<a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>

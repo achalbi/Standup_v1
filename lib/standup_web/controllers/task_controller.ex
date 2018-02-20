@@ -12,15 +12,15 @@ defmodule StandupWeb.TaskController do
     render(conn, "index.html", tasks: tasks)
   end
   
-  def new(conn, task_params) do
+  def new(conn, params) do
     today = Date.utc_today
     current_user = conn.assigns.current_user
     organization = hd(current_user.organizations)
     teams = Organizations.get_teams_by_user_and_org(current_user.id, organization.id)
-    if task_params["on_date"] do
-      today = Timex.parse!(task_params["on_date"], "%Y-%m-%d", :strftime)  
+    if params["on_date"] do
+      today = Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime)  
     end
-    changeset = StatusTrack.change_task(conn, %Task{})
+    changeset = StatusTrack.change_task(conn, %Task{tense: params["tense"]})
     render(conn, "new.html", changeset: changeset, today: today, teams: teams)
   end
   

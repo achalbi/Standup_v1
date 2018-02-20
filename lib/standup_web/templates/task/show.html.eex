@@ -18,9 +18,13 @@
       <input id="url" type="text" readonly value="<%= @task.team.name %>">
       <label class="active  "for="url">Team</label>
     </div>
-    <div class="input-field col s12 m6">
+    <div class="input-field col s12 m6 hide">
       <input id="url" type="text" readonly value="<%= @task.url %>">
       <label class="active  "for="url">URL</label>
+    </div>
+    <div class="input-field col s12 m6">
+      <input id="url" type="text" readonly value="<%= @task.tense %>">
+      <label class="active">Actual/Target</label>
     </div>
   </div>
 

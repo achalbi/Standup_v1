@@ -51,7 +51,9 @@ defmodule StandupWeb.WorkStatusController do
     work_status = StatusTrack.get_work_status!(id)
     work_status_type_id = params["work_status_type_id"]
     work_status_type = StatusTrack.get_work_status_type!(work_status_type_id)
-    render(conn, "show.html", work_status: work_status, work_status_type: work_status_type)
+    actual_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Actual")
+    target_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Target")
+    render(conn, "show.html", work_status: work_status, work_status_type: work_status_type, actual_tasks: actual_tasks, target_tasks: target_tasks)
   end
 
   def edit(conn, %{"id" => id} = params) do

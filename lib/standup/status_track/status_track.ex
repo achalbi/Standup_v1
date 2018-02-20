@@ -175,7 +175,17 @@ defmodule Standup.StatusTrack do
 
   """
   def get_task!(id), do: Repo.get!(Task, id) |> Repo.preload([:work_status, :team])
+	
+	def get_task_by_work_status_and_tense(id, tense) do
+		query = from t in Task,
+			where: t.tense == ^tense and t.work_status_id == ^id,
+			distinct: true,
+			order_by: [desc: t.updated_at],
+			preload: [:work_status, :team],
+			select: t
 
+		 Repo.all(query)
+	end
   @doc """
   Creates a task.
 
@@ -188,20 +198,20 @@ defmodule Standup.StatusTrack do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_task(attrs \\ %{}) do
+	def create_task(attrs \\ %{}) do
     %Task{}
 			|> Task.changeset(attrs)
 			|> Repo.insert()
-    end
+	end
     
-defp task_summary(task) do
+	defp task_summary(task) do
     task = task |> Repo.preload(:team)
     task_number = if task.task_number, do: task.task_number <> ": ", else: ""
     task_notes = if task.notes, do: task.notes, else: ""
-    task_number <> task.title <> "\n" <> "Team: " <> task.team.name <>"\n" <> "status: " <> task.status <> "\n" <> task_notes 
-end
+    task_number <> task.title <> "\n" <> "Team: " <> task.team.name <>"\n" <> "status: " <> task.status <> "\n" <> "Actual/Target: " <> task.tense <> "\n" <> task_notes 
+	end
 
-def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
+	def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 		#current_user = Guardian.Plug.current_resource(conn)
 		user = User
         |> Repo.get!(task.user_id)
