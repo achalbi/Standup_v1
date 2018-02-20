@@ -335,7 +335,7 @@ def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do
 					formatted_tasks = Enum.map(tasks, fn(task) -> task_summary(task) end)
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
 			end
-        work_status_details = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, work_status.status_type) <> "\n" <> work_status.notes <> "\n\n"
+        work_status_details = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, work_status.status_type) <> "\n" <> (work_status.notes || "") <> "\n\n"
 		attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
 		attrs = Map.put(attrs, "notes", work_status.notes)	
 		update_work_status(work_status, attrs)
