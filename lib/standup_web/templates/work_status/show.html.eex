@@ -23,13 +23,19 @@
       <div class="row">
         <div class="col s12 m10">
           <div class="html-newline">
-            <b><%= task.task_number %> - <%= task.title %></b>
+            <b><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></b>
             <b>Team: </b><%= task.team.name %>
-            <b>URL:</b> <%= if task.url, do: task.url, else: "--NA--"  %>
+            <%= if task.url do %>
+              <b>URL:</b> <%= task.url %>
+            <% end %>
+            <b>Actual/Target:</b> <%= task.tense %>
             <b>Status:</b> <%= task.status %>
-            <b>Notes:</b> <%= task.notes %>
+            <%= if task.notes do %>
+              <b>Notes:</b> <%= task.notes %>
+            <% end %>
             
           </div>
+              
         </div>
         <div class="col s12 m2 text-right">
         <br>

@@ -196,7 +196,9 @@ defmodule Standup.StatusTrack do
     
 defp task_summary(task) do
     task = task |> Repo.preload(:team)
-    task.task_number <> ": " <> task.title <> "\n" <> "Team: " <> task.team.name <>"\n" <> "status: " <> task.status <> "\n" <> task.notes 
+    task_number = if task.task_number, do: task.task_number <> ": ", else: ""
+    task_notes = if task.notes, do: task.notes, else: ""
+    task_number <> task.title <> "\n" <> "Team: " <> task.team.name <>"\n" <> "status: " <> task.status <> "\n" <> task_notes 
 end
 
 def prepare_work_status_from_task(%Task{} = task, attrs \\ %{}) do

@@ -29,10 +29,15 @@
       <%= select f, :team_id, Enum.map(@teams, fn(x) -> {x.name, x.id} end), selected: @task.team_id %>
       <%= error_tag f, :team_id %>
     </div>
-    <div class="input-field col s12 m6">
+    <div class="input-field col s12 m6 hide">
       <%= label f, :url %>
       <%= text_input f, :url %>
       <%= error_tag f, :url %>
+    </div>
+    <div class="input-field col s12 m6">
+      <label class="active">Actual/Target</label>
+      <%= select f, :tense, Standup.StatusTrack.Task.tense_list %>
+      <%= error_tag f, :tense %>
     </div>
   </div>
 

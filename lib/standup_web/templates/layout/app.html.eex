@@ -89,6 +89,8 @@
     </li>
     <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
     <li><a class="waves-effect" href="/organizations"><i class="material-icons">business</i>Organizations</a></li>
+      
+    <%= if !!@conn.assigns.current_user.organizations do %>
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion">
         <li>
@@ -110,7 +112,7 @@
         </li>
       </ul>
     </li>
-    </li>
+    <% end %>
       <div id="v-cal">
         <div class="vcal-header">
           <button class="vcal-btn" data-calendar-toggle="previous">

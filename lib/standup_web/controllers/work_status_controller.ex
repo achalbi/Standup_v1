@@ -25,17 +25,17 @@ defmodule StandupWeb.WorkStatusController do
     case StatusTrack.get_work_status_by_date_and_user_id(today, current_user.id) do
       %WorkStatus{} = work_status -> 
         changeset = StatusTrack.change_work_status(work_status)
-        render(conn, "edit.html", work_status: work_status, changeset: changeset, today: today, work_status_type_id: work_status_type_id, work_status_type: work_status_type)
+        render(conn, "edit.html", work_status: work_status, changeset: changeset, today: today, work_status_type_id: work_status_type_id, work_status_type: work_status_type, organization: organization)
       _ -> 
         changeset = StatusTrack.change_work_status(%WorkStatus{user_id: current_user.id, organization_id: organization.id})
-        render(conn, "new.html", changeset: changeset, today: today, organization: organization, work_status_type_id: work_status_type_id, work_status_type: work_status_type)
+        render(conn, "new.html", changeset: changeset, today: today, organization: organization, work_status_type_id: work_status_type_id, work_status_type: work_status_type, organization: organization)
     end
     
   end
 
-  def create(conn, %{"work_status" => work_status_params} = params) do
+  def create(conn, %{"work_status" => work_status_params}) do
     today = Timex.parse!(work_status_params["on_date"], "%Y-%m-%d", :strftime)
-    work_status_type_id = params["work_status_type_id"]
+    work_status_type_id = work_status_params["work_status_type_id"]
     work_status_type = StatusTrack.get_work_status_type!(work_status_type_id)
     case StatusTrack.create_work_status(work_status_params) do
       {:ok, work_status} ->
