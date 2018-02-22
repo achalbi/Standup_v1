@@ -1,0 +1,3 @@
+<h2>Edit Key result area</h2>
+
+<%= render "form.html", Map.put(assigns, :action, work_status_key_result_area_path(@conn, :update, @key_result_area.work_status, @key_result_area)) %>

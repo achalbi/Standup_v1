@@ -3,7 +3,7 @@ defmodule Standup.Plugs.WorkStatusTypeAuthorizer do
 
 	alias Standup.Organizations
 
-	@actions [:edit, :delete]
+	@actions [:new, :edit, :delete]
 
   def init(default), do: default
 

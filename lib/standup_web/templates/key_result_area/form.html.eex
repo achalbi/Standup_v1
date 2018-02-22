@@ -1,0 +1,68 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :accountability %>
+      <%= textarea f, :accountability, class: "materialize-textarea", readonly: "readonly" %>
+      <%= error_tag f, :accountability %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12 m6">
+      <%= label f, :ownership %>
+      <%= textarea f, :ownership, class: "materialize-textarea" %>
+      <%= error_tag f, :ownership %>
+    </div>
+
+    <div class="input-field col s12 m6">
+      <%= label f, :skill %>
+      <%= textarea f, :skill, class: "materialize-textarea" %>
+      <%= error_tag f, :skill %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12 m6">
+      <%= label f, :productivity %>
+      <%= number_input f, :productivity, step: "any" %>
+      <%= error_tag f, :productivity %>
+    </div>
+
+    <div class="input-field col s6 m3">
+      <label>Effective Communication</label>
+    </div>
+    <div class="col s6 m3">
+      <label class="active" style="visibility:hidden">placeholder</label>
+    <div class="switch">
+      <label>
+        No
+        <input type="checkbox" id="key_result_area_effective_communication" name="key_result_area[effective_communication]">
+        <span class="lever"></span>
+        Yes
+      </label>
+    </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :impediments %>
+      <%= textarea f, :impediments, class: "materialize-textarea" %>
+      <%= error_tag f, :impediments %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <%= submit "Submit", class: "btn waves-effect waves-light" %>
+      <a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
+    </div>
+  </div>
+<% end %>

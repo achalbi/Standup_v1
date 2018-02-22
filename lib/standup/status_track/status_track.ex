@@ -527,4 +527,100 @@ defmodule Standup.StatusTrack do
   def change_work_status_type(%WorkStatusType{} = work_status_type) do
     WorkStatusType.changeset(work_status_type, %{})
   end
+
+  alias Standup.StatusTrack.KeyResultArea
+
+  @doc """
+  Returns the list of key_result_areas.
+
+  ## Examples
+
+      iex> list_key_result_areas()
+      [%KeyResultArea{}, ...]
+
+  """
+  def list_key_result_areas do
+    Repo.all(KeyResultArea)
+  end
+
+  @doc """
+  Gets a single key_result_area.
+
+  Raises `Ecto.NoResultsError` if the Key result area does not exist.
+
+  ## Examples
+
+      iex> get_key_result_area!(123)
+      %KeyResultArea{}
+
+      iex> get_key_result_area!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_key_result_area!(id), do: Repo.get!(KeyResultArea, id)
+
+  @doc """
+  Creates a key_result_area.
+
+  ## Examples
+
+      iex> create_key_result_area(%{field: value})
+      {:ok, %KeyResultArea{}}
+
+      iex> create_key_result_area(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_key_result_area(attrs \\ %{}) do
+    %KeyResultArea{}
+    |> KeyResultArea.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a key_result_area.
+
+  ## Examples
+
+      iex> update_key_result_area(key_result_area, %{field: new_value})
+      {:ok, %KeyResultArea{}}
+
+      iex> update_key_result_area(key_result_area, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_key_result_area(%KeyResultArea{} = key_result_area, attrs) do
+    key_result_area
+    |> KeyResultArea.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a KeyResultArea.
+
+  ## Examples
+
+      iex> delete_key_result_area(key_result_area)
+      {:ok, %KeyResultArea{}}
+
+      iex> delete_key_result_area(key_result_area)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_key_result_area(%KeyResultArea{} = key_result_area) do
+    Repo.delete(key_result_area)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking key_result_area changes.
+
+  ## Examples
+
+      iex> change_key_result_area(key_result_area)
+      %Ecto.Changeset{source: %KeyResultArea{}}
+
+  """
+  def change_key_result_area(%KeyResultArea{} = key_result_area) do
+    KeyResultArea.changeset(key_result_area, %{})
+  end
 end

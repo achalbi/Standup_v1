@@ -1,0 +1,36 @@
+<h2>Listing Key result areas</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Accountability</th>
+      <th>Ownership</th>
+      <th>Productivity</th>
+      <th>Skill</th>
+      <th>Effective communication</th>
+      <th>Impediments</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for key_result_area <- @key_result_areas do %>
+    <tr>
+      <td><%= key_result_area.accountability %></td>
+      <td><%= key_result_area.ownership %></td>
+      <td><%= key_result_area.productivity %></td>
+      <td><%= key_result_area.skill %></td>
+      <td><%= key_result_area.effective_communication %></td>
+      <td><%= key_result_area.impediments %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: work_status_key_result_area_path(@conn, :show, @work_status, key_result_area), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: work_status_key_result_area_path(@conn, :edit, @work_status, key_result_area), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: work_status_key_result_area_path(@conn, :delete, @work_status, key_result_area), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Key result area", to: work_status_key_result_area_path(@conn, :new, @work_status) %></span>

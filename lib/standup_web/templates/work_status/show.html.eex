@@ -12,6 +12,7 @@
          <h5><%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> 
          - <%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type) %></h5>
         <h6><%= @work_status.notes %></h6>
+        <h6><div><%= link "Success Factor", to: work_status_key_result_area_path(@conn, :new, @work_status), class: "btn right"  %></div></h6>
       </th>
     </tr>
   </thead>

@@ -71,7 +71,9 @@ defmodule StandupWeb.Router do
       get "/set_as_member", TeamController, :set_as_member, as: :set_as_member
     end
     post "/photos/upload", PhotoController, :upload 
-    resources "/work_statuses", WorkStatusController
+    resources "/work_statuses", WorkStatusController do
+      resources "/key_result_areas", KeyResultAreaController
+    end
     get "/team_work_statuses", WorkStatusController, :team_work_statuses, as: :team_work_statuses
     resources "/tasks", TaskController
   end

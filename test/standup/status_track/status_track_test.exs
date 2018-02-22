@@ -200,4 +200,74 @@ defmodule Standup.StatusTrackTest do
       assert %Ecto.Changeset{} = StatusTrack.change_work_status_type(work_status_type)
     end
   end
+
+  describe "key_result_areas" do
+    alias Standup.StatusTrack.KeyResultArea
+
+    @valid_attrs %{accountability: "some accountability", effective_communication: true, impediments: "some impediments", ownership: "some ownership", productivity: 120.5, skill: "some skill"}
+    @update_attrs %{accountability: "some updated accountability", effective_communication: false, impediments: "some updated impediments", ownership: "some updated ownership", productivity: 456.7, skill: "some updated skill"}
+    @invalid_attrs %{accountability: nil, effective_communication: nil, impediments: nil, ownership: nil, productivity: nil, skill: nil}
+
+    def key_result_area_fixture(attrs \\ %{}) do
+      {:ok, key_result_area} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> StatusTrack.create_key_result_area()
+
+      key_result_area
+    end
+
+    test "list_key_result_areas/0 returns all key_result_areas" do
+      key_result_area = key_result_area_fixture()
+      assert StatusTrack.list_key_result_areas() == [key_result_area]
+    end
+
+    test "get_key_result_area!/1 returns the key_result_area with given id" do
+      key_result_area = key_result_area_fixture()
+      assert StatusTrack.get_key_result_area!(key_result_area.id) == key_result_area
+    end
+
+    test "create_key_result_area/1 with valid data creates a key_result_area" do
+      assert {:ok, %KeyResultArea{} = key_result_area} = StatusTrack.create_key_result_area(@valid_attrs)
+      assert key_result_area.accountability == "some accountability"
+      assert key_result_area.effective_communication == true
+      assert key_result_area.impediments == "some impediments"
+      assert key_result_area.ownership == "some ownership"
+      assert key_result_area.productivity == 120.5
+      assert key_result_area.skill == "some skill"
+    end
+
+    test "create_key_result_area/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = StatusTrack.create_key_result_area(@invalid_attrs)
+    end
+
+    test "update_key_result_area/2 with valid data updates the key_result_area" do
+      key_result_area = key_result_area_fixture()
+      assert {:ok, key_result_area} = StatusTrack.update_key_result_area(key_result_area, @update_attrs)
+      assert %KeyResultArea{} = key_result_area
+      assert key_result_area.accountability == "some updated accountability"
+      assert key_result_area.effective_communication == false
+      assert key_result_area.impediments == "some updated impediments"
+      assert key_result_area.ownership == "some updated ownership"
+      assert key_result_area.productivity == 456.7
+      assert key_result_area.skill == "some updated skill"
+    end
+
+    test "update_key_result_area/2 with invalid data returns error changeset" do
+      key_result_area = key_result_area_fixture()
+      assert {:error, %Ecto.Changeset{}} = StatusTrack.update_key_result_area(key_result_area, @invalid_attrs)
+      assert key_result_area == StatusTrack.get_key_result_area!(key_result_area.id)
+    end
+
+    test "delete_key_result_area/1 deletes the key_result_area" do
+      key_result_area = key_result_area_fixture()
+      assert {:ok, %KeyResultArea{}} = StatusTrack.delete_key_result_area(key_result_area)
+      assert_raise Ecto.NoResultsError, fn -> StatusTrack.get_key_result_area!(key_result_area.id) end
+    end
+
+    test "change_key_result_area/1 returns a key_result_area changeset" do
+      key_result_area = key_result_area_fixture()
+      assert %Ecto.Changeset{} = StatusTrack.change_key_result_area(key_result_area)
+    end
+  end
 end
