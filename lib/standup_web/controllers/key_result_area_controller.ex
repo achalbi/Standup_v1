@@ -2,6 +2,7 @@ defmodule StandupWeb.KeyResultAreaController do
   use StandupWeb, :controller
   plug Standup.Plugs.KeyResultAreaAuthorizer
 
+  require IEx
   alias Standup.StatusTrack
   alias Standup.StatusTrack.KeyResultArea
 

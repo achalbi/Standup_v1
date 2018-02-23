@@ -35,4 +35,4 @@
 </ul>
 
 <span><%= link "Edit", to: work_status_key_result_area_path(@conn, :edit, @key_result_area.work_status, @key_result_area), class: "btn" %></span>
-<span><%= link "Back", to: work_status_key_result_area_path(@conn, :index, @key_result_area.work_status), class: "btn" %></span>
+<span><a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a></span>

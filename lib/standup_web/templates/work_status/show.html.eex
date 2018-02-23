@@ -65,7 +65,7 @@
       </tbody>
       </table>
     <% else %>
-      <p>Please create Actual tasks</p>
+      <p>Please add Actual Tasks</p>
     <% end %>
     </div>
     </div>
@@ -115,7 +115,7 @@
       </tbody>
       </table>
     <% else %>
-    <p>Please create target tasks</p>
+    <p>Please add Target Tasks</p>
     <% end %>
     </div>
     </div>
@@ -123,6 +123,55 @@
   </div>
   </td>
   <tr>
+  <tr>
+    <td>
+    <div class="card ">
+    <div class="card-content indigo lighten-5" style="position: relative">
+      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= work_status_key_result_area_path(@conn, :new, @work_status) %>'><i class="material-icons"><%= if @work_status.key_result_area, do: "edit", else: "add" %></i></a>
+      <span class="card-title ">Key Success Factor</span>
+    </div>
+    <div class="card-content indigo darken-1 white-text">
+      <%= if @work_status.key_result_area  do %>
+      <ul>
+
+        <li>
+          <h5 class="light">Accountability:</h5>
+          <p class="html-newline"><%= @work_status.key_result_area.accountability %></p>
+        </li>
+
+        <li>
+          <h5 class="light">Ownership:</h5>
+          <p class="html-newline"><%= @work_status.key_result_area.ownership %></p>
+        </li>
+
+        <li>
+          <h5 class="light">Productivity:</h5>
+          <%= @work_status.key_result_area.productivity %> %
+        </li>
+
+        <li>
+          <h5 class="light">Skill:</h5>
+          <%= @work_status.key_result_area.skill %>
+        </li>
+
+        <li>
+          <h5 class="light">Effective communication:</h5>
+          <%= @work_status.key_result_area.effective_communication %>
+        </li>
+
+        <li>
+          <h5 class="light">Impediments:</h5>
+          <%= @work_status.key_result_area.impediments %>
+        </li>
+
+      </ul>
+      <% else %>
+          <p>Please add Key Success Factors</p>
+      <% end %>
+      </div>
+      </div>
+    </td>
+  </tr>
 </tbody>
 </table>
 <br>
