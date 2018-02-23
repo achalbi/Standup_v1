@@ -9,11 +9,13 @@
 
   <div class="row">
     <div class="input-field col s12">
-      <%= label f, :accountability %>
-      <%= textarea f, :accountability, class: "materialize-textarea", readonly: "readonly" %>
+      <%= label f, :accountability, class: "active" %>
+      <%= textarea f, :accountability, class: "hide" %>
+      <p class="html-newline"><%= f.data.accountability %></p>
       <%= error_tag f, :accountability %>
     </div>
   </div>
+  <%= hidden_input f, :work_status_id %>
 
   <div class="row">
     <div class="input-field col s12 m6">
@@ -31,7 +33,7 @@
 
   <div class="row">
     <div class="input-field col s12 m6">
-      <%= label f, :productivity %>
+      <%= label f, :productivity, "Productivity (%)" %>
       <%= number_input f, :productivity, step: "any" %>
       <%= error_tag f, :productivity %>
     </div>
@@ -40,15 +42,15 @@
       <label>Effective Communication</label>
     </div>
     <div class="col s6 m3">
-      <label class="active" style="visibility:hidden">placeholder</label>
-    <div class="switch">
-      <label>
-        No
-        <input type="checkbox" id="key_result_area_effective_communication" name="key_result_area[effective_communication]">
-        <span class="lever"></span>
-        Yes
-      </label>
-    </div>
+      <p>
+        <%= radio_button f, :effective_communication, true, class: "with-gap" %>
+        <label for="key_result_area_effective_communication_true">Yes</label>
+      </p>
+      <p>
+        <%= radio_button f, :effective_communication, false, class: "with-gap" %>
+        <label for="key_result_area_effective_communication_false">No</label>
+      </p>
+ 
     </div>
   </div>
   <div class="row">

@@ -1,7 +1,7 @@
 defmodule Standup.Plugs.KeyResultAreaAuthorizer do
 	import Plug.Conn
 
-	@actions [:new, :edit, :delete]
+	@actions [:index, :new, :edit, :delete]
 
   def init(default), do: default
 

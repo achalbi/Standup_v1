@@ -20,7 +20,8 @@ defmodule StandupWeb.TaskController do
     if params["on_date"] do
       today = Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime)  
     end
-    changeset = StatusTrack.change_task(conn, %Task{tense: params["tense"]})
+    status = if params["tense"] == "Target", do: "Yet to Start", else: "Completed"
+    changeset = StatusTrack.change_task(conn, %Task{tense: params["tense"], status: status})
     render(conn, "new.html", changeset: changeset, today: today, teams: teams)
   end
   
@@ -38,6 +39,7 @@ defmodule StandupWeb.TaskController do
       {:ok, task} ->
         case StatusTrack.prepare_work_status_from_task(task, task_params) do
           {:ok, task} ->
+            StatusTrack.update_key_result_area_accountability(task.work_status.id)
             conn
             |> put_flash(:info, "Task created successfully.")
             |> redirect(to: task_path(conn, :show, task))
@@ -69,6 +71,7 @@ defmodule StandupWeb.TaskController do
 
     case StatusTrack.update_task(task, task.work_status, task_params) do
       {:ok, task} ->
+        StatusTrack.update_key_result_area_accountability(task.work_status.id)
         conn
         |> put_flash(:info, "Task updated successfully.")
         |> redirect(to: task_path(conn, :show, task))
@@ -80,10 +83,12 @@ defmodule StandupWeb.TaskController do
   def delete(conn, %{"id" => id}) do
     task = StatusTrack.get_task!(id)
     work_status_id = task.work_status.id
+    work_status_type_id = task.work_status.work_status_type_id
     {:ok, _task} = StatusTrack.delete_task(task)
-
+    StatusTrack.update_key_result_area_accountability(work_status_id)
+    
     conn
     |> put_flash(:info, "Task deleted successfully.")
-    |> redirect(to: work_status_path(conn, :show, work_status_id))
+    |> redirect(to: work_status_path(conn, :show, work_status_id, work_status_type_id: work_status_type_id))
   end
 end

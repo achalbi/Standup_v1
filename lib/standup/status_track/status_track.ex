@@ -12,7 +12,8 @@ defmodule Standup.StatusTrack do
 
   alias Standup.StatusTrack.WorkStatus
   alias Standup.StatusTrack.WorkStatusType
-
+  alias Standup.StatusTrack.KeyResultArea
+  alias Standup.StatusTrack.Task
   @doc """
   Returns the list of work_statuses.
 
@@ -47,7 +48,7 @@ defmodule Standup.StatusTrack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload([:work_status_type, tasks: :team])
+  def get_work_status!(id), do: Repo.get!(WorkStatus, id) |> Repo.preload([:work_status_type, :key_result_area, tasks: [:team]])
 
   @doc """
   Creates a work_status.
@@ -139,7 +140,6 @@ defmodule Standup.StatusTrack do
     WorkStatus.changeset(work_status, %{})
   end
 
-  alias Standup.StatusTrack.Task
 
   @doc """
   Returns the list of tasks.
@@ -256,15 +256,15 @@ defmodule Standup.StatusTrack do
 
 		case update_task_result do
 			{:ok, task} -> 
-                task_summary = task_summary(task)
-                attrs = Map.put(attrs, "task_summary", task_summary)
+				task_summary = task_summary(task)
+				attrs = Map.put(attrs, "task_summary", task_summary)
 
-                case update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs) do
-                    {:ok, _work_status} ->
-                       # sync_with_spreadsheet(work_status)
-                        {:ok, task}
-                    {:error, _reason} -> {:error, "could not update Work Status"}
-                end
+				case update_work_status_from_tasks(work_status, task.on_date, task.user_id, attrs) do
+						{:ok, _work_status} ->
+								# sync_with_spreadsheet(work_status)
+								{:ok, task}
+						{:error, _reason} -> {:error, "could not update Work Status"}
+				end
 			{:error, %Ecto.Changeset{} = changeset} -> {:error, changeset}
 		end 
 
@@ -528,8 +528,6 @@ defmodule Standup.StatusTrack do
     WorkStatusType.changeset(work_status_type, %{})
   end
 
-  alias Standup.StatusTrack.KeyResultArea
-
   @doc """
   Returns the list of key_result_areas.
 
@@ -557,7 +555,7 @@ defmodule Standup.StatusTrack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_key_result_area!(id), do: Repo.get!(KeyResultArea, id)
+  def get_key_result_area!(id), do: Repo.get!(KeyResultArea, id) |> Repo.preload([:work_status])
 
   @doc """
   Creates a key_result_area.
@@ -620,7 +618,28 @@ defmodule Standup.StatusTrack do
       %Ecto.Changeset{source: %KeyResultArea{}}
 
   """
-  def change_key_result_area(%KeyResultArea{} = key_result_area) do
-    KeyResultArea.changeset(key_result_area, %{})
+  def change_key_result_area(%KeyResultArea{work_status_id: work_status_id} = key_result_area) do
+    summary = accountability_summary(work_status_id)
+    attrs = %{work_status_id: work_status_id, accountability: summary, productivity: 100}
+    KeyResultArea.changeset(key_result_area, attrs)
   end
+
+  def accountability_summary(work_status_id) do
+    actual_tasks = get_task_by_work_status_and_tense(work_status_id, "Actual")
+    target_tasks = get_task_by_work_status_and_tense(work_status_id, "Target")
+    summary = if Enum.count(actual_tasks) > 0, do: "Actual:\n", else: ""
+    summary = Enum.reduce(actual_tasks, summary, fn(task, summary) -> summary <> (if task.task_number, do: task.task_number <>  ": ", else: "" ) <> task.title <> "\n" end)
+    summary = summary <> if Enum.count(target_tasks) > 0, do: "\nTarget:\n", else: ""
+    Enum.reduce(target_tasks, summary, fn(task, summary) -> summary <> (if task.task_number, do: task.task_number <>  ": ", else: "" ) <> task.title <> "\n" end)
+	end
+
+
+	def update_key_result_area_accountability(work_status_id) do
+		work_status = get_work_status!(work_status_id)
+		if work_status.key_result_area do
+			summary = accountability_summary(work_status_id)
+			KeyResultArea.changeset(work_status.key_result_area, %{"accountability" => summary})
+			|> Repo.update()
+		end
+	end
 end

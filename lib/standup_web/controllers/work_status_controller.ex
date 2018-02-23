@@ -7,7 +7,6 @@ defmodule StandupWeb.WorkStatusController do
   alias Standup.StatusTrack.WorkStatus
   alias Standup.Organizations
 
-
   def index(conn, params) do
     work_status_type_id = params["work_status_type_id"]
     work_status_type = StatusTrack.get_work_status_type!(work_status_type_id)
@@ -35,7 +34,7 @@ defmodule StandupWeb.WorkStatusController do
 
   def create(conn, %{"work_status" => work_status_params}) do
     today = Timex.parse!(work_status_params["on_date"], "%Y-%m-%d", :strftime)
-    work_status_type_id = work_status_params["work_status_type_id"]
+    work_status_type_id = work_status_params["work_status_type_id"] 
     work_status_type = StatusTrack.get_work_status_type!(work_status_type_id)
     case StatusTrack.create_work_status(work_status_params) do
       {:ok, work_status} ->
@@ -49,7 +48,10 @@ defmodule StandupWeb.WorkStatusController do
 
   def show(conn, %{"id" => id} = params) do
     work_status = StatusTrack.get_work_status!(id)
-    work_status_type_id = params["work_status_type_id"]
+    current_user = conn.assigns.current_user
+    organization = hd(current_user.organizations)
+    organization = Organizations.get_organization!(organization.id)
+    work_status_type_id = params["work_status_type_id"] || hd(organization.work_status_types).id
     work_status_type = StatusTrack.get_work_status_type!(work_status_type_id)
     actual_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Actual")
     target_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Target")
