@@ -9,6 +9,8 @@ defmodule Standup.StatusTrack do
   import Ecto.Query, warn: false
   alias Standup.Repo
   alias Standup.Accounts.User
+  alias Standup.Accounts
+  alias Standup.Organizations
 
   alias Standup.StatusTrack.WorkStatus
   alias Standup.StatusTrack.WorkStatusType
@@ -72,7 +74,8 @@ defmodule Standup.StatusTrack do
             user_name  = user.firstname <> " " <> user.lastname
             task_summary = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, status_type) <> "\n" <> notes <> "\n"
             Map.merge(attrs, %{"task_summary" => task_summary, "user_id" => user_id, "user_name" => user_name, "user_email" => user.credential.email })
-		end
+        _ -> attrs
+        end
 		
    	work_status_result = %WorkStatus{}
     |> WorkStatus.changeset(attrs)
@@ -185,6 +188,30 @@ defmodule Standup.StatusTrack do
 			select: t
 
 		 Repo.all(query)
+    end
+    
+    def get_task_by_work_status_and_next_target(id) do
+        ws = get_work_status!(id)
+        {:ok, datetime} = NaiveDateTime.new(ws.on_date, ~T[00:00:00])
+        query = from w in WorkStatus,
+				where: w.on_date > ^datetime,
+				preload: [:tasks],
+        order_by: [asc: w.on_date],
+        limit: 1
+        work_status = Repo.one(query)
+        if work_status do
+          	query = from t in Task,
+            where: t.tense == "Target" and t.work_status_id == ^work_status.id,
+            distinct: true,
+            order_by: [desc: t.updated_at],
+            preload: [:work_status, :team],
+            select: t
+            
+            Repo.all(query)
+        else
+            []
+        end
+
 	end
   @doc """
   Creates a task.
@@ -216,11 +243,14 @@ defmodule Standup.StatusTrack do
 		user = User
         |> Repo.get!(task.user_id)
         |> Repo.preload(:credential)
+            
+        [domain] = Accounts.get_domain_by_user_email(user)
+        organization = Organizations.get_organization_from_domain!(domain)
 
 		user_name  = user.firstname <> " " <> user.lastname
-		task_summary = task_summary(task)
+        task_summary = task_summary(task)
 
-		work_status_attrs = %{"on_date" => task.on_date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name, "user_email" => user.credential.email }
+		work_status_attrs = %{"on_date" => task.on_date, "task_summary" => task_summary, "user_id" => task.user_id, "user_name" => user_name, "user_email" => user.credential.email, "organization_id" => organization.id, "work_status_type_id" => attrs["work_status_type_id"] }
 		case create_or_update_work_status(task.on_date, task.user_id, work_status_attrs) do
     	{:ok, work_status} ->
 				task
@@ -344,7 +374,8 @@ defmodule Standup.StatusTrack do
 					#formatted_tasks = Enum.map(tasks, fn(x) -> Enum.at(x, 0) <> ": " <> Enum.at(x, 1) <> "\n" <> "status: " <> Enum.at(x, 2) <> "\n" <> Enum.at(x, 3) end)
 					formatted_tasks = Enum.map(tasks, fn(task) -> task_summary(task) end)
 					Enum.map_join(formatted_tasks, "\n\n", &(&1))
-			end
+            end
+            IEx.pry
         work_status_details = Map.get(Standup.StatusTrack.WorkStatus.working_at_map, work_status.status_type) <> "\n" <> (work_status.notes || "") <> "\n\n"
 		attrs = Map.put(attrs, "task_summary", work_status_details <> task_summary)	
 		attrs = Map.put(attrs, "notes", work_status.notes)	

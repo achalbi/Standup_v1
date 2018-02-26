@@ -20,9 +20,13 @@ defmodule StandupWeb.TaskController do
     if params["on_date"] do
       today = Timex.parse!(params["on_date"], "%Y-%m-%d", :strftime)  
     end
-    status = if params["tense"] == "Target", do: "Yet to Start", else: "Completed"
-    changeset = StatusTrack.change_task(conn, %Task{tense: params["tense"], status: status})
-    render(conn, "new.html", changeset: changeset, today: today, teams: teams)
+    status = cond do
+      (params["tense"] == "Target") || (params["tense"] == "Next Target")  -> "Yet to Start"
+      true -> "Completed"      
+    end
+    tense = if (params["tense"] == "Target") || (params["tense"] == "Next Target"), do: "Target"
+    changeset = StatusTrack.change_task(conn, %Task{tense: tense, status: status})
+    render(conn, (if params["tense"] == "Next Target", do: "new_next_target.html", else: "new.html"), changeset: changeset, today: today, teams: teams, work_status_type_id: params["work_status_type_id"])
   end
   
   def create(conn, %{"task" => task_params}) do

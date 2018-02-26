@@ -21,6 +21,7 @@ defmodule Standup.StatusTrack.Task do
     belongs_to :user, User
     belongs_to :team, Team
     belongs_to :work_status, WorkStatus
+    field :work_status_type_id, :string, virtual: true
 
     timestamps()
   end
@@ -28,7 +29,7 @@ defmodule Standup.StatusTrack.Task do
   @doc false
   def changeset(%Task{} = task, attrs) do
     task
-    |> cast(attrs, [:task_number, :title, :url, :status, :notes, :on_date, :user_id , :work_status_id, :team_id, :tense])
+    |> cast(attrs, [:task_number, :title, :url, :status, :notes, :on_date, :user_id , :work_status_id, :team_id, :tense, :work_status_type_id])
     |> validate_required([:title, :status, :on_date, :team_id, :user_id])
   end
   

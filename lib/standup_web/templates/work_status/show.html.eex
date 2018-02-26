@@ -12,7 +12,6 @@
          <h5><%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> 
          - <%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type) %></h5>
         <h6><%= @work_status.notes %></h6>
-        <h6><div><%= link "Success Factor", to: work_status_key_result_area_path(@conn, :new, @work_status), class: "btn right"  %></div></h6>
       </th>
     </tr>
   </thead>
@@ -22,61 +21,11 @@
     <div class="row">
     <div class="col s12 m6">
     <div class="card ">
-    <div class="card-content blue lighten-5" style="position: relative">
-      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Actual") %>'><i class="material-icons">add</i></a>
-      <span class="card-title ">Actual</span>
+    <div class="card-content amber darken-1 white-text" style="position: relative">
+      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Target", work_status_type_id: @work_status_type.id) %>'><i class="material-icons">add</i></a>
+      <span class="card-title m-b-0">Today's Target</span>
     </div>
-    <div class="card-content blue darken-1 white-text">
-    <%= if Enum.count(@actual_tasks) > 0 do %>
-      <table class=" ">
-      <tbody>
-      <%= for task <- @actual_tasks do %>
-        <tr>
-          <td>
-            <div class="row">
-              <div class="col s12 m8">
-                <div class="html-newline">
-                  <span class="BOLD"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
-                  <span>Team: </span><%= task.team.name %>
-                  <%= if task.url do %>
-                    <span class="bold">URL:</span> <%= task.url %>
-                  <% end %>
-                  <span class="bold">Status:</span> <%= task.status %>
-                  <%= if task.notes do %>
-                    <span class="bold">Notes:</span> <%= task.notes %>
-                  <% end %>
-                </div>
-              </div>
-              <div class="col s12 m4 text-right">
-              <br>
-                <div class="right">
-                  <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
-                  <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
-                    <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
-                    <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
-                    <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-      </table>
-    <% else %>
-      <p>Please add Actual Tasks</p>
-    <% end %>
-    </div>
-    </div>
-    </div>
-    <div class="col s12 m6">
-    <div class="card ">
-    <div class="card-content amber lighten-5" style="position: relative">
-      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Target") %>'><i class="material-icons">add</i></a>
-      <span class="card-title ">Target</span>
-    </div>
-    <div class="card-content amber darken-1 white-text">
+    <div class="card-content amber lighten-5">
     <%= if Enum.count(@target_tasks) > 0 do %>
       <table class="">
       <tbody>
@@ -120,47 +69,153 @@
     </div>
     </div>
     </div>
+        <div class="col s12 m6">
+    <div class="card ">
+    <div class="card-content blue darken-1 white-text" style="position: relative">
+      <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Actual", work_status_type_id: @work_status_type.id) %>'><i class="material-icons">add</i></a>
+      <span class="card-title m-b-0">Actual</span>
+    </div>
+    <div class="card-content blue lighten-5">
+    <%= if Enum.count(@actual_tasks) > 0 do %>
+      <table class=" ">
+      <tbody>
+      <%= for task <- @actual_tasks do %>
+        <tr>
+          <td>
+            <div class="row">
+              <div class="col s12 m8">
+                <div class="html-newline">
+                  <span class="BOLD"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
+                  <span>Team: </span><%= task.team.name %>
+                  <%= if task.url do %>
+                    <span class="bold">URL:</span> <%= task.url %>
+                  <% end %>
+                  <span class="bold">Status:</span> <%= task.status %>
+                  <%= if task.notes do %>
+                    <span class="bold">Notes:</span> <%= task.notes %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="col s12 m4 text-right">
+              <br>
+                <div class="right">
+                  <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
+                  <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
+                    <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
+                    <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
+                    <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+      </table>
+    <% else %>
+      <p>Please add Actual Tasks</p>
+    <% end %>
+    </div>
+    </div>
+    </div>
   </div>
   </td>
   <tr>
   <tr>
     <td>
+      <div class="row">
+        <div class="col s12">
+        <div class="card ">
+        <div class="card-content cyan darken-1 white-text" style="position: relative">
+          <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Next Target", work_status_type_id: @work_status_type.id) %>'><i class="material-icons">add</i></a>
+          <span class="card-title m-b-0">Next Target</span>
+        </div>
+        <div class="card-content cyan lighten-5">
+        <%= if Enum.count(@next_target_tasks) > 0 do %>
+          <table class="">
+          <tbody>
+          <%= for task <- @next_target_tasks do %>
+            <tr>
+              <td>
+                <div class="row">
+                  <div class="col s12 m8">
+                    <div class="html-newline">
+                      <span class="bold"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
+                      <span class="bold">Team: </span><%= task.team.name %>
+                      <%= if task.url do %>
+                        <span>URL:</span> <%= task.url %>
+                      <% end %>
+                      <span>Status:</span> <%= task.status %>
+                      <%= if task.notes do %>
+                        <span>Notes:</span> <%= task.notes %>
+                      <% end %>     
+                    </div>
+                  </div>
+                  <div class="col s12 m4 text-right">
+                  <br>
+                    <div class="right">
+                      <a class='dropdown-button btn' href='#' data-activates='dropdown_domain_<%= task.id %>'>Action</a>
+                      <ul id='dropdown_domain_<%= task.id %>' class='dropdown-content'>
+                        <li><%= link "Show", to: task_path(@conn, :show, task), class: "" %></li>
+                        <li><%= link "Edit", to: task_path(@conn, :edit, task), class: "" %></li>
+                        <li><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+          </table>
+        <% else %>
+        <p>Please add Next Target Tasks</p>
+        <% end %>
+        </div>
+        </div>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
     <div class="card ">
-    <div class="card-content indigo lighten-5" style="position: relative">
+    <div class="card-content indigo darken-1 white-text" style="position: relative">
       <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= work_status_key_result_area_path(@conn, :new, @work_status) %>'><i class="material-icons"><%= if @work_status.key_result_area, do: "edit", else: "add" %></i></a>
-      <span class="card-title ">Key Success Factor</span>
+      <span class="card-title m-b-0">Key Success Factor</span>
     </div>
-    <div class="card-content indigo darken-1 white-text">
+    <div class="card-content indigo lighten-5 ">
       <%= if @work_status.key_result_area  do %>
       <ul>
 
         <li>
-          <h5 class="light">Accountability:</h5>
+          <h5 class="light indigo-text">Accountability:</h5>
           <p class="html-newline"><%= @work_status.key_result_area.accountability %></p>
         </li>
 
         <li>
-          <h5 class="light">Ownership:</h5>
+          <h5 class="light indigo-text">Ownership:</h5>
           <p class="html-newline"><%= @work_status.key_result_area.ownership %></p>
         </li>
 
         <li>
-          <h5 class="light">Productivity:</h5>
-          <%= @work_status.key_result_area.productivity %> %
+          <h5 class="light indigo-text ">Productivity:</h5>
+          <p><%= @work_status.key_result_area.productivity %> % </p>
         </li>
 
         <li>
-          <h5 class="light">Skill:</h5>
+          <h5 class="light indigo-text">Skill:</h5>
           <%= @work_status.key_result_area.skill %>
         </li>
 
         <li>
-          <h5 class="light">Effective communication:</h5>
+          <h5 class="light indigo-text">Effective communication:</h5>
           <%= @work_status.key_result_area.effective_communication %>
         </li>
 
         <li>
-          <h5 class="light">Impediments:</h5>
+          <h5 class="light indigo-text">Impediments:</h5>
           <%= @work_status.key_result_area.impediments %>
         </li>
 

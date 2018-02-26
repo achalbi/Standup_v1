@@ -1,0 +1,3 @@
+<h4>New Task</h4>
+
+<%= render "form_next_target.html", Map.put(assigns, :action, task_path(@conn, :create)) %>

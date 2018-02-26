@@ -11,7 +11,7 @@ defmodule Standup.StatusTrack.WorkStatus do
 
   schema "work_statuses" do
     field :on_date, :date
-    field :status_type, :string
+    field :status_type, :string, default: "WFO"
     field :notes, :string
     field :task_summary, :string
     field :user_name, :string
