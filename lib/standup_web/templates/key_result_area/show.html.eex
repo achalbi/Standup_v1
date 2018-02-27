@@ -6,31 +6,37 @@
     <strong>Accountability:</strong>
     <p class="html-newline"><%= @key_result_area.accountability %></p>
   </li>
-
+  
+<%= if @key_result_area.ownership do %>
   <li>
     <strong>Ownership:</strong>
     <p class="html-newline"><%= @key_result_area.ownership %></p>
   </li>
+<% end %>
 
   <li>
     <strong>Productivity:</strong>
     <%= @key_result_area.productivity %> %
   </li>
-
+  
+<%= if @key_result_area.skill do %>
   <li>
     <strong>Skill:</strong>
     <%= @key_result_area.skill %>
   </li>
+<% end %>
 
   <li>
     <strong>Effective communication:</strong>
     <%= @key_result_area.effective_communication %>
   </li>
-
+  
+<%= if @key_result_area.impediments do %>
   <li>
     <strong>Impediments:</strong>
     <%= @key_result_area.impediments %>
   </li>
+<% end %>
 
 </ul>
 

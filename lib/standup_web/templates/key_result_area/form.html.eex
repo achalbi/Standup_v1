@@ -11,7 +11,11 @@
     <div class="input-field col s12">
       <%= label f, :accountability, class: "active" %>
       <%= textarea f, :accountability, class: "hide" %>
-      <p class="html-newline"><%= @changeset.changes.accountability %></p>
+      <%= if @changeset.changes.accountability do %>
+        <p class="html-newline"><%= @changeset.changes.accountability %></p>
+      <% else %>
+        <p class="html-newline"><%= @changeset.data.accountability %></p>
+      <% end %>
       <%= error_tag f, :accountability %>
     </div>
   </div>
