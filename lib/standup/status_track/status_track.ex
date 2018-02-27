@@ -658,10 +658,10 @@ defmodule Standup.StatusTrack do
   def accountability_summary(work_status_id) do
     actual_tasks = get_task_by_work_status_and_tense(work_status_id, "Actual")
     target_tasks = get_task_by_work_status_and_tense(work_status_id, "Target")
-    summary = if Enum.count(actual_tasks) > 0, do: "Actual:\n", else: ""
-    summary = Enum.reduce(actual_tasks, summary, fn(task, summary) -> summary <> (if task.task_number, do: task.task_number <>  ": ", else: "" ) <> task.title <> "\n" end)
-    summary = summary <> if Enum.count(target_tasks) > 0, do: "\nTarget:\n", else: ""
-    Enum.reduce(target_tasks, summary, fn(task, summary) -> summary <> (if task.task_number, do: task.task_number <>  ": ", else: "" ) <> task.title <> "\n" end)
+    summary = if Enum.count(target_tasks) > 0, do: "Target:\n", else: "" 
+    summary = Enum.reduce(target_tasks, summary, fn(task, summary) -> summary <> (if task.task_number, do: task.task_number <>  ": ", else: "" ) <> task.title <> "\n" end)
+    summary = summary <> if Enum.count(actual_tasks) > 0, do: "\nActual:\n", else: ""
+    Enum.reduce(actual_tasks, summary, fn(task, summary) -> summary <> (if task.task_number, do: task.task_number <>  ": ", else: "" ) <> task.title <> "\n" end)
 	end
 
 
