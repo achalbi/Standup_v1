@@ -1,0 +1,24 @@
+<h4>Show Spreadsheet</h4>
+
+<ul>
+
+  <li>
+    <strong>Spreadsheet:</strong>
+    <%= @spreadsheet.spreadsheet_id %>
+  </li>
+  <li>
+    <strong>Status:</strong>
+    <%= @spreadsheet.status %>
+  </li>
+
+<br>
+  <li>
+    <strong><p>Please share your Google speadsheet document with the below email for the App to push workstatus updates.</p></strong>
+      <div class="chip">
+        standup@standup-129.iam.gserviceaccount.com
+      </div>
+  </li>
+</ul>
+<br>
+<span><%= link "Edit", to: organization_spreadsheet_path(@conn, :edit, @spreadsheet.organization, @spreadsheet), class: "btn" %></span>
+<span><%= link "Back", to: organization_path(@conn, :show, @spreadsheet.organization), class: "btn" %></span>

@@ -395,23 +395,27 @@ defmodule Standup.StatusTrack do
     end
     
 	def sync_with_spreadsheet(%WorkStatus{} = work_status) do
-		try do
-	  	case GSS.Spreadsheet.Supervisor.spreadsheet(System.get_env("SPREADSHEET_ID")) do
-				{:ok, pid} ->
-					case GSS.Spreadsheet.rows(pid) do
-						{:ok, row_count} ->
-							if row_count == 0, do: GSS.Spreadsheet.write_row(pid, 1, ["Name", "Date", "Task Summary"])
-							
-							row_no = work_status.sheet_row_id
-							update_spreadsheet(work_status, pid, row_no)
-						{:error, reason} -> reason
-					end
-				{:error, reason} -> reason
+		#spreadsheet_id = System.get_env("SPREADSHEET_ID")
+		spreadsheet = Standup.Spreadsheets.list_spreadsheets(work_status.organization_id)
+		if (spreadsheet && spreadsheet.status == "Active") do
+			try do
+				case GSS.Spreadsheet.Supervisor.spreadsheet(spreadsheet.spreadsheet_id) do
+					{:ok, pid} ->
+						case GSS.Spreadsheet.rows(pid) do
+							{:ok, row_count} ->
+								if row_count == 0, do: GSS.Spreadsheet.write_row(pid, 1, ["Name", "Date", "Task Summary"])
+								
+								row_no = work_status.sheet_row_id
+								update_spreadsheet(work_status, pid, row_no)
+							{:error, reason} -> reason
+						end
+					{:error, reason} -> reason
+				end
+			rescue
+				_error -> {:error}
+			catch
+				_error -> {:error}
 			end
-		rescue
-			_error -> {:error}
-		catch
-			_error -> {:error}
 		end
 	end
 

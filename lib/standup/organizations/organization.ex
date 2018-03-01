@@ -5,6 +5,7 @@ defmodule Standup.Organizations.Organization do
   alias Standup.Accounts.User
   alias Standup.StatusTrack.WorkStatus
   alias Standup.StatusTrack.WorkStatusType
+  alias Standup.Spreadsheets.Spreadsheet
 
 
   schema "organizations" do
@@ -15,6 +16,7 @@ defmodule Standup.Organizations.Organization do
     has_many :work_statuses, WorkStatus
     has_many :work_status_types, WorkStatusType
     has_many :domains, Domain
+    has_one :spreadsheet, Spreadsheet
 
     timestamps()
   end

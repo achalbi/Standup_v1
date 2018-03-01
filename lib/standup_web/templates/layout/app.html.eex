@@ -20,7 +20,7 @@
   </head>
   <body>
 
-    <nav class="light-blue lighten-1">
+    <nav class="blue darken-1">
       <div class="nav-wrapper">
         <%= if logged_in?(@conn) do %>
           <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -88,7 +88,7 @@
       </div>
     </li>
     <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
-    <li><a class="waves-effect" href="/organizations"><i class="material-icons">business</i>Organizations</a></li>
+    <li><a class="waves-effect" href="/organizations"><i class="material-icons">business</i>Organization</a></li>
       
     <%= if !!@conn.assigns.current_user.organizations do %>
     <li class="no-padding">

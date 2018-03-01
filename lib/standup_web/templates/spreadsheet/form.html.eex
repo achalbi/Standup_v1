@@ -1,0 +1,37 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+  <div class="input-field col s12 m9">
+    <%= label f, :spreadsheet_id %>
+    <%= text_input f, :spreadsheet_id %>
+    <%= error_tag f, :spreadsheet_id %>
+  </div>
+    <div class="input-field col s12 m3">
+    <label class="active">Status</label>
+    <%= select f, :status, Standup.Spreadsheets.Spreadsheet.status %>
+    <%= error_tag f, :status %>
+  </div>
+  </div>
+
+    <%= hidden_input f, :organization_id, value: @organization_id %>
+
+  <div class="row">
+  <div class="col s12">
+    <%= submit "Submit", class: "btn waves-effect waves-light" %>
+    <span><%= link "Back", to: organization_path(@conn, :show, @organization_id), class: "btn" %></span>
+  </div>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+</script>

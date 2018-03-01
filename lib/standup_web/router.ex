@@ -62,6 +62,7 @@ defmodule StandupWeb.Router do
     resources "/organizations", OrganizationController do
       resources "/domains", DomainController
       resources "/work_status_types", WorkStatusTypeController
+      resources "/spreadsheets", SpreadsheetController
     end
 
     resources "/teams", TeamController do

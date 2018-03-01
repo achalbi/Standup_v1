@@ -1,0 +1,34 @@
+<h4>Spreadsheets</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Spreadsheet</th>
+
+      <th>status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for spreadsheet <- @spreadsheets do %>
+  <%= if spreadsheet do %>
+      <tr>
+        <td><%= spreadsheet.spreadsheet_id %></td>
+        <td><%= spreadsheet.status %></td>
+
+        <td class="text-right">
+          <span><%= link "Show", to: organization_spreadsheet_path(@conn, :show, spreadsheet.organization_id, spreadsheet), class: "btn " %></span>
+          <span><%= link "Edit", to: organization_spreadsheet_path(@conn, :edit, spreadsheet.organization_id, spreadsheet), class: "btn " %></span>
+          <span><%= link "Delete", to: organization_spreadsheet_path(@conn, :delete, spreadsheet.organization_id, spreadsheet), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %></span>
+        </td>
+      </tr>  
+  <% else %>
+    <tr>
+      <td colspan="2">
+        <p class="center">No Spreadsheet added yet!</p>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
+  </tbody>
+</table>

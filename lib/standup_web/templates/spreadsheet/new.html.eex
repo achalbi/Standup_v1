@@ -1,0 +1,4 @@
+<h4>New Spreadsheet</h4>
+
+<%= render "form.html", Map.put(assigns, :action, organization_spreadsheet_path(@conn, :create, @organization_id)) %>
+
