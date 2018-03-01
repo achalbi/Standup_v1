@@ -1,5 +1,6 @@
 defmodule StandupWeb.SpreadsheetController do
   use StandupWeb, :controller
+  plug Standup.Plugs.SpreadsheetAuthorizer
 
   alias Standup.Spreadsheets
   alias Standup.Spreadsheets.Spreadsheet

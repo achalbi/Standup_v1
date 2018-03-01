@@ -1,0 +1,24 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, "Add comments..." %>
+      <%= textarea f, :content, class: "materialize-textarea" %>
+      <%= error_tag f, :content %>
+    </div>
+  </div>
+<%= hidden_input f, :work_status_id, value: @work_status.id %>
+<%= hidden_input f, :user_id, value: @conn.assigns.current_user.id %>
+
+  <div class="">
+    <%= submit "Submit", class: "btn" %>
+    <a href="javascript:history.back()" class="waves-effect waves-light btn">Back</a>
+  </div>
+<% end %>

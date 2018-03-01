@@ -237,6 +237,61 @@
       </div>
     </td>
   </tr>
+  <tr>
+    <td>
+      <div class="">
+        <div class="col s12">
+        <div class="card ">
+        <div class="card-content light-green darken-1 white-text" style="position: relative">
+          <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= work_status_comment_path(@conn, :new, @work_status) %>'><i class="material-icons">add</i></a>
+          <span class="card-title m-b-0">Comments</span>
+        </div>
+        <div class="card-content light-green lighten-5">
+        <%= if Enum.count(@comments) > 0 do %>
+          <table class="">
+          <tbody class="collection" style="border: 0;">
+          <%= for comment <- @comments do %>
+            <tr class="collection-item light-green lighten-5">
+              <td>
+                <div class="row" style="margin: 0">
+                  <div class="col" >
+                    <%= unless is_nil(comment.user.photo) do %>
+                      <%= cl_image_tag(comment.user.photo.public_id, class: "circle", transforms: %{width: 50, height: 50, sign_url: true, quality: 80}) %>
+                    <% end %> 
+                  </div>
+                  <div class="col s12 m8" >
+                    <div class="">
+                      <span class="bold"><%= comment.content %></span>    
+                    </div>
+
+                  </div>
+                  <div class="col s12 m4 text-right" style="margin-left: -100px;">
+                  <br>
+                    <div class="right">
+                      <a class='dropdown-button btn' href='#' data-activates='dropdown_comments_<%= comment.id %>'>Action</a>
+                      <ul id='dropdown_comments_<%= comment.id %>' class='dropdown-content'>
+                        <li><%= link "Edit", to: work_status_comment_path(@conn, :edit, @work_status, comment), class: "" %></li>
+                        <li><%= link "Delete", to: work_status_comment_path(@conn, :delete, @work_status, comment), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                    <span class=" grey-text"><%= comment.user.firstname <> " " <> comment.user.lastname %> </span><br>
+                    <span class="grey-text left"><%= Timex.from_now(comment.inserted_at) %></span>   
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+          </table>
+        <% else %>
+        <p>No comments</p>
+        <% end %>
+        </div>
+        </div>
+        </div>
+      </div>
+    </td>
+  </tr>
 </tbody>
 </table>
 <br>

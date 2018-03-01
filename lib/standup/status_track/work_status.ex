@@ -6,6 +6,7 @@ defmodule Standup.StatusTrack.WorkStatus do
   alias Standup.Organizations.Organization
   alias Standup.StatusTrack.WorkStatusType
   alias Standup.StatusTrack.KeyResultArea
+  alias Standup.StatusTrack.Comment
 
   @working_at ["Working from Office": "WFO", "Working Remotely or Working From Home": "WFH", "Vacation or Paid-Time-Off": "PTO"]
 
@@ -21,6 +22,7 @@ defmodule Standup.StatusTrack.WorkStatus do
     belongs_to :organization, Organization
     belongs_to :work_status_type, WorkStatusType
     has_many :tasks, Task
+    has_many :comments, Comment
     has_one :key_result_area, KeyResultArea
 
     timestamps()

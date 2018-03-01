@@ -1,0 +1,4 @@
+<h4>New Comment</h4>
+
+<%= render "form.html", Map.put(assigns, :action, work_status_comment_path(@conn, :create, @work_status)) %>
+

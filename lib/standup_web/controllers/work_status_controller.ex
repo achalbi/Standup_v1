@@ -48,6 +48,7 @@ defmodule StandupWeb.WorkStatusController do
 
   def show(conn, %{"id" => id} = params) do
     work_status = StatusTrack.get_work_status!(id)
+    comments = StatusTrack.list_comments(id)
     current_user = conn.assigns.current_user
     organization = hd(current_user.organizations)
     organization = Organizations.get_organization!(organization.id)
@@ -56,7 +57,7 @@ defmodule StandupWeb.WorkStatusController do
     actual_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Actual")
     target_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Target")
     next_target_tasks = StatusTrack.get_task_by_work_status_and_next_target(id)
-    render(conn, "show.html", work_status: work_status, work_status_type: work_status_type, actual_tasks: actual_tasks, target_tasks: target_tasks, next_target_tasks: next_target_tasks)
+    render(conn, "show.html", work_status: work_status, work_status_type: work_status_type, actual_tasks: actual_tasks, target_tasks: target_tasks, next_target_tasks: next_target_tasks, comments: comments)
   end
 
   def edit(conn, %{"id" => id} = params) do

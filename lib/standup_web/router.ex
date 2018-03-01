@@ -74,6 +74,7 @@ defmodule StandupWeb.Router do
     post "/photos/upload", PhotoController, :upload 
     resources "/work_statuses", WorkStatusController do
       resources "/key_result_areas", KeyResultAreaController
+      resources "/comments", CommentController
     end
     get "/team_work_statuses", WorkStatusController, :team_work_statuses, as: :team_work_statuses
     resources "/tasks", TaskController
