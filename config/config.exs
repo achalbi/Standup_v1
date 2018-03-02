@@ -59,8 +59,8 @@ config :goth, json: System.get_env("GCP_CREDENTIALS")
 config :elixir_google_spreadsheets, :client,
   request_workers: 50,
   max_demand: 100,
-  max_interval: :timer.minutes(1),
-  interval: 100
+  max_interval: :timer.minutes(3),
+  interval: 3000
 
 config :sphinx, :repo, Standup.Repo
 

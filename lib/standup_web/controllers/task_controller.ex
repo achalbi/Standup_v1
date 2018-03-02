@@ -2,6 +2,8 @@ defmodule StandupWeb.TaskController do
   use StandupWeb, :controller
 
   plug Standup.Plugs.TaskAuthorizer
+  plug :task_date_validator
+  require IEx
 
   alias Standup.StatusTrack
   alias Standup.StatusTrack.Task
@@ -13,6 +15,7 @@ defmodule StandupWeb.TaskController do
   end
   
   def new(conn, params) do
+    IEx.pry
     today = Date.utc_today
     current_user = conn.assigns.current_user
     organization = hd(current_user.organizations)
@@ -29,7 +32,7 @@ defmodule StandupWeb.TaskController do
     render(conn, (if params["tense"] == "Next Target", do: "new_next_target.html", else: "new.html"), changeset: changeset, today: today, teams: teams, work_status_type_id: params["work_status_type_id"])
   end
   
-  def create(conn, %{"task" => task_params}) do
+  def create(conn, %{"task" => task_params} = params) do
     today = Date.utc_today
     if task_params["on_date"] != "" do
       today = task_params["on_date"]
@@ -48,10 +51,10 @@ defmodule StandupWeb.TaskController do
             |> put_flash(:info, "Task created successfully.")
             |> redirect(to: task_path(conn, :show, task))
           {:error, %Ecto.Changeset{} = changeset} ->
-            render(conn, "new.html", changeset: changeset, today: today, teams: teams)
+            render(conn, "new.html", changeset: changeset, today: today, teams: teams, work_status_type_id: params["work_status_type_id"])
         end
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, today: today, teams: teams)
+        render(conn, "new.html", changeset: changeset, today: today, teams: teams, work_status_type_id: params["work_status_type_id"])
     end
   end
 
@@ -95,4 +98,21 @@ defmodule StandupWeb.TaskController do
     |> put_flash(:info, "Task deleted successfully.")
     |> redirect(to: work_status_path(conn, :show, work_status_id, work_status_type_id: work_status_type_id))
   end
+
+  defp task_date_validator(%Plug.Conn{:private => %{:phoenix_action => :new}, :params => %{"on_date" => on_date, "tense" => tense}} = conn, _) do
+    if tense == "Actual" do
+      today = Date.utc_today
+      params_date = Timex.parse!(on_date, "%Y-%m-%d", :strftime)  
+      date  = NaiveDateTime.to_date(params_date)
+      if date > today do
+        assign(conn, :authorized, false)
+        Standup.Plugs.Authorizer.unauthorized_user(conn)
+		  else
+        assign(conn, :authorized, true)
+      end 
+    else
+        assign(conn, :authorized, true)
+    end
+  end
+  defp task_date_validator(conn, _), do: conn
 end

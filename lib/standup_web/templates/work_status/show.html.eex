@@ -19,7 +19,7 @@
   <tbody>
   <tr>
     <td>
-    <div class="row">
+    <div class="row m-0">
     <div class="col s12 m6">
     <div class="card ">
     <div class="card-content amber darken-1 white-text" style="position: relative">
@@ -33,7 +33,7 @@
       <%= for task <- @target_tasks do %>
         <tr>
           <td>
-            <div class="row">
+            <div class="row m-0">
               <div class="col s12 m8">
                 <div class="html-newline">
                   <span class="bold"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
@@ -83,7 +83,7 @@
       <%= for task <- @actual_tasks do %>
         <tr>
           <td>
-            <div class="row">
+            <div class="row m-0">
               <div class="col s12 m8">
                 <div class="html-newline">
                   <span class="BOLD"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
@@ -139,7 +139,7 @@
           <%= for task <- @next_target_tasks do %>
             <tr>
               <td>
-                <div class="row">
+                <div class="row m-0">
                   <div class="col s12 m8">
                     <div class="html-newline">
                       <span class="bold"><%= if task.task_number, do: task.task_number <> "- ", else: "" %><%= task.title %></span>
@@ -253,7 +253,7 @@
           <%= for comment <- @comments do %>
             <tr class="collection-item light-green lighten-5">
               <td>
-                <div class="row" style="margin: 0">
+                <div class="row m-0" style="margin: 0">
                   <div class="col" >
                     <%= unless is_nil(comment.user.photo) do %>
                       <%= cl_image_tag(comment.user.photo.public_id, class: "circle", transforms: %{width: 50, height: 50, sign_url: true, quality: 80}) %>
@@ -261,7 +261,8 @@
                   </div>
                   <div class="col s12 m8" >
                     <div class="">
-                      <span class="bold"><%= comment.content %></span>    
+                      <span class="" style="font-weight: bold;"><%= comment.user.firstname <> " " <> comment.user.lastname %> </span><br>
+                      <span class=""><%= comment.content %></span>    
                     </div>
 
                   </div>
@@ -276,8 +277,7 @@
                     </div>
                   </div>
                 </div>
-                    <span class=" grey-text"><%= comment.user.firstname <> " " <> comment.user.lastname %> </span><br>
-                    <span class="grey-text left"><%= Timex.from_now(comment.inserted_at) %></span>   
+                <p class="grey-text left " style="font-size: 80%"><%= Timex.from_now(comment.inserted_at) %></p>   
               </td>
             </tr>
           <% end %>

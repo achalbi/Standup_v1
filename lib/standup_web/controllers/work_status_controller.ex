@@ -46,14 +46,14 @@ defmodule StandupWeb.WorkStatusController do
     end
   end
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id}) do
     work_status = StatusTrack.get_work_status!(id)
     comments = StatusTrack.list_comments(id)
-    current_user = conn.assigns.current_user
-    organization = hd(current_user.organizations)
-    organization = Organizations.get_organization!(organization.id)
-    work_status_type_id = params["work_status_type_id"] || hd(organization.work_status_types).id
-    work_status_type = StatusTrack.get_work_status_type!(work_status_type_id)
+    #current_user = conn.assigns.current_user
+    #organization = hd(current_user.organizations)
+    #organization = Organizations.get_organization!(organization.id)
+    #work_status_type_id = params["work_status_type_id"] || hd(organization.work_status_types).id
+    work_status_type = StatusTrack.get_work_status_type!(work_status.work_status_type_id)
     actual_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Actual")
     target_tasks = StatusTrack.get_task_by_work_status_and_tense(id, "Target")
     next_target_tasks = StatusTrack.get_task_by_work_status_and_next_target(id)
