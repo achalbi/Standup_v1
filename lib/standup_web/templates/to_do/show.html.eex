@@ -1,0 +1,48 @@
+<h2>Show To do</h2>
+
+<ul>
+
+  <li>
+    <strong>Item number:</strong>
+    <%= @to_do.item_number %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @to_do.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @to_do.description %>
+  </li>
+
+  <li>
+    <strong>Start date:</strong>
+    <%= @to_do.start_date %>
+  </li>
+
+  <li>
+    <strong>End date:</strong>
+    <%= @to_do.end_date %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @to_do.status %>
+  </li>
+
+  <li>
+    <strong>Ownership:</strong>
+    <%= @to_do.ownership %>
+  </li>
+
+  <li>
+    <strong>List type:</strong>
+    <%= @to_do.list_type %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: to_do_path(@conn, :edit, @to_do) %></span>
+<span><%= link "Back", to: to_do_path(@conn, :index) %></span>

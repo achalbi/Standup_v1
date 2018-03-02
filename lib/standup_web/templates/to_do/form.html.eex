@@ -1,0 +1,59 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger red-text">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :item_number, class: "control-label" %>
+    <%= text_input f, :item_number, class: "form-control" %>
+    <%= error_tag f, :item_number %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :title, class: "control-label" %>
+    <%= text_input f, :title, class: "form-control" %>
+    <%= error_tag f, :title %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :description, class: "control-label" %>
+    <%= textarea f, :description, class: "form-control" %>
+    <%= error_tag f, :description %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :start_date, class: "control-label" %>
+    <%= datetime_select f, :start_date, class: "form-control" %>
+    <%= error_tag f, :start_date %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :end_date, class: "control-label" %>
+    <%= datetime_select f, :end_date, class: "form-control" %>
+    <%= error_tag f, :end_date %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :status, class: "control-label" %>
+    <%= text_input f, :status, class: "form-control" %>
+    <%= error_tag f, :status %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :ownership, class: "control-label" %>
+    <%= text_input f, :ownership, class: "form-control" %>
+    <%= error_tag f, :ownership %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :list_type, class: "control-label" %>
+    <%= text_input f, :list_type, class: "form-control" %>
+    <%= error_tag f, :list_type %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

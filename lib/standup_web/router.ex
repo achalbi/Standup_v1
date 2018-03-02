@@ -64,6 +64,8 @@ defmodule StandupWeb.Router do
       resources "/work_status_types", WorkStatusTypeController
       resources "/spreadsheets", SpreadsheetController
     end
+    resources "/to_dos", ToDoController
+    resources "/to_do_users", ToDoUserController
 
     resources "/teams", TeamController do
       get "/add_users", TeamController, :add_users, as: :add_users

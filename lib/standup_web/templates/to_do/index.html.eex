@@ -1,0 +1,40 @@
+<h2>Listing To dos</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Item number</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Status</th>
+      <th>Ownership</th>
+      <th>List type</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for to_do <- @to_dos do %>
+    <tr>
+      <td><%= to_do.item_number %></td>
+      <td><%= to_do.title %></td>
+      <td><%= to_do.description %></td>
+      <td><%= to_do.start_date %></td>
+      <td><%= to_do.end_date %></td>
+      <td><%= to_do.status %></td>
+      <td><%= to_do.ownership %></td>
+      <td><%= to_do.list_type %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: to_do_path(@conn, :show, to_do), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: to_do_path(@conn, :edit, to_do), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: to_do_path(@conn, :delete, to_do), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New To do", to: to_do_path(@conn, :new) %></span>
