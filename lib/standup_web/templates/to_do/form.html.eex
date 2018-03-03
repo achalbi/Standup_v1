@@ -1,59 +1,82 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
-    <div class="alert alert-danger red-text">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= label f, :item_number, class: "control-label" %>
-    <%= text_input f, :item_number, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :item_number %>
+    <%= text_input f, :item_number %>
     <%= error_tag f, :item_number %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :title, class: "control-label" %>
-    <%= text_input f, :title, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :title %>
+    <%= text_input f, :title %>
     <%= error_tag f, :title %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :description, class: "control-label" %>
-    <%= textarea f, :description, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :description %>
+    <%= textarea f, :description, class: "materialize-textarea" %>
     <%= error_tag f, :description %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :start_date, class: "control-label" %>
-    <%= datetime_select f, :start_date, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :start_date %>
+    <%= text_input f, :start_date, class: "datepicker" %>
     <%= error_tag f, :start_date %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :end_date, class: "control-label" %>
-    <%= datetime_select f, :end_date, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :end_date %>
+    <%= text_input f, :end_date, class: "datepicker" %>
     <%= error_tag f, :end_date %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :status, class: "control-label" %>
-    <%= text_input f, :status, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :status %>
+    <%= text_input f, :status %>
     <%= error_tag f, :status %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :ownership, class: "control-label" %>
-    <%= text_input f, :ownership, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :ownership %>
+    <%= text_input f, :ownership %>
     <%= error_tag f, :ownership %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :list_type, class: "control-label" %>
-    <%= text_input f, :list_type, class: "form-control" %>
+  <div class="input-field">
+    <%= label f, :list_type %>
+    <%= text_input f, :list_type %>
     <%= error_tag f, :list_type %>
   </div>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+  <div class="input-field">
+    <%= submit "Submit", class: "btn " %>
   </div>
 <% end %>
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+  
+
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: 'Today',
+      clear: 'Clear',
+      closeOnClear: false,
+      close: 'Ok',
+      formatSubmit: 'yyyy-mm-dd',
+      hiddenName: true,
+      closeOnSelect: true // Close upon selecting a date,
+    });
+
+  });
+  
+</script>

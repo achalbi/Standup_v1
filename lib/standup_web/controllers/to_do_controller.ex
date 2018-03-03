@@ -4,24 +4,24 @@ defmodule StandupWeb.ToDoController do
   alias Standup.ToDos
   alias Standup.ToDos.ToDo
 
-  def index(conn, _params) do
+  def index(conn, %{"organization_id" => organization_id} = params) do
     to_dos = ToDos.list_to_dos()
-    render(conn, "index.html", to_dos: to_dos)
+    render(conn, "index.html", to_dos: to_dos, organization_id: organization_id)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"organization_id" => organization_id}) do
     changeset = ToDos.change_to_do(%ToDo{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, organization_id: organization_id)
   end
 
-  def create(conn, %{"to_do" => to_do_params}) do
+  def create(conn, %{"to_do" => to_do_params, "organization_id" => organization_id}) do
     case ToDos.create_to_do(to_do_params) do
       {:ok, to_do} ->
         conn
         |> put_flash(:info, "To do created successfully.")
-        |> redirect(to: to_do_path(conn, :show, to_do))
+        |> redirect(to: organization_to_do_path(conn, :show, to_do.organization, to_do))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, organization_id: organization_id)
     end
   end
 
@@ -43,18 +43,18 @@ defmodule StandupWeb.ToDoController do
       {:ok, to_do} ->
         conn
         |> put_flash(:info, "To do updated successfully.")
-        |> redirect(to: to_do_path(conn, :show, to_do))
+        |> redirect(to: organization_to_do_path(conn, :show, to_do.organization, to_do))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", to_do: to_do, changeset: changeset)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id, "organization_id" => organization_id}) do
     to_do = ToDos.get_to_do!(id)
     {:ok, _to_do} = ToDos.delete_to_do(to_do)
 
     conn
     |> put_flash(:info, "To do deleted successfully.")
-    |> redirect(to: to_do_path(conn, :index))
+    |> redirect(to: organization_to_do_path(conn, :index, organization_id))
   end
 end

@@ -44,5 +44,5 @@
 
 </ul>
 
-<span><%= link "Edit", to: to_do_path(@conn, :edit, @to_do) %></span>
-<span><%= link "Back", to: to_do_path(@conn, :index) %></span>
+<span><%= link "Edit", to: organization_to_do_path(@conn, :edit, @to_do.organization, @todo) %></span>
+<span><%= link "Back", to: organization_to_do_path(@conn, :index, @to_do.organization) %></span>
