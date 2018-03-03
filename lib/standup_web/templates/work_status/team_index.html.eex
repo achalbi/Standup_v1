@@ -18,8 +18,8 @@
 <%= if Enum.count(@work_statuses) > 0 do %>
   <ul class="collapsible popout" data-collapsible="accordion">
   <% work_status_first = hd(@work_statuses) %>
-  <li class="m-0 active blue-grey lighten-5">
-        <h5 class="collapsible-header active blue-grey white-text">
+  <li class="m-0 active deep-purple lighten-5">
+        <h5 class="collapsible-header active deep-purple white-text">
           <div class="avatar">
           <%= unless is_nil(work_status_first.user.photo) do %>
             <%= cl_image_tag(work_status_first.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
@@ -36,8 +36,8 @@
         </div>
   </li>
   <%= for work_status <- tl(@work_statuses) do %>
-  <li class="m-0 blue-grey lighten-5">
-        <h5 class="collapsible-header blue-grey white-text">
+  <li class="m-0 deep-purple lighten-5">
+        <h5 class="collapsible-header deep-purple white-text">
           <div class="avatar">
           <%= unless is_nil(work_status.user.photo) do %>
             <%= cl_image_tag(work_status.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
@@ -88,5 +88,9 @@
     });
   });
 </script>
-  
+<script>
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+</script>
 <% end %>

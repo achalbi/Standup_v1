@@ -82,7 +82,11 @@
 <% end %>
 
 <script>
-$(document).ready(function(){
-  $('#add_ws').addClass('animated bounce');
-});
+  $(document).ready(function(){
+    $('#add_ws').addClass('animated bounce');
+  });
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
 </script>
