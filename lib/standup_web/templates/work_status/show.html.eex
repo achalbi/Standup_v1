@@ -9,7 +9,6 @@
       <th>
         <h6><div><%= link "Edit", to: work_status_path(@conn, :edit, @work_status, work_status_type_id: @work_status_type.id), class: "btn right" %></div></h6>
         <h4>Your <%= @work_status_type.name %> Work status</h4>
-        <h6><div><a href="javascript:history.back()" class="waves-effect waves-light btn right">Back</a></div></h6>
          <h5><%= date  |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> 
          - <%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type) %></h5>
         <h6><%= @work_status.notes %></h6>
@@ -22,11 +21,11 @@
     <div class="row m-0">
     <div class="col s12 m6">
     <div class="card ">
-    <div class="card-content amber darken-1 white-text" style="position: relative">
+    <div class="card-content deep-purple darken-1 white-text" style="position: relative">
       <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Target", work_status_type_id: @work_status_type.id) %>'><i class="material-icons">add</i></a>
       <span class="card-title m-b-0">Today's Target</span>
     </div>
-    <div class="card-content amber lighten-5">
+    <div class="card-content deep-purple lighten-5">
     <%= if Enum.count(@target_tasks) > 0 do %>
       <table class="">
       <tbody>
@@ -72,11 +71,11 @@
     </div>
         <div class="col s12 m6">
     <div class="card ">
-    <div class="card-content blue darken-1 white-text" style="position: relative">
+    <div class="card-content deep-purple darken-1 white-text" style="position: relative">
       <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Actual", work_status_type_id: @work_status_type.id) %>'><i class="material-icons">add</i></a>
       <span class="card-title m-b-0">Actual</span>
     </div>
-    <div class="card-content blue lighten-5">
+    <div class="card-content deep-purple lighten-5">
     <%= if Enum.count(@actual_tasks) > 0 do %>
       <table class=" ">
       <tbody>
@@ -128,11 +127,11 @@
       <div class="">
         <div class="col s12">
         <div class="card ">
-        <div class="card-content cyan darken-1 white-text" style="position: relative">
+        <div class="card-content deep-purple darken-1 white-text" style="position: relative">
           <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= task_path(@conn, :new, on_date: Date.to_string(date), work_status_id: @work_status.id, tense: "Next Target", work_status_type_id: @work_status_type.id) %>'><i class="material-icons">add</i></a>
           <span class="card-title m-b-0">Next Target</span>
         </div>
-        <div class="card-content cyan lighten-5">
+        <div class="card-content deep-purple lighten-5">
         <%= if Enum.count(@next_target_tasks) > 0 do %>
           <table class="">
           <tbody>
@@ -182,29 +181,29 @@
   <tr>
     <td>
     <div class="card ">
-    <div class="card-content indigo darken-1 white-text" style="position: relative">
+    <div class="card-content deep-purple darken-1 white-text" style="position: relative">
       <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= work_status_key_result_area_path(@conn, :new, @work_status) %>'><i class="material-icons"><%= if @work_status.key_result_area, do: "edit", else: "add" %></i></a>
       <span class="card-title m-b-0">Key Success Factor</span>
     </div>
-    <div class="card-content indigo lighten-5 ">
+    <div class="card-content deep-purple lighten-5 ">
       <%= if @work_status.key_result_area  do %>
       <ul>
 
         <li>
-          <h5 class="light indigo-text">Accountability:</h5>
+          <h5 class="light deep-purple-text">Accountability:</h5>
           <p class="html-newline"><%= @work_status.key_result_area.accountability %></p>
         </li>
   
         <%= if @work_status.key_result_area.ownership do %>
         <li>
-          <h5 class="light indigo-text">Ownership:</h5>
+          <h5 class="light deep-purple-text">Ownership:</h5>
           <p class="html-newline"><%= @work_status.key_result_area.ownership %></p>
         </li>
         <% end %>
 
         <%= if @work_status.key_result_area.productivity do %>
         <li>
-          <h5 class="light indigo-text ">Productivity:</h5>
+          <h5 class="light deep-purple-text ">Productivity:</h5>
           <p><%= @work_status.key_result_area.productivity %> % </p>
         </li>
         <% else %>
@@ -213,19 +212,19 @@
 
         <%= if @work_status.key_result_area.skill do %>          
         <li>
-          <h5 class="light indigo-text">Skill:</h5>
+          <h5 class="light deep-purple-text">Skill:</h5>
           <%= @work_status.key_result_area.skill %>
         </li>
         <% end %>
 
         <li>
-          <h5 class="light indigo-text">Effective communication:</h5>
+          <h5 class="light deep-purple-text">Effective communication:</h5>
           <%= @work_status.key_result_area.effective_communication %>
         </li>
 
         <%= if @work_status.key_result_area.impediments do %>
           <li>
-            <h5 class="light indigo-text">Impediments:</h5>
+            <h5 class="light deep-purple-text">Impediments:</h5>
             <%= @work_status.key_result_area.impediments %>
           </li>   
         <% end %>
@@ -242,16 +241,16 @@
       <div class="">
         <div class="col s12">
         <div class="card ">
-        <div class="card-content light-green darken-1 white-text" style="position: relative">
+        <div class="card-content deep-purple darken-1 white-text" style="position: relative">
           <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= work_status_comment_path(@conn, :new, @work_status) %>'><i class="material-icons">add</i></a>
           <span class="card-title m-b-0">Comments</span>
         </div>
-        <div class="card-content light-green lighten-5">
+        <div class="card-content deep-purple lighten-5">
         <%= if Enum.count(@comments) > 0 do %>
           <table class="">
           <tbody class="collection" style="border: 0;">
           <%= for comment <- @comments do %>
-            <tr class="collection-item light-green lighten-5">
+            <tr class="collection-item deep-purple lighten-5">
               <td>
                 <div class="row m-0" style="margin: 0">
                   <div class="col" >

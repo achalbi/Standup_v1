@@ -32,6 +32,59 @@
   margin-bottom:5px; 
 }
 
+
+// custom colors
+$primary-color: #8e24aa;
+$primary-color-light: #ab47bc;
+
+.btn {
+  background-color: $primary-color;
+}
+
+.btn:hover {
+  background-color: $primary-color-light;
+}
+
+form> :focus {
+  border-color: $primary-color;
+  box-shadow: 0 1px 0 0 $primary-color;
+}
+
+input:not([type]),
+input[type=text]:not(.browser-default),
+input[type=password]:not(.browser-default),
+input[type=email]:not(.browser-default),
+input[type=url]:not(.browser-default),
+input[type=time]:not(.browser-default),
+input[type=date]:not(.browser-default),
+input[type=datetime]:not(.browser-default),
+input[type=datetime-local]:not(.browser-default),
+input[type=tel]:not(.browser-default),
+input[type=number]:not(.browser-default),
+input[type=search]:not(.browser-default),
+textarea.materialize-textarea{
+    &:hover, &:focus:not([read-only]) {
+      border-color: $primary-color;
+      box-shadow: 0 1px 0 0 $primary-color;
+    }
+}
+
+.dropdown-content li>a,
+.dropdown-content li>span{
+        color: $primary-color;
+}
+
+[type="radio"]:checked+label:after,
+[type="radio"].with-gap:checked+label:after{
+    background-color: $primary-color;
+}
+[type="radio"]:checked+label:after,
+[type="radio"].with-gap:checked+label:before,
+[type="radio"].with-gap:checked+label:after{
+      border: 2px solid $primary-color;
+}
+// custom colors
+
 .m-0 {
   margin:0px!important; 
 }
