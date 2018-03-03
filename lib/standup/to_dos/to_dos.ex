@@ -23,7 +23,8 @@ defmodule Standup.ToDos do
     where: t.organization_id == ^organization_id
 
     if day == Standup.ToDos.ToDo.day[:Today] do
-        query = from t in query, where: t.start_date == ^day
+        {:ok, datetime} = NaiveDateTime.new(Date.utc_today, ~T[00:00:00])
+        query = from t in query, where: t.start_date == ^datetime
     end
     if privacy do
         query = from t in query, where: t.list_type == ^privacy

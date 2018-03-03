@@ -185,12 +185,15 @@
       </div>
       <% end %>
       <br>
+        <div id="pjax-container">
         <%= render @view_module, @view_template, assigns %>
+        </div>
       </main>
 
     </div> <!-- /container-main -->
   </div> <!-- /container -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
     <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 

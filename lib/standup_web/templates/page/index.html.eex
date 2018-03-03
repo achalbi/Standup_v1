@@ -1,6 +1,6 @@
 <div class="row marketing">
   <div class="col s12 m6">
-    <div class="card amber accent-4">
+    <div class="card deep-purple darken-1">
       <div class="card-content white-text">
         <span class="card-title">Organization</span>
         <ul>
@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="col s12 m6">
-       <div class="card pink darken-3">
+       <div class="card deep-purple darken-1">
           <div class="card-content white-text">
           <%= if @work_status do %>
             <span class="card-title">Last Work status updated on:</span>
@@ -30,8 +30,8 @@
 <div class="row marketing">
   <div class="col s12">
     <ul class="collapsible popout" data-collapsible="accordion">
-      <li class="m-0 active cyan lighten-5">
-        <h5 class="collapsible-header active cyan darken-1 white-text"><%= @work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
+      <li class="m-0 active deep-purple lighten-5">
+        <h5 class="collapsible-header active deep-purple darken-1 white-text"><%= @work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
         <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, @work_status), class: "btn " %></span>
           <div class="html-newline hide"><b><%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type, "Working From Office") %></b></div>
           <div class="html-newline hide"><%= @work_status.notes %></div>

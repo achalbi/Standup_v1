@@ -13,7 +13,7 @@
       <div class="card-content deep-purple lighten-5">
         <div class="input-field">
           <label class="active">Day</label>
-          <select>
+          <select id="filter_day">
             <option value="<%= Standup.ToDos.ToDo.day[:Today] %>" selected><%= Standup.ToDos.ToDo.day[:Today] %></option>
             <option value='<%= Standup.ToDos.ToDo.day[:"This Week"] %>'><%= Standup.ToDos.ToDo.day[:"This Week"] %></option>
           </select>
@@ -21,7 +21,7 @@
         <br>
         <div class="input-field">
           <label class="active">Privacy</label>
-          <select>
+          <select id="filter_privacy">
             <option value="<%= Standup.ToDos.ToDo.privacy[:Public] %>" selected><%= Standup.ToDos.ToDo.privacy[:Public] %></option>
             <option value='<%= Standup.ToDos.ToDo.privacy[:Private] %>'><%= Standup.ToDos.ToDo.privacy[:Private] %></option>
           </select>
@@ -29,13 +29,16 @@
         <br>
         <div class="input-field">
           <label class="active">Status</label>
-          <select>
+          <select id="filter_status">
             <option value="" selected>All</option>
             <%= for status <- Keyword.keys(Standup.ToDos.ToDo.status_type) do %>
             <option value='<%= Atom.to_string(status) %>'><%= Atom.to_string(status) %></option>
             <% end %>
           </select>
         </div>
+      <div class="">
+            <%= link "Submit", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn center-block", id: "filter_submit" %>
+      </div>
       </div>
     </div>
   </div>
@@ -104,6 +107,19 @@
       formatSubmit: 'yyyy-mm-dd',
       hiddenName: true,
       closeOnSelect: true // Close upon selecting a date,
+    });
+    var url = $('#filter_submit').attr('href')
+     str = "?day="+ $("#filter_day").val() + "&privacy=" + $("#filter_privacy").val() + "&status=" + $("#filter_status").val();
+      $('#filter_submit').attr('href',function(i,url) {
+        return url + str;
+      });
+
+    $('select').change(function(){
+      str = "?day="+ $("#filter_day").val() + "&privacy=" + $("#filter_privacy").val() + "&status=" + $("#filter_status").val();
+      $('#filter_submit').attr('href',function(i,url_str) {
+        return url + str;
+      });
+
     });
 
   });
