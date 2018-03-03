@@ -16,7 +16,6 @@
 
     <link  type="text/css" rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
   </head>
   <body>
 
@@ -193,9 +192,9 @@
     </div> <!-- /container-main -->
   </div> <!-- /container -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
     <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
