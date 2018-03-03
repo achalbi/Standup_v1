@@ -7,56 +7,65 @@
     </div>
   <% end %>
 
-  <div class="input-field">
-    <%= label f, :item_number %>
-    <%= text_input f, :item_number %>
-    <%= error_tag f, :item_number %>
+  <div class="row">
+    <div class="input-field col s12 m3">
+      <%= label f, :item_number %>
+      <%= text_input f, :item_number %>
+      <%= error_tag f, :item_number %>
+    </div>
+
+    <div class="input-field col s12 m9">
+      <%= label f, :title %>
+      <%= text_input f, :title %>
+      <%= error_tag f, :title %>
+    </div>
   </div>
 
-  <div class="input-field">
-    <%= label f, :title %>
-    <%= text_input f, :title %>
-    <%= error_tag f, :title %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :description %>
+      <%= textarea f, :description, class: "materialize-textarea" %>
+      <%= error_tag f, :description %>
+    </div>
   </div>
 
-  <div class="input-field">
-    <%= label f, :description %>
-    <%= textarea f, :description, class: "materialize-textarea" %>
-    <%= error_tag f, :description %>
+  <div class="row">
+    <div class="input-field col s12 m4">
+      <%= label f, :status, class: "active" %>
+      <%= select f, :status, Standup.ToDos.ToDo.status_type %>
+      <%= error_tag f, :status %>
+    </div>
+    <div class="input-field col s12 m4">
+      <%= label f, :ownership, class: "active" %>
+      <%= select f, :ownership, Standup.ToDos.ToDo.ownership_type %>
+      <%= error_tag f, :ownership %>
+    </div>
+
+    <div class="input-field col s12 m4">
+      <%= label f, "Privacy", class: "active" %>
+      <%= select f, :list_type, Standup.ToDos.ToDo.privacy %>
+      <%= error_tag f, :list_type %>
+    </div>
   </div>
 
-  <div class="input-field">
-    <%= label f, :start_date %>
-    <%= text_input f, :start_date, class: "datepicker" %>
-    <%= error_tag f, :start_date %>
-  </div>
+  <div class="row">
+    <div class="input-field col s12 m4">
+      <%= label f, :start_date %>
+      <%= text_input f, :start_date, class: "datepicker" %>
+      <%= error_tag f, :start_date %>
+    </div>
+      <%= hidden_input f, :organization_id, value: @organization_id %>
 
-  <div class="input-field">
-    <%= label f, :end_date %>
-    <%= text_input f, :end_date, class: "datepicker" %>
-    <%= error_tag f, :end_date %>
-  </div>
-
-  <div class="input-field">
-    <%= label f, :status %>
-    <%= text_input f, :status %>
-    <%= error_tag f, :status %>
-  </div>
-
-  <div class="input-field">
-    <%= label f, :ownership %>
-    <%= text_input f, :ownership %>
-    <%= error_tag f, :ownership %>
-  </div>
-
-  <div class="input-field">
-    <%= label f, :list_type %>
-    <%= text_input f, :list_type %>
-    <%= error_tag f, :list_type %>
+    <div class="input-field col s12 m4">
+      <%= label f, :end_date %>
+      <%= text_input f, :end_date, class: "datepicker" %>
+      <%= error_tag f, :end_date %>
+    </div>
   </div>
 
   <div class="input-field">
     <%= submit "Submit", class: "btn " %>
+    <span><%= link "Back", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn" %></span>
   </div>
 <% end %>
 
@@ -72,6 +81,7 @@
       clear: 'Clear',
       closeOnClear: false,
       close: 'Ok',
+      min: true,
       formatSubmit: 'yyyy-mm-dd',
       hiddenName: true,
       closeOnSelect: true // Close upon selecting a date,

@@ -30,18 +30,22 @@
 
 .btn {
   margin-bottom:5px; 
+  border-radius: 4px;
 }
 
 
 // custom colors
 $primary-color: #8e24aa;
+$secondary-color: #673ab7;
 $primary-color-light: #ab47bc;
 
-.btn {
+.btn, .btn:visited,
+.btn:link {
   background-color: $primary-color;
 }
 
-.btn:hover {
+.btn:hover,
+.btn:active {
   background-color: $primary-color-light;
 }
 
@@ -83,7 +87,41 @@ textarea.materialize-textarea{
 [type="radio"].with-gap:checked+label:after{
       border: 2px solid $primary-color;
 }
+
+.picker__date-display,{
+    background-color: $primary-color;
+}
+.picker__close,
+.picker__today,{
+  color: $primary-color;
+}
+.picker__day--today{
+  color: $primary-color !important;
+}
+.picker__nav--prev:hover,
+.picker__nav--next:hover {
+  color: white !important;
+  background-color: $primary-color-light !important;
+}
+//.picker__day--infocus,
+.picker__day--selected,
+.picker__day--selected:hover,
+//.picker--focused,
+.picker__day--highlighted {
+    color: white!important;
+    background-color: $primary-color!important;
+}
+
+html h4{
+  color: $secondary-color;
+}
 // custom colors
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .m-0 {
   margin:0px!important; 

@@ -17,8 +17,23 @@ defmodule Standup.ToDos do
       [%ToDo{}, ...]
 
   """
-  def list_to_dos do
-    Repo.all(ToDo)
+  def list_to_dos(organization_id, day, privacy, status) do
+    
+    query = from t in ToDo, 
+    where: t.organization_id == ^organization_id
+
+    if day == Standup.ToDos.ToDo.day[:Today] do
+        query = from t in query, where: t.start_date == ^day
+    end
+    if privacy do
+        query = from t in query, where: t.list_type == ^privacy
+    end
+    if status do
+        query = from t in query, where: t.status == ^status
+    end
+    query = from t in query, order_by: [desc: t.start_date]
+    
+    Repo.all(query)
   end
 
   @doc """
