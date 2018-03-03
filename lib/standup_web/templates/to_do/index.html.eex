@@ -1,10 +1,5 @@
 
 <div class="row">
-  <div class="col s12">
-    <h4>To-Do</h4>
-  </div>
-</div>
-<div class="row">
   <div class="col s12 m3 ">
     <div class="card ">
       <div class="card-content deep-purple darken-1 white-text" style="position: relative">
@@ -46,7 +41,7 @@
     <div class="card ">
       <div class="card-content deep-purple darken-1 white-text" style="position: relative">
         <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= organization_to_do_path(@conn, :new, @organization_id) %>'><i class="material-icons">add</i></a>
-        <span class="card-title m-b-0">ITEMS</span>
+        <span class="card-title m-b-0">TO-DO ITEMS</span>
       </div>
       <div class="card-content deep-purple lighten-5">
 

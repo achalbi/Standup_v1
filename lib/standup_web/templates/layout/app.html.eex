@@ -77,7 +77,7 @@
       <div class="user-view" style="height: 290px;">
         <div class="background">
           <%= unless is_nil(@current_user.photo) do %>
-            <%= cl_image_tag(@current_user.photo.public_id, class: " materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
+            <%= cl_image_tag(@current_user.photo.public_id, class: " materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
         </div>
         <%# <a href="#!user"><img class="circle" src=""></a> %>
@@ -209,6 +209,10 @@
     });
   </script>
 <% end %>   
-
+<script>
+$(function () {
+    $(document).pjax("a", "#pjax-container");
+});
+</script>
   </body>
 </html>

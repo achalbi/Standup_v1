@@ -255,7 +255,7 @@
                 <div class="row m-0" style="margin: 0">
                   <div class="col" >
                     <%= unless is_nil(comment.user.photo) do %>
-                      <%= cl_image_tag(comment.user.photo.public_id, class: "circle", transforms: %{width: 50, height: 50, sign_url: true, quality: 80}) %>
+                      <%= cl_image_tag(comment.user.photo.public_id, class: "circle", transforms: %{width: 50, height: 50, sign_url: true, quality: 80, crop: :fill, gravity: :face}) %>
                     <% end %> 
                   </div>
                   <div class="col s12 m8" >

@@ -16,7 +16,7 @@
       <li class="collection-item avatar blue-grey lighten-5">
         <div style="margin-top: 6px;">
           <%= unless is_nil(user.photo) do %>
-            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
+            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
         </div>
         <h4 class="title"><%= user.firstname <> " " <> user.lastname %> 
@@ -43,7 +43,7 @@
         <li class="collection-item avatar blue-grey lighten-5">
           <div style="margin-top: 6px;">
           <%= unless is_nil(user.photo) do %>
-            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
+            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
           </div>
           <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>
@@ -74,7 +74,7 @@
         <li class="collection-item avatar blue-grey lighten-5">
           <div style="margin-top: 6px;">
           <%= unless is_nil(user.photo) do %>
-            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100}) %>
+            <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
           </div>
           <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>

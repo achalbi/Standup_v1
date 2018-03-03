@@ -22,7 +22,7 @@
         <h5 class="collapsible-header active blue-grey white-text">
           <div class="avatar">
           <%= unless is_nil(work_status_first.user.photo) do %>
-            <%= cl_image_tag(work_status_first.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100}) %>
+            <%= cl_image_tag(work_status_first.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
           </div>
           <div class="m-lr-10" style="margin-top: 3px;">
@@ -40,7 +40,7 @@
         <h5 class="collapsible-header blue-grey white-text">
           <div class="avatar">
           <%= unless is_nil(work_status.user.photo) do %>
-            <%= cl_image_tag(work_status.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100}) %>
+            <%= cl_image_tag(work_status.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
           </div>
           <div class="m-lr-10" style="margin-top: 3px;">

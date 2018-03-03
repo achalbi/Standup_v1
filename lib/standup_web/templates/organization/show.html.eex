@@ -257,7 +257,7 @@
         <div class="m-b-0">
           <div class="left avatar">
             <%= unless is_nil(user.photo) do %>
-              <%= cl_image_tag(user.photo.public_id, class: "circle responsive-img", transforms: %{width: 50, height: 50, sign_url: true, quality: 80}) %>
+              <%= cl_image_tag(user.photo.public_id, class: "circle responsive-img", transforms: %{width: 50, height: 50, sign_url: true, quality: 80, crop: :fill, gravity: :face}) %>
             <% end %> 
           </div>
           <div class="left" style="margin: 15px 10px; ">

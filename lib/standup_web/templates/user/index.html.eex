@@ -18,7 +18,7 @@
           <div class="row valign-wrapper">
             <div class="col s2">
               <%= unless is_nil(user.photo) do %>
-                <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 70}) %>
+                <%= cl_image_tag(user.photo.public_id, class: "circle materialboxed responsive-img", transforms: %{width: 100, height: 100, sign_url: true, quality: 80, crop: :fill, gravity: :face}) %>
               <% end %> 
             </div>
             <div class="col s10">
