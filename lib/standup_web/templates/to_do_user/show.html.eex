@@ -4,5 +4,5 @@
 
 </ul>
 
-<span><%= link "Edit", to: to_do_user_path(@conn, :edit, @to_do_user) %></span>
-<span><%= link "Back", to: to_do_user_path(@conn, :index) %></span>
+<span><%#= link "Edit", to: to_do_user_path(@conn, :edit, @to_do_user) %></span>
+<span><%#= link "Back", to: to_do_user_path(@conn, :index) %></span>

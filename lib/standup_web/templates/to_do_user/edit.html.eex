@@ -1,5 +1,5 @@
 <h2>Edit To do user</h2>
 
-<%= render "form.html", Map.put(assigns, :action, to_do_user_path(@conn, :update, @to_do_user)) %>
+<%= render "form.html", Map.put(assigns, :action, to_do_user_path(@conn, :update, @to_do_user.to_do, @to_do_user)) %>
 
-<span><%= link "Back", to: to_do_user_path(@conn, :index) %></span>
+<span><%= link "Back", to: to_do_user_path(@conn, :index, @to_do_user.to_do) %></span>

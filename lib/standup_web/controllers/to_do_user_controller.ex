@@ -19,7 +19,7 @@ defmodule StandupWeb.ToDoUserController do
       {:ok, to_do_user} ->
         conn
         |> put_flash(:info, "To do user created successfully.")
-        |> redirect(to: to_do_user_path(conn, :show, to_do_user))
+ #       |> redirect(to: to_do_user_path(conn, :show, to_do_user))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -43,7 +43,7 @@ defmodule StandupWeb.ToDoUserController do
       {:ok, to_do_user} ->
         conn
         |> put_flash(:info, "To do user updated successfully.")
-        |> redirect(to: to_do_user_path(conn, :show, to_do_user))
+  #      |> redirect(to: to_do_user_path(conn, :show, to_do_user))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", to_do_user: to_do_user, changeset: changeset)
     end
@@ -55,6 +55,6 @@ defmodule StandupWeb.ToDoUserController do
 
     conn
     |> put_flash(:info, "To do user deleted successfully.")
-    |> redirect(to: to_do_user_path(conn, :index))
+ #   |> redirect(to: to_do_user_path(conn, :index))
   end
 end

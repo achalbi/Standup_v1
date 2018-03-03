@@ -63,9 +63,10 @@ defmodule StandupWeb.Router do
       resources "/domains", DomainController
       resources "/work_status_types", WorkStatusTypeController
       resources "/spreadsheets", SpreadsheetController
-      resources "/to_dos", ToDoController do
-        resources "/to_do_users", ToDoUserController
-      end
+      resources "/to_dos", ToDoController
+    end
+    resources "/to_dos", ToDoController, only: [], as: :to_do do
+      resources "/to_do_users", ToDoUserController, as: :users
     end
     resources "/teams", TeamController do
       get "/add_users", TeamController, :add_users, as: :add_users
