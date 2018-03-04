@@ -6,6 +6,7 @@ defmodule Standup.ToDos do
   import Ecto.Query, warn: false
   alias Standup.Repo
 
+  require IEx
   alias Standup.ToDos.ToDo
 
   @doc """
@@ -21,18 +22,19 @@ defmodule Standup.ToDos do
     
     query = from t in ToDo, 
     where: t.organization_id == ^organization_id
-
+    
+    IEx.pry
     if day == Standup.ToDos.ToDo.day[:Today] do
         {:ok, datetime} = NaiveDateTime.new(Date.utc_today, ~T[00:00:00])
         query = from t in query, where: t.start_date == ^datetime
     end
-    if privacy do
+    if privacy && privacy != "" do
         query = from t in query, where: t.list_type == ^privacy
     end
-    if status do
+    if status && status != "" do
         query = from t in query, where: t.status == ^status
     end
-    query = from t in query, order_by: [desc: t.start_date]
+    query = from t in query, order_by: [desc: t.start_date], preload: [:organization]
     
     Repo.all(query)
   end
@@ -51,7 +53,7 @@ defmodule Standup.ToDos do
       ** (Ecto.NoResultsError)
 
   """
-  def get_to_do!(id), do: Repo.get!(ToDo, id)
+  def get_to_do!(id), do: Repo.get!(ToDo, id) |> Repo.preload([:organization])
 
   @doc """
   Creates a to_do.

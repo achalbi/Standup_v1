@@ -36,16 +36,7 @@
 </table>
 <%= if Enum.count(@work_statuses) > 0 do %>
   <ul class="collapsible popout" data-collapsible="accordion">
-  <% work_status_first = hd(@work_statuses) %>
-  <li class="m-0 active deep-purple lighten-5">
-        <h5 class="collapsible-header active deep-purple white-text"><%= work_status_first.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
-        <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status_first, work_status_type_id: @work_status_type.id), class: "btn" %></span>
-          <div class="html-newline hide"><b><%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map , work_status_first.status_type, "Working From Office") %></b></div>
-          <div class="html-newline hide"><%= work_status_first.notes %></div>
-          <div class="html-newline"><%= work_status_first.task_summary %></div>
-        </div>
-  </li>
-  <%= for work_status <- tl(@work_statuses) do %>
+  <%= for work_status <- @work_statuses do %>
   <li class="m-0 deep-purple lighten-5">
         <h5 class="collapsible-header deep-purple white-text"><%= work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
         <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status, work_status_type_id: @work_status_type.id), class: "btn" %></span>
@@ -87,6 +78,6 @@
   });
 
   $(document).ready(function(){
-    $('.collapsible').collapsible();
+    $('.collapsible').collapsible('open', 0);
   });
 </script>

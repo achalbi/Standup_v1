@@ -50,15 +50,15 @@
 
   <div class="row">
     <div class="input-field col s12 m4">
-      <%= label f, :start_date %>
-      <%= text_input f, :start_date, class: "datepicker" %>
+      <%= label f, :start_date, class: "active " %>
+      <%= text_input f, :start_date, class: "datepicker",  "data-value": NaiveDateTime.to_date(f.data.start_date) %>
       <%= error_tag f, :start_date %>
     </div>
       <%= hidden_input f, :organization_id, value: @organization_id %>
 
     <div class="input-field col s12 m4">
-      <%= label f, :end_date %>
-      <%= text_input f, :end_date, class: "datepicker" %>
+      <%= label f, :end_date, class: "active " %>
+      <%= text_input f, :end_date, class: "datepicker",  "data-value": NaiveDateTime.to_date(f.data.end_date) %>
       <%= error_tag f, :end_date %>
     </div>
   </div>
@@ -81,7 +81,6 @@
       clear: 'Clear',
       closeOnClear: false,
       close: 'Ok',
-      min: true,
       formatSubmit: 'yyyy-mm-dd',
       hiddenName: true,
       closeOnSelect: true // Close upon selecting a date,

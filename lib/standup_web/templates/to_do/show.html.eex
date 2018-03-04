@@ -1,4 +1,4 @@
-<h2>Show To do</h2>
+<h4>Show To do</h4>
 
 <ul>
 
@@ -19,12 +19,12 @@
 
   <li>
     <strong>Start date:</strong>
-    <%= @to_do.start_date %>
+    <%= NaiveDateTime.to_date(@to_do.start_date) %>
   </li>
 
   <li>
     <strong>End date:</strong>
-    <%= @to_do.end_date %>
+    <%= NaiveDateTime.to_date(@to_do.end_date) %>
   </li>
 
   <li>
@@ -38,11 +38,11 @@
   </li>
 
   <li>
-    <strong>List type:</strong>
+    <strong>Privacy:</strong>
     <%= @to_do.list_type %>
   </li>
 
 </ul>
 
-<span><%= link "Edit", to: organization_to_do_path(@conn, :edit, @to_do.organization, @todo) %></span>
-<span><%= link "Back", to: organization_to_do_path(@conn, :index, @to_do.organization) %></span>
+<span><%= link "Edit", to: organization_to_do_path(@conn, :edit, @to_do.organization, @to_do), class: "btn" %></span>
+<span><%= link "Back", to: organization_to_do_path(@conn, :index, @to_do.organization), class: "btn" %></span>

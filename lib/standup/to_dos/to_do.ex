@@ -5,7 +5,7 @@ defmodule Standup.ToDos.ToDo do
   alias Standup.Accounts.User
   alias Standup.Organizations.Organization
 
-  @day [Today: "Today", "This Week": "This Week"]
+  @day [Today: "Today"]#, "This Week": "This Week"]
   @privacy [Public: "Public", Private: "Private"]
   @status_type ["To be Started": "To be Started", "In-Progress": "In-Progress", "Completed": "Completed", "Abandoned": "Abandoned", "Due": "Due"]
   @ownership_type ["Self": "Self", "Assigned": "Assigned", "Shared": "Shared"]
@@ -28,7 +28,7 @@ defmodule Standup.ToDos.ToDo do
   @doc false
   def changeset(%ToDo{} = to_do, attrs) do
     to_do
-    |> cast(attrs, [:item_number, :title, :description, :start_date, :end_date, :status, :ownership, :list_type])
+    |> cast(attrs, [:item_number, :title, :description, :start_date, :end_date, :status, :ownership, :list_type, :user_id, :organization_id])
     |> validate_required([:title, :start_date, :end_date, :status, :ownership, :list_type])
   end
 

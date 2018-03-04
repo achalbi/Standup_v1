@@ -170,14 +170,14 @@
     <main role="main">
     <div class="container-main">
       <%= if(get_flash(@conn, :info)) do %>
-      <div class="card green lighten-5" role="alert">
+      <div class="card green lighten-5 alert" role="alert">
         <div class="card-content green-text">
           <p><%= get_flash(@conn, :info) %></p>
         </div>
       </div>
       <% end %>
       <%= if(get_flash(@conn, :error)) do %>
-      <div class="card red lighten-5" role="alert">
+      <div class="card red lighten-5 alert" role="alert">
         <div class="card-content red-text">
           <p><%= get_flash(@conn, :error) %></p>
         </div>
@@ -202,7 +202,16 @@
   <script>
     $(document).ready(function(){
        // Initialize collapse button
-      $(".button-collapse").sideNav();
+        $('.button-collapse').sideNav({
+            menuWidth: 300, // Default is 300
+           // edge: 'right', // Choose the horizontal origin
+            closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+            draggable: true, // Choose whether you can drag to open on touch screens,
+            onOpen: function(el) { /* Do Stuff */ }, // A function to be called when sideNav is opened
+            onClose: function(el) { /* Do Stuff */ }, // A function to be called when sideNav is closed
+          }
+        );
+        $('.collapsible').collapsible();
       vanillaCalendar.init();
 
     });
@@ -212,6 +221,31 @@
 $(function () {
     $(document).pjax("a", "#pjax-container");
 });
+  $(function(){
+    $('.dropdown-button').dropdown();
+  });
+
+  $('#pjax-container')
+  .on('pjax:start', function() { //do before request start 
+    })
+  .on('pjax:end',   function() { //after the request ends 
+        $('.dropdown-button').dropdown();
+
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
+    });
+</script>
+<script>
+$(function(){
+  $("#slide-out li").on('click', function(){
+    $("#slide-out li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+
 </script>
   </body>
 </html>

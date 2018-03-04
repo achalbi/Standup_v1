@@ -6,34 +6,9 @@
 
 <h4>Organization:  <%= @organization.name %></h4>
 <%= @organization.description %>
-<br>
-<br>
 </div>
-<ul class="hide">
-  <li>
-    <strong>Name:</strong>
-    <%= @organization.name %>
-  </li>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @organization.description %>
-  </li>
-
-  <li>
-    <strong><%= ngettext("Moderator", "Moderators", Enum.count(@moderators)) %>:</strong>
-    <%= Enum.map_join(@moderators, " , ", fn user -> user.firstname <> " " <> user.lastname end) %>
-  </li>
-  <%= if Enum.count(@members) > 0 do %>
-  <li>
-    <strong><%= ngettext("Member", "Members", Enum.count(@members)) %>:</strong>
-    <%= Enum.map_join(@members, " , ", fn user -> user.firstname <> " " <> user.lastname end) %>
-  </li>
-  <% end %>
-
-</ul>
-<br>
-<div class="row">
+<div class="row m-0">
 <div class="col s12 m6">
 <div class="card ">
 <div class="card-content deep-purple darken-1 white-text" style="position: relative">
@@ -76,7 +51,6 @@
 <% end %>
   </tbody>
 </table>
-<br>
 </div>
 </div>
 </div>
@@ -126,12 +100,11 @@
 <% end %>
   </tbody>
 </table>
-<br>
 </div>
 </div>
 </div>
 </div>
-<div class="row">
+<div class="row m-0">
 <div class="col s12 m6">
 <div class="card ">
 <div class="card-content deep-purple darken-1 white-text" style="position: relative">
@@ -234,7 +207,7 @@
 
 </div>
 
-<div class="row">
+<div class="row m-0">
 <div class="col s12">
 <div class="card ">
 <div class="card-content deep-purple darken-1 white-text" style="position: relative">
@@ -261,7 +234,12 @@
             <% end %> 
           </div>
           <div class="left" style="margin: 15px 10px; ">
-            <b class="deep-purple-grey-text text-darken-4"> <%= user.firstname %>  <%= user.lastname %></b>
+            <b class="deep-purple-text text-darken-4"> <%= user.firstname %>  <%= user.lastname %></b>
+          <p>
+          <span class='m-0 new badge <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "pink", else: "cyan" %>' data-badge-caption="">
+            <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "Moderator", else: "Member" %>
+          </span>
+          </p>
           </div>
         </div>
       </td>
@@ -277,10 +255,9 @@
 <% end %>
   </tbody>
 </table>
-<br>
 </div>
 </div>
 </div>
 </div>
 <br>
-<span><%= link "Back", to: organization_path(@conn, :index), class: "btn" %></span>
+<span><%#= link "Back", to: organization_path(@conn, :index), class: "btn" %></span>

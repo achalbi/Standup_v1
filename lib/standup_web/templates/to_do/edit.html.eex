@@ -1,5 +1,4 @@
-<h2>Edit To do</h2>
+<h4>Edit To-Do</h4>
 
-<%= render "form.html", Map.put(assigns, :action, organization_to_do_path(@conn, :update, @to_do.organization)) %>
+<%= render "form.html", Map.put(assigns, :action, organization_to_do_path(@conn, :update, @to_do.organization, @to_do)) %>
 
-<span><%= link "Back", to: organization_to_do_path(@conn, :index, @to_do.organization) %></span>
