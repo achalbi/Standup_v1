@@ -82,6 +82,7 @@ defmodule StandupWeb.Router do
     end
     get "/team_work_statuses", WorkStatusController, :team_work_statuses, as: :team_work_statuses
     resources "/tasks", TaskController
+    get "/export_to_do_to_tasks", TaskController, :export_to_do_to_tasks, as: :export_to_do_to_tasks
   end
   # Other scopes may use custom stacks.
   # scope "/api", StandupWeb do

@@ -43,16 +43,14 @@
         <li>
           <div class="collapsible-header">
             <strong><%= to_do.item_number %> <%= to_do.title %></strong>
-            
-            <span class='new badge cyan right' data-badge-caption="">
-              <%= to_do.status %>
-            </span>
+            <span class='new badge cyan right' data-badge-caption="<%= to_do.status %>"></span>
           </div>
-          <div class="collapsible-body">
+          <div class="collapsible-body grey lighten-5">
               <div class="right">
                 <a class='dropdown-button btn ' style="margin-top: 15px; " href='#' data-activates='dropdown_to_do_<%= to_do.id %>'>Action</a>
                   <ul id='dropdown_to_do_<%= to_do.id %>' class='dropdown-content'>
                     <li><%= link "Show", to: organization_to_do_path(@conn, :show, to_do.organization, to_do), class: "" %></li>
+                    <li><%= link "Export to Task", to: export_to_do_to_tasks_path(@conn, :export_to_do_to_tasks, to_do_id: to_do.id), class: "" %></li>
                     <li><%= link "Edit", to: organization_to_do_path(@conn, :edit, to_do.organization, to_do), class: "" %></li>
                     <li><%= link "Delete", to: organization_to_do_path(@conn, :delete, to_do.organization, to_do), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
                   </ul>

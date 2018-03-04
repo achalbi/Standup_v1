@@ -1,6 +1,6 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
-    <div class="card red lighten-5" role="alert">
+    <div class="card red lighten-5 alert" role="alert">
       <div class="card-content red-text">
         <p> Please check the errors below.</p>
       </div>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="input-field col m6 s12">
-      <%= label f, :on_date %>
+      <%= label f, :on_date, class: "active" %>
       <%= text_input f, :on_date, class: "datepicker black-text", "data-value": @today, disabled: "disabled" %>
       <%= error_tag f, :on_date %>
     </div>

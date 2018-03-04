@@ -230,7 +230,8 @@ $(function () {
     })
   .on('pjax:end',   function() { //after the request ends 
         $('.dropdown-button').dropdown();
-
+        Materialize.updateTextFields();
+        
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 

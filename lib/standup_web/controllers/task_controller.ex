@@ -8,6 +8,7 @@ defmodule StandupWeb.TaskController do
   alias Standup.StatusTrack
   alias Standup.StatusTrack.Task
   alias Standup.Organizations
+  alias Standup.ToDos
 
   def index(conn, _params) do
     tasks = StatusTrack.list_tasks(conn)
@@ -15,7 +16,6 @@ defmodule StandupWeb.TaskController do
   end
   
   def new(conn, params) do
-    IEx.pry
     today = Date.utc_today
     current_user = conn.assigns.current_user
     organization = hd(current_user.organizations)
@@ -97,6 +97,26 @@ defmodule StandupWeb.TaskController do
     conn
     |> put_flash(:info, "Task deleted successfully.")
     |> redirect(to: work_status_path(conn, :show, work_status_id, work_status_type_id: work_status_type_id))
+  end
+
+  def export_to_do_to_tasks(conn, %{"to_do_id" => to_do_id}) do
+    to_do = ToDos.get_to_do!(to_do_id)
+    task_number = to_do.item_number
+    title = to_do.title
+    notes = to_do.description
+    status = to_do.status
+    on_date = NaiveDateTime.to_date(to_do.end_date)
+    tense = "Target"
+    user_id = to_do.user_id
+    
+    current_user = conn.assigns.current_user
+    organization = hd(current_user.organizations)
+    organization = Organizations.get_organization!(organization.id)
+    work_status_type_id = hd(organization.work_status_types).id
+
+    teams = Organizations.get_teams_by_user_and_org(user_id, to_do.organization_id)
+    changeset = StatusTrack.change_task(conn, %Task{task_number: task_number, title: title, notes: notes, tense: tense, status: status, on_date: on_date, user_id: user_id})
+    render(conn, "new_next_target.html", changeset: changeset, today: on_date, teams: teams, work_status_type_id: work_status_type_id)
   end
 
   defp task_date_validator(%Plug.Conn{:private => %{:phoenix_action => :new}, :params => %{"on_date" => on_date, "tense" => tense}} = conn, _) do
