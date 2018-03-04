@@ -29,7 +29,7 @@
       <smal >or</small>
     </h5>
     <div class="center">
-      <a class="btn-large waves-effect waves-light purple darken-1 z-depth-4" href="/auth/google">
+      <a class="btn-large btn waves-effect waves-light purple darken-1 z-depth-4" href="/auth/google">
         <i class="material-icons small"></i>Sign in with Google  
       </a>
     </div>
