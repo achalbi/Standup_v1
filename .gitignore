@@ -2,6 +2,7 @@
 /_build
 /.history
 /.vscode
+/.elixir_ls
 /db
 /deps
 /*.ez

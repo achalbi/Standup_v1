@@ -5,6 +5,8 @@
 # is restricted to this project.
 use Mix.Config
 
+config :standup, env: Mix.env
+
 # General application configuration
 config :standup,
   ecto_repos: [Standup.Repo]

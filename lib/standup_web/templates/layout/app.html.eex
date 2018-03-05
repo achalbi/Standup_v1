@@ -13,8 +13,7 @@
 
     <!-- Compiled and minified CSS -->
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
     <link  type="text/css" rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   </head>
@@ -74,15 +73,15 @@
 
   <ul id="slide-out" class="side-nav fixed white">
     <li>
-      <div class="user-view" style="height: 290px;">
-        <div class="background">
+      <div class="user-view cyan" style="padding-bottom:15px;" >
+      <div class="col vertical-align left" style="margin-right:10px;" >
           <%= unless is_nil(@current_user.photo) do %>
-            <%= cl_image_tag(@current_user.photo.public_id, class: " materialboxed responsive-img", transforms: %{width: 300, height: 300, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
+            <%= cl_image_tag(@current_user.photo.public_id, class: " materialboxed circle responsive-img valign profile-image", transforms: %{width: 300, height: 300, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
-        </div>
+      </div>
         <%# <a href="#!user"><img class="circle" src=""></a> %>
-        <div style="margin-top:200px;">
-          <span class="white-text name text-grey-shadow"><%= current_user_fullname(@conn) %></span>
+        <div class="valign col" style="position: relative;">
+          <span class="white-text name text-grey-shadow" stye="margin-top: 6px!important;"><%= current_user_fullname(@conn) %></span>
           <span class="white-text email text-grey-shadow"><%= @current_user.credential.email %></span>
         </div>
       </div>
@@ -196,6 +195,7 @@
     <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+    <%# <script src="https://raw.github.com/defunkt/jquery-pjax/master/jquery.pjax.js"></script> %>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 

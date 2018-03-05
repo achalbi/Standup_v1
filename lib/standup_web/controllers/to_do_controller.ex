@@ -5,7 +5,7 @@ defmodule StandupWeb.ToDoController do
   alias Standup.ToDos.ToDo
 
   def index(conn, %{"organization_id" => organization_id} = params) do
-    day = params["day"]
+    day = params["day"] || "Today"
     privacy = params["privacy"]
     status = params["status"]
     to_dos = ToDos.list_to_dos(organization_id, day, privacy, status)

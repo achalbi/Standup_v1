@@ -26,7 +26,7 @@
   </div>
 
   <div class="input-field col s12 m6">
-    <%= label f, :on_date %>
+    <%= label f, :on_date, class: "active" %>
     <%= text_input f, :on_date, class: "datepicker", "data-value": @today, id: "date_select" %>
     <%= error_tag f, :on_date %>
   </div>

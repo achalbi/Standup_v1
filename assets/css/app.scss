@@ -1,9 +1,11 @@
 /* This file is for your main application css. */
   html {
-    font-family: Quicksand, GillSans, Calibri, Trebuchet, sans-serif;
+    // font-family: Quicksand, GillSans, Calibri, Trebuchet, sans-serif;
+     font-family: 'Quicksand', sans-serif;
   }
-
-
+.side-nav .user-view .name, .side-nav .userView .name{
+  margin-top: 8px;
+}
 
 .user-avatar-sm {
     width: 40px;

@@ -6,7 +6,6 @@ defmodule Standup.ToDos do
   import Ecto.Query, warn: false
   alias Standup.Repo
 
-  require IEx
   alias Standup.ToDos.ToDo
 
   @doc """
@@ -23,7 +22,6 @@ defmodule Standup.ToDos do
     query = from t in ToDo, 
     where: t.organization_id == ^organization_id
     
-    IEx.pry
     if day == Standup.ToDos.ToDo.day[:Today] do
         {:ok, datetime} = NaiveDateTime.new(Date.utc_today, ~T[00:00:00])
         query = from t in query, where: t.start_date == ^datetime
