@@ -1,7 +1,7 @@
 <div class="row"></div>
 <div class="row">
   <div class="card-panel hoverable">
-    <h3 class="center purple-text darken-1">Sign in </h3>
+    <h3 class="center teal-text">Sign in </h3>
     <div class="center">
       <%= form_tag @callback_url, method: "post", class: "login", novalidate: true do %>
       <div class="row">
@@ -19,8 +19,8 @@
       </div>
       <div class="row">
           <div class="">
-            <button type="submit" class="btn waves-effect waves-light deep-purple darken-1">Sign in</button>
-            <a href="/users/new" class="btn waves-effect waves-light deep-purple darken-1">Sign up</a>
+            <button type="submit" class="btn waves-effect waves-light cyan darken-1">Sign in</button>
+            <a href="/users/new" class="btn waves-effect waves-light cyan darken-1">Sign up</a>
           </div>
       </div>
       <% end %>
@@ -29,7 +29,7 @@
       <smal >or</small>
     </h5>
     <div class="center">
-      <a class="btn-large btn waves-effect waves-light purple darken-1 z-depth-4" href="/auth/google">
+      <a class="btn-large btn waves-effect waves-light teal z-depth-4" href="/auth/google">
         <i class="material-icons small"></i>Sign in with Google  
       </a>
     </div>

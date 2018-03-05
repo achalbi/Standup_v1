@@ -3,7 +3,8 @@
   --vcal-border-radius: 0;
   --vcal-border-color: #e7e9ed;
   /* --vcal-today-bg-color: #10989e; */
-  --vcal-today-bg-color: #8e24aa;
+  /* --vcal-today-bg-color: #8e24aa; */
+  --vcal-today-bg-color: #009688;
   --vcal-today-color: #fff;
   --vcal-selected-bg-color: #e7e9ed;
   --vcal-selected-color: #333;

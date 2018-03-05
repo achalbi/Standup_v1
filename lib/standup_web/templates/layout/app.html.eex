@@ -19,7 +19,7 @@
   </head>
   <body>
 
-    <nav class="purple darken-1">
+    <nav class="teal">
       <div class="nav-wrapper">
         <%= if logged_in?(@conn) do %>
           <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -35,7 +35,7 @@
             <%#= link "Logout", to: auth_path(@conn, :delete), class: "waves-effect waves-blue btn-flat transparent white-text" %>
 
               <%= form_for @conn, auth_path(@conn, :delete), [method: :delete], fn _ -> %>
-                    <%= submit "logout", class: "waves-effect waves-purple btn-flat transparent white-text " %>
+                    <%= submit "logout", class: "waves-effect waves-teal btn-flat transparent white-text " %>
               <% end %>
             </li>
           <% else %>
@@ -86,24 +86,24 @@
         </div>
       </div>
     </li>
-    <li><a class="waves-effect waves-purple" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
-    <li><a class="waves-effect waves-purple" href="/organizations/<%= hd(@conn.assigns.current_user.organizations).id %>/to_dos"><i class="material-icons">list</i>To-Do</a></li>
-    <li><a class="waves-effect waves-purple" href="/organizations"><i class="material-icons">business</i>Organization</a></li>
+    <li><a class="waves-effect waves-teal" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a class="waves-effect waves-teal" href="/organizations/<%= hd(@conn.assigns.current_user.organizations).id %>/to_dos"><i class="material-icons">list</i>To-Do</a></li>
+    <li><a class="waves-effect waves-teal" href="/organizations"><i class="material-icons">business</i>Organization</a></li>
       
     <%= if !!@conn.assigns.current_user.organizations do %>
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion">
         <li>
-          <a class="collapsible-header waves-effect waves-purple" style="padding: 0 32px;"><i class="material-icons">event_note</i>Work Status</a>
+          <a class="collapsible-header waves-effect waves-teal" style="padding: 0 32px;"><i class="material-icons">event_note</i>Work Status</a>
           <div class="collapsible-body">
             <ul class="collapsible collapsible-accordion">
               <%= for work_status_type <- hd(@conn.assigns.current_user.organizations).work_status_types do %>
                 <li>          
-                  <a class="collapsible-header waves-effect waves-purple" style="padding: 0 48px;"><i class="material-icons">event_note</i><%= work_status_type.name %> Work Status</a>
+                  <a class="collapsible-header waves-effect waves-teal" style="padding: 0 48px;"><i class="material-icons">event_note</i><%= work_status_type.name %> Work Status</a>
                   <div class="collapsible-body">
                     <ul>
-                      <li><a class="waves-effect waves-purple" href="/work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">face</i>Your</a></li>
-                      <li><a class="waves-effect waves-purple" href="/team_work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">people</i>Your Team</a></li>
+                      <li><a class="waves-effect waves-teal" href="/work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">face</i>Your</a></li>
+                      <li><a class="waves-effect waves-teal" href="/team_work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">people</i>Your Team</a></li>
                     </ul>
                 </li>
               <% end %>

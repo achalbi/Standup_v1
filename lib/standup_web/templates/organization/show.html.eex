@@ -1,4 +1,4 @@
-<div class="card-panel deep-purple lighten-5"> 
+<div class="card-panel cyan lighten-5"> 
 <div class="valign-wrapper right">
   <%= link "Edit", to: organization_path(@conn, :edit, @organization), class: "btn ", style: "margin-right: 5px;" %>
   <%= link "Delete", to: organization_path(@conn, :delete, @organization), method: :delete, data: [confirm: "Are you sure?"], class: "btn" %>
@@ -11,10 +11,10 @@
 <div class="row m-0">
 <div class="col s12 m6">
 <div class="card ">
-<div class="card-content deep-purple darken-1 white-text" style="position: relative">
+<div class="card-content cyan darken-1 white-text" style="position: relative">
   <span class="card-title m-b-0">Self signup email address domains</span>
 </div>
-<div class="card-content deep-purple lighten-5">
+<div class="card-content cyan lighten-5">
 <table class="bordered highlight">
   <thead>
     <tr>
@@ -56,10 +56,10 @@
 </div>
 <div class="col s12 m6"> 
 <div class="card ">
-<div class="card-content deep-purple darken-1 white-text" style="position: relative">
+<div class="card-content cyan darken-1 white-text" style="position: relative">
   <span class="card-title m-b-0">Teams</span>
 </div>
-<div class="card-content deep-purple lighten-5">
+<div class="card-content cyan lighten-5">
 <table class="bordered highlight">
   <thead>
     <tr>
@@ -107,10 +107,10 @@
 <div class="row m-0">
 <div class="col s12 m6">
 <div class="card ">
-<div class="card-content deep-purple darken-1 white-text" style="position: relative">
+<div class="card-content cyan darken-1 white-text" style="position: relative">
   <span class="card-title m-b-0">Add Work Status Type</span>
 </div>
-<div class="card-content deep-purple lighten-5">
+<div class="card-content cyan lighten-5">
 <table class="bordered highlight">
   <thead>
     <tr>
@@ -153,10 +153,10 @@
 
 <div class="col s12 m6">
 <div class="card ">
-<div class="card-content deep-purple darken-1 white-text" style="position: relative">
+<div class="card-content cyan darken-1 white-text" style="position: relative">
   <span class="card-title m-b-0">Spreadsheet</span>
 </div>
-<div class="card-content deep-purple lighten-5">
+<div class="card-content cyan lighten-5">
 <table class="bordered highlight">
   <thead>
     <tr>
@@ -210,10 +210,10 @@
 <div class="row m-0">
 <div class="col s12">
 <div class="card ">
-<div class="card-content deep-purple darken-1 white-text" style="position: relative">
+<div class="card-content cyan darken-1 white-text" style="position: relative">
   <span class="card-title m-b-0">Users</span>
 </div>
-<div class="card-content deep-purple lighten-5">
+<div class="card-content cyan lighten-5">
 <table class=" bordered highlight ">
   <thead>
     <tr>
@@ -234,7 +234,7 @@
             <% end %> 
           </div>
           <div class="left" style="margin: 15px 10px; ">
-            <b class="deep-purple-text text-darken-4"> <%= user.firstname %>  <%= user.lastname %></b>
+            <b class="cyan-text text-darken-4"> <%= user.firstname %>  <%= user.lastname %></b>
           <p>
           <span class='m-0 new badge <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "pink", else: "cyan" %>' data-badge-caption="">
             <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "Moderator", else: "Member" %>

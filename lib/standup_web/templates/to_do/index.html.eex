@@ -2,10 +2,10 @@
 <div class="row">
   <div class="col s12 m3 ">
     <div class="card ">
-      <div class="card-content deep-purple darken-1 white-text" style="position: relative">
+      <div class="card-content cyan darken-1 white-text" style="position: relative">
         <span class="card-title m-b-0">FILTER LIST</span>
       </div>
-      <div class="card-content deep-purple lighten-5">
+      <div class="card-content cyan lighten-5">
       <%= form_for @conn, organization_to_do_path(@conn, :index, @organization_id), [method: "get"],fn f -> %>
 
         <div class="input-field">
@@ -32,11 +32,10 @@
   </div>
   <div class="col s12 m9 ">
     <div class="card ">
-      <div class="card-content deep-purple darken-1 white-text" style="position: relative">
-        <a class="btn-floating halfway-fab waves-effect waves-light red" href='<%= organization_to_do_path(@conn, :new, @organization_id) %>'><i class="material-icons">add</i></a>
+      <div class="card-content cyan darken-1 white-text" style="position: relative">
         <span class="card-title m-b-0">TO-DO ITEMS</span>
       </div>
-      <div class="card-content deep-purple lighten-5">
+      <div class="card-content cyan lighten-5">
       <ul class="collapsible popout" data-collapsible="accordion">
       <%= if Enum.count(@to_dos) > 0 do %>
         <%= for to_do <- @to_dos do %>
@@ -90,6 +89,11 @@
     </div>
 
   </div>
+</div>
+<div class="fixed-action-btn">
+  <a id="add_ws" class="btn-floating btn-large red z-depth-5 waves-effect waves-light animated bounce" href="<%= organization_to_do_path(@conn, :new, @organization_id) %>">
+    <i class="large material-icons">add</i>
+  </a>
 </div>
 
 <script>

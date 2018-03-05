@@ -36,9 +36,14 @@
 
 // custom colors
 
-$primary-color: #8e24aa;
-$secondary-color: #673ab7;
-$primary-color-light: #ab47bc;
+// $primary-color: #00bcd4;
+// $secondary-color: #009688;
+// $primary-color-light: #26c6da;
+// $secondary-color-light: #26a69a;
+$secondary-color: #00bcd4;
+$primary-color: #009688;
+$secondary-color-light: #26c6da;
+$primary-color-light: #26a69a;
 
 .btn, .btn:visited,
 .btn:link {
@@ -114,7 +119,7 @@ textarea.materialize-textarea{
 }
 
 html h4{
-  color: $secondary-color;
+  color: $primary-color;
 }
 // custom colors
 

@@ -20,7 +20,7 @@
       <%= error_tag f, :title %>
     </div>
   </div>
-
+<div id="more-section" style="display: none;">
   <div class="row">
     <div class="input-field col s12">
       <%= label f, :description %>
@@ -62,8 +62,10 @@
       <%= error_tag f, :end_date %>
     </div>
   </div>
+</div>
 
-  <div class="input-field">
+  <div class="input-field" id="submit-div">
+    <a href="#!" id="more-link" class="btn right">Advanced</a>
     <%= submit "Submit", class: "btn " %>
     <span><%= link "Back", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn" %></span>
   </div>
@@ -73,6 +75,11 @@
   $(document).ready(function() {
     $('select').material_select();
   
+    $("#more-link").on('click', function(){
+      $("#more-section").fadeIn(2000)
+      $("#submit-div").slideDown(3000);
+      $(this).hide().fadeOut(3000);
+    });
 
     $('.datepicker').pickadate({
       selectMonths: true, // Creates a dropdown to control month
