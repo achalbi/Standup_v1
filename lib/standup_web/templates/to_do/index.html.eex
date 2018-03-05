@@ -1,35 +1,6 @@
 
 <div class="row">
-  <div class="col s12 m3 ">
-    <div class="card ">
-      <div class="card-content cyan darken-1 white-text" style="position: relative">
-        <span class="card-title m-b-0">FILTER LIST</span>
-      </div>
-      <div class="card-content cyan lighten-5">
-      <%= form_for @conn, organization_to_do_path(@conn, :index, @organization_id), [method: "get"],fn f -> %>
 
-        <div class="input-field">
-          <label class="active">Day</label>
-          <%= select(f, :day, Standup.ToDos.ToDo.day, prompt: "All", selected: @day, id: "filter_day") %>
-        </div>
-        <br>
-        <div class="input-field">
-          <label class="active">Privacy</label>
-          <%= select(f, :privacy, Standup.ToDos.ToDo.privacy, prompt: "All", selected: @privacy, id: "filter_privacy") %>
-        </div>
-        <br>
-        <div class="input-field">
-          <label class="active">Status</label>
-          <%= select(f, :status, Standup.ToDos.ToDo.status_type, prompt: "All", selected: @status, id: "filter_status") %>
-        </div>
-      <div class="">
-          <%= submit "Filter", class: "btn center-block" %>
-            <%= link "Submit", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn center-block hide", id: "filter_submit" %>
-      </div>
-      <% end %>
-      </div>
-    </div>
-  </div>
   <div class="col s12 m9 ">
     <div class="card ">
       <div class="card-content cyan darken-1 white-text" style="position: relative">
@@ -88,6 +59,37 @@
       </div>
     </div>
 
+  </div>
+
+    <div class="col s12 m3">
+    <div class="card ">
+      <div class="card-content cyan darken-1 white-text" style="position: relative">
+        <span class="card-title m-b-0">FILTER LIST</span>
+      </div>
+      <div class="card-content cyan lighten-5">
+      <%= form_for @conn, organization_to_do_path(@conn, :index, @organization_id), [method: "get"],fn f -> %>
+
+        <div class="input-field">
+          <label class="active">Day</label>
+          <%= select(f, :day, Standup.ToDos.ToDo.day, prompt: "All", selected: @day, id: "filter_day") %>
+        </div>
+        <br>
+        <div class="input-field">
+          <label class="active">Privacy</label>
+          <%= select(f, :privacy, Standup.ToDos.ToDo.privacy, prompt: "All", selected: @privacy, id: "filter_privacy") %>
+        </div>
+        <br>
+        <div class="input-field">
+          <label class="active">Status</label>
+          <%= select(f, :status, Standup.ToDos.ToDo.status_type, prompt: "All", selected: @status, id: "filter_status") %>
+        </div>
+      <div class="">
+          <%= submit "Filter", class: "btn center-block" %>
+            <%= link "Submit", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn center-block hide", id: "filter_submit" %>
+      </div>
+      <% end %>
+      </div>
+    </div>
   </div>
 </div>
 <div class="fixed-action-btn">
