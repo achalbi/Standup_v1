@@ -1,7 +1,7 @@
 defmodule Pjax.Plugs.Pjax do
   import Plug.Conn
   use Phoenix.Controller
-
+  require IEx
   def init(default), do: default
 
   def call(conn, _default) do

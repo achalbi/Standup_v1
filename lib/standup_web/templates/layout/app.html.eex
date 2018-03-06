@@ -220,13 +220,23 @@
 <% end %>   
 <script>
 $(function () {
+
     $(document).pjax("a", "#pjax-container");
+  //  $.pjax.defaults.pushRedirect = true;
 });
   $(function(){
     $('.dropdown-button').dropdown();
   });
 
   $('#pjax-container')
+//  .on('pjax:success', function() { //do before request success 
+//    var xhr = new XMLHttpRequest();
+//    var redirect = xhr.getResponseHeader('x-pjax-url');
+//      if(redirect && !container.contents){
+//          pjax({url: redirect, container: options.context})
+//          return;
+//      }
+//    })
   .on('pjax:start', function() { //do before request start 
     })
   .on('pjax:end',   function() { //after the request ends 
