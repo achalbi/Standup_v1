@@ -12,7 +12,7 @@ defmodule Standup.Plugs.Authorizer do
       conn
         |> put_status(403)
       #  |> send_resp(403, "You do not have permission for this request")
-        |>put_flash(:error, "You do not have permission for this request")
+        |> put_flash(:error, "You do not have permission for this request")
       #  |> render(StandupWeb.ErrorView, :"403")
         |> redirect(external: url)
       #  |> redirect(to: "/")
