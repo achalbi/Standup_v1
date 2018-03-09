@@ -6,7 +6,7 @@
       <div class="card-content cyan darken-1 white-text" style="position: relative">
         <span class="card-title m-b-0">TO-DO ITEMS</span>
       </div>
-      <div class="card-content cyan lighten-5">
+      <div class="card-content grey lighten-5">
       <ul class="collapsible popout" data-collapsible="accordion">
       <%= if Enum.count(@to_dos) > 0 do %>
         <%= for to_do <- @to_dos do %>
@@ -66,7 +66,7 @@
       <div class="card-content cyan darken-1 white-text" style="position: relative">
         <span class="card-title m-b-0">FILTER LIST</span>
       </div>
-      <div class="card-content cyan lighten-5">
+      <div class="card-content grey lighten-5">
       <%= form_for @conn, organization_to_do_path(@conn, :index, @organization_id), [method: "get"],fn f -> %>
 
         <div class="input-field">

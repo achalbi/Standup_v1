@@ -30,7 +30,7 @@
 <div class="row marketing">
   <div class="col s12">
     <ul class="collapsible popout" data-collapsible="accordion">
-      <li class="m-0 active cyan lighten-5">
+      <li class="m-0 active grey lighten-5">
         <h5 class="collapsible-header active cyan darken-1 white-text"><%= @work_status.on_date |>  Timex.Format.DateTime.Formatter.format!("%d %a, %B %Y", :strftime) %> </h5>
         <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, @work_status), class: "btn " %></span>
           <div class="html-newline hide"><b><%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, @work_status.status_type, "Working From Office") %></b></div>
