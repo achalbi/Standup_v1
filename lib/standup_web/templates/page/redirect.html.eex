@@ -1,0 +1,3 @@
+<script>
+        window.location.replace("<%= @current_url %>");
+</script>

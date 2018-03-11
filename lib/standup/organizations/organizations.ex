@@ -272,6 +272,11 @@ defmodule Standup.Organizations do
     |> Repo.update()
   end
 
+  def is_current_user_moderator?(conn) do
+    organization = hd(conn.assigns.current_user.organizations)
+    is_org_moderator?(conn.assigns.current_user.id, organization.id)
+  end
+
   def is_org_moderator?(user_id, org_id) do
     uo = UserOrganization
     |> Repo.get_by(organization_id: org_id, user_id: user_id)

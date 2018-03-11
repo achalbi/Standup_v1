@@ -44,6 +44,7 @@ defmodule StandupWeb do
       import Standup.CloudexImageHelper
       
       import Standup.Accounts, only: [current_user: 1, logged_in?: 1]
+      import Standup.Organizations, only: [is_current_user_moderator?: 1]
     end
   end
 

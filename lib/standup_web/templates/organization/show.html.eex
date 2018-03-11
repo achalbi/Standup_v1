@@ -21,7 +21,7 @@
       <th>Name</th>
 
       <th class="right">
-      <span><%= link "New Domain", to: organization_domain_path(@conn, :new, @organization), class: "btn right light" %></span>
+      <span class='<%= unless is_current_user_moderator?(@conn), do: "hide" %>'><%= link "New Domain", to: organization_domain_path(@conn, :new, @organization), class: "btn right light" %></span>
 
       </th>
     </tr>
