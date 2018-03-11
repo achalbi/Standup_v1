@@ -3,7 +3,7 @@
 <br>
 
   <div class="fixed-action-btn">
-    <a id="add_ws" class="btn-floating btn-large red z-depth-5 waves-effect waves-light" href="<%= work_status_path(@conn, :new, work_status_type_id: @work_status_type.id ) %>">
+    <a id="add_ws" class="btn-floating btn-large red z-depth-5 waves-effect " href="<%= work_status_path(@conn, :new, work_status_type_id: @work_status_type.id ) %>">
       <i class='large material-icons'>add</i>
     </a>
   </div>

@@ -53,6 +53,21 @@
         <% end %>
         <% else %>
           <p class="center"> No results found </p>
+
+                    <!-- Tap Target Structure -->
+          <div class="tap-target" data-activates="add_ws">
+            <div class="tap-target-content white-text">
+              <h5>Add To-Dos</h5>
+              <p>Add your daily to-dos.
+                  You can make it private and also export it as tasks.</p>
+            </div>
+          </div>
+
+          <script>
+          $(function(){
+            $('.tap-target').tapTarget('open');
+          });
+          </script>
         <% end %>
 
       </ul>
@@ -134,7 +149,8 @@ custom filter append
   });
 
   $(document).ready(function(){
-    $('.collapsible').collapsible();
+    $('.collapsible').collapsible('open', 0);
+    $('#add_ws').addClass('animated bounce');
   });
   
 </script>

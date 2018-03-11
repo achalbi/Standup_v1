@@ -235,11 +235,9 @@
           </div>
           <div class="left" style="margin: 15px 10px; ">
             <b class="cyan-text text-darken-4"> <%= user.firstname %>  <%= user.lastname %></b>
-          <p>
-          <span class='m-0 new badge <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "pink", else: "cyan" %>' data-badge-caption="">
+          <span class='new badge <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "pink", else: "cyan" %>' data-badge-caption="">
             <%= if Enum.any?(@moderators, fn(u) -> u.id == user.id end), do: "Moderator", else: "Member" %>
           </span>
-          </p>
           </div>
         </div>
       </td>

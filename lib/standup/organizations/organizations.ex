@@ -243,9 +243,13 @@ defmodule Standup.Organizations do
   end
 
   def remove_users_from_team(team, user) do
-    UserTeam
-    |> Repo.get_by(team_id: team.id, user_id: user.id)
-    |> Repo.delete() 
+    if get_user_team(team,user) do
+        UserTeam
+        |> Repo.get_by(team_id: team.id, user_id: user.id)
+        |> Repo.delete() 
+    else
+      {:error, "user doesn't exist"}  
+    end
   end
 
   def get_user_team(team,user) do

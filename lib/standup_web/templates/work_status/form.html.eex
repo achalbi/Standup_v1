@@ -63,10 +63,10 @@
       hiddenName: true,
       closeOnSelect: true // Close upon selecting a date,
     });
-
     $("#date_select").change(function () {
         location.href = "/work_statuses/new?on_date=" + $("[name='work_status[on_date]']").val();
     });
+  $('.datepicker').parent().children("label").addClass("active");
 
   });
   

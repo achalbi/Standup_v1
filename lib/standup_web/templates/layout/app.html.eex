@@ -243,7 +243,6 @@ $(function () {
   .on('pjax:end',   function() { //after the request ends 
       $('#pjax-container').fadeIn(1000).slideDown('slow');
         $('.dropdown-button').dropdown();
-        
         Materialize.updateTextFields();
         
         window.setTimeout(function() {
@@ -251,6 +250,8 @@ $(function () {
                 $(this).remove(); 
             });
         }, 4000);
+        $('.datepicker').parent().children("label").addClass("active");
+        $('.collapsible').collapsible();
     });
 </script>
 <script>

@@ -2,7 +2,7 @@ defmodule StandupWeb.TeamController do
   use StandupWeb, :controller
 
   plug Standup.Plugs.TeamAuthorizer
-
+  require IEx
   alias Standup.Organizations
   alias Standup.Organizations.Team
   alias Standup.Accounts

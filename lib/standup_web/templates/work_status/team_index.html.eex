@@ -11,7 +11,7 @@
     </div>
     <div class="input-field col m6 s12">
       <input type="text" name="on_date" class="datepicker" data-value="<%= @date %>" id="date_ws">
-      <label for="date_ws">Date</label>
+      <label for="date_ws" class="active">Date</label>
     </div>
     </div>
 

@@ -19,5 +19,6 @@ defmodule Standup.Organizations.UserTeam do
     user_team
     |> cast(attrs, [:is_moderator, :team_id, :user_id])
     |> validate_required([:is_moderator, :team_id, :user_id])
+    |> unique_constraint(:user_id, name: :user_teams_user_id_team_id_index)
   end
 end

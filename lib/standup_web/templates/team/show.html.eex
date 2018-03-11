@@ -1,4 +1,4 @@
-<div class="card-panel"> 
+<div class="card-panel grey lighten-5"> 
 <h5><strong>Team: </strong><%= @team.name %></h5>
 <h6><%= @team.description %></h6>
   <h5><small>
@@ -20,11 +20,11 @@
           <% end %> 
         </div>
         <h4 class="title"><%= user.firstname <> " " <> user.lastname %> 
-        <span class="new badge orange" style="margin-right: 45px;" data-badge-caption="Moderator"></span>
+        <span class="new badge pink" style="margin-right: 45px;" data-badge-caption="Moderator"></span>
 
           <%= if (@current_user_is_team_moderator) && @current_user.id != user.id do %>
             <div class="secondary-content fixed-action-btn toolbar">
-              <a class="btn-floating ">
+              <a class="btn-floating red ">
                 <i class="material-icons">more_vert</i>
               </a>
               <ul>
@@ -50,7 +50,7 @@
 
           <%= if (@current_user.id == user.id) || (@current_user_is_team_moderator) do %>
             <div class="secondary-content fixed-action-btn toolbar">
-              <a class="btn-floating ">
+              <a class="btn-floating red">
                 <i class="material-icons">more_vert</i>
               </a>
               <ul>
@@ -79,7 +79,7 @@
           </div>
           <h4 class="title"><%= user.firstname <> " " <> user.lastname %></h4>
           <%= if (@current_user.id == user.id) || (@current_user_is_team_moderator) do %>
-            <a href="/teams/<%= @team.id %>/add_users?user_id=<%= user.id %>" class="secondary-content btn-floating"> <i class="material-icons small">add</i></a>
+            <a href="/teams/<%= @team.id %>/add_users?user_id=<%= user.id %>" class="secondary-content btn-floating red"> <i class="material-icons small">add</i></a>
           <% end %>
         </li>
       <% end %>
