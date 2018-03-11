@@ -2,10 +2,12 @@
 
 <ul>
 
+<%= if @key_result_area.accountability do %>
   <li>
     <strong>Accountability:</strong>
     <p class="html-newline"><%= @key_result_area.accountability %></p>
   </li>
+<% end %>
   
 <%= if @key_result_area.ownership do %>
   <li>

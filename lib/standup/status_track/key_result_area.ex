@@ -21,6 +21,6 @@ defmodule Standup.StatusTrack.KeyResultArea do
   def changeset(%KeyResultArea{} = key_result_area, attrs) do
     key_result_area
     |> cast(attrs, [:accountability, :ownership, :productivity, :skill, :effective_communication, :impediments, :work_status_id])
-    |> validate_required([:accountability, :productivity,  :effective_communication])
+    |> validate_required([ :productivity,  :effective_communication])
   end
 end

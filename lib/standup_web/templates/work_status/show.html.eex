@@ -178,10 +178,12 @@
           <%= if @work_status.key_result_area  do %>
           <ul>
 
+            <%= if @work_status.key_result_area.accountability do %>
             <li>
               <h5 class="light teal-text">Accountability:</h5>
               <p class="html-newline"><%= @work_status.key_result_area.accountability %></p>
             </li>
+            <% end %>
       
             <%= if @work_status.key_result_area.ownership do %>
             <li>

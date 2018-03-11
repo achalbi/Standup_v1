@@ -7,18 +7,20 @@
     </div>
   <% end %>
 
+  <%= if Map.has_key?(@changeset.changes, :accountability) do %>
   <div class="row">
     <div class="input-field col s12">
       <%= label f, :accountability, class: "active" %>
       <%= textarea f, :accountability, class: "hide" %>
-      <%= if @changeset.changes.accountability do %>
-        <p class="html-newline"><%= @changeset.changes.accountability %></p>
-      <% else %>
-        <p class="html-newline"><%= @changeset.data.accountability %></p>
-      <% end %>
+        <%= if @changeset.changes.accountability do %>
+          <p class="html-newline"><%= @changeset.changes.accountability %></p>
+        <% else %>
+          <p class="html-newline"><%= @changeset.data.accountability %></p>
+        <% end %>
       <%= error_tag f, :accountability %>
     </div>
   </div>
+  <% end %>
   <%= hidden_input f, :work_status_id %>
 
   <div class="row">
