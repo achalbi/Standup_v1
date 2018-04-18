@@ -9,7 +9,7 @@
 
   <div class="row">
     <div class="input-field col s12 m3">
-      <%= label f, :item_number %>
+      <%= label f, "Jira ID" %>
       <%= text_input f, :item_number %>
       <%= error_tag f, :item_number %>
     </div>
@@ -65,9 +65,9 @@
 </div>
 
   <div class="input-field" id="submit-div">
-    <a href="#!" id="more-link" class="btn right">Advanced</a>
-    <%= submit "Submit", class: "btn " %>
-    <span><%= link "Back", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn" %></span>
+    <%= submit "Submit", class: "btn right" %>
+    <a href="#!" id="more-link" class="btn right m-lr-10 ">Advanced</a>
+    <span class="hide"><%= link "Back", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn" %></span>
   </div>
 <% end %>
 

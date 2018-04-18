@@ -1,3 +1,15 @@
+  <div class="row hide">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#test1">Your</a></li>
+        <li class="tab col s3"><a class="" href="#test2">Your Team</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <%= render "form.html", Map.put(assigns, :action, organization_to_do_path(@conn, :create, @organization_id)) %>
+  </div>
 
 <div class="row">
 
@@ -7,15 +19,15 @@
         <span class="card-title m-b-0">TO-DO ITEMS</span>
       </div>
       <div class="card-content grey lighten-5">
-      <ul class="collapsible popout" data-collapsible="accordion">
+      <div class="collection">
       <%= if Enum.count(@to_dos) > 0 do %>
         <%= for to_do <- @to_dos do %>
-        <li>
-          <div class="collapsible-header">
-            <strong><%= to_do.item_number %> <%= to_do.title %></strong>
-            <span class='new badge cyan right' data-badge-caption="<%= to_do.status %>"></span>
+        <a class="collection-item" href="<%= organization_to_do_path(@conn, :show, to_do.organization, to_do) %>">
+          <div class="collection-title">
+            <%= to_do.item_number %> <%= to_do.title %>
+            <span class='new badge' data-badge-caption="<%= to_do.status %>"></span>
           </div>
-          <div class="collapsible-body grey lighten-5">
+          <div class="hide grey lighten-5">
               <div class="right">
                 <a class='dropdown-button btn ' style="margin-top: 15px; " href='#' data-activates='dropdown_to_do_<%= to_do.id %>'>Action</a>
                   <ul id='dropdown_to_do_<%= to_do.id %>' class='dropdown-content'>
@@ -49,7 +61,7 @@
 
 
           </div>
-        </li>
+        </a>
         <% end %>
         <% else %>
           <p class="center"> No results found </p>
@@ -70,7 +82,7 @@
           </script>
         <% end %>
 
-      </ul>
+      </div>
       </div>
     </div>
 
@@ -149,7 +161,7 @@ custom filter append
   });
 
   $(document).ready(function(){
-    $('.collapsible').collapsible('open', 0);
+  //  $('.collapsible').collapsible('open', 0);
     $('#add_ws').addClass('animated bounce');
   });
   

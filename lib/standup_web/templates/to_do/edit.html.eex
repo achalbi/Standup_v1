@@ -1,4 +1,95 @@
 <h4>Edit To-Do</h4>
 
-<%= render "form.html", Map.put(assigns, :action, organization_to_do_path(@conn, :update, @to_do.organization, @to_do)) %>
+<%#= render "form.html", Map.put(assigns, :action, organization_to_do_path(@conn, :update, @to_do.organization, @to_do)) %>
+<%= form_for @changeset, organization_to_do_path(@conn, :update, @to_do.organization, @to_do), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="card red lighten-5" role="alert">
+      <div class="card-content red-text">
+        <p> Please check the errors below.</p>
+      </div>
+    </div>
+  <% end %>
 
+  <div class="row">
+    <div class="input-field col s12 m3">
+      <%= label f, "Jira ID" %>
+      <%= text_input f, :item_number %>
+      <%= error_tag f, :item_number %>
+    </div>
+
+    <div class="input-field col s12 m9">
+      <%= label f, :title %>
+      <%= text_input f, :title %>
+      <%= error_tag f, :title %>
+    </div>
+  </div>
+<div id="more-section">
+  <div class="row">
+    <div class="input-field col s12">
+      <%= label f, :description %>
+      <%= textarea f, :description, class: "materialize-textarea" %>
+      <%= error_tag f, :description %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12 m4">
+      <%= label f, :status, class: "active" %>
+      <%= select f, :status, Standup.ToDos.ToDo.status_type %>
+      <%= error_tag f, :status %>
+    </div>
+    <div class="input-field col s12 m4">
+      <%= label f, :ownership, class: "active" %>
+      <%= select f, :ownership, Standup.ToDos.ToDo.ownership_type %>
+      <%= error_tag f, :ownership %>
+    </div>
+
+    <div class="input-field col s12 m4">
+      <%= label f, "Privacy", class: "active" %>
+      <%= select f, :list_type, Standup.ToDos.ToDo.privacy %>
+      <%= error_tag f, :list_type %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12 m4">
+      <%= label f, :start_date, class: "active " %>
+      <%= text_input f, :start_date, class: "datepicker",  "data-value": NaiveDateTime.to_date(f.data.start_date) %>
+      <%= error_tag f, :start_date %>
+    </div>
+      <%= hidden_input f, :organization_id, value: @organization_id %>
+
+    <div class="input-field col s12 m4">
+      <%= label f, :end_date, class: "active " %>
+      <%= text_input f, :end_date, class: "datepicker",  "data-value": NaiveDateTime.to_date(f.data.end_date) %>
+      <%= error_tag f, :end_date %>
+    </div>
+  </div>
+</div>
+
+  <div class="input-field" id="submit-div">
+    <%= submit "Submit", class: "btn" %>
+    <span><%= link "Back", to: organization_to_do_path(@conn, :index, @organization_id), class: "btn" %></span>
+    <span><%= link "Delete", to: organization_to_do_path(@conn, :delete, @organization_id, @changeset.data), method: :delete, data: [confirm: "Are you sure?"], class: "btn red right" %></span>
+ </div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: 'Today',
+      clear: 'Clear',
+      closeOnClear: false,
+      close: 'Ok',
+      formatSubmit: 'yyyy-mm-dd',
+      hiddenName: true,
+      closeOnSelect: true // Close upon selecting a date,
+    });
+
+  });
+  
+</script>

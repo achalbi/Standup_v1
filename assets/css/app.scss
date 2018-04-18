@@ -1,44 +1,49 @@
 /* This file is for your main application css. */
-  html {
-    // font-family: Quicksand, GillSans, Calibri, Trebuchet, sans-serif;
-     font-family: 'Quicksand', sans-serif;
-  }
-.side-nav .user-view .name, .side-nav .userView .name{
-  margin-top: 8px;
+html {
+	// font-family: Quicksand, GillSans, Calibri, Trebuchet, sans-serif;
+	font-family: 'Quicksand', sans-serif;
+}
+.side-nav .user-view .name,
+.side-nav .userView .name {
+	margin-top: 8px;
 }
 
 .user-avatar-sm {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #769fd1;
+	width: 40px;
+	height: 40px;
+	border: 2px solid #769fd1;
 }
 
 /* Phoenix flash messages */
-.alert:empty { display: none; }
+.alert:empty {
+	display: none;
+}
 
-.clear, .clear-10, .clear-15 {
-  clear: both;
-  height: 0; overflow: hidden; /* Précaution pour IE 7 */
+.clear,
+.clear-10,
+.clear-15 {
+	clear: both;
+	height: 0;
+	overflow: hidden; /* Précaution pour IE 7 */
 }
 .clear-10 {
-  margin-bottom: 10px
+	margin-bottom: 10px;
 }
 .clear-15 {
-  margin-bottom: 15px
+	margin-bottom: 15px;
 }
 .html-newline {
-    white-space: pre-line;    
+	white-space: pre-line;
 }
 
 .help-block {
-  color: red
+	color: red;
 }
 
 .btn {
-  margin-bottom:5px; 
-  border-radius: 4px;
+	margin-bottom: 5px;
+	border-radius: 4px;
 }
-
 
 // custom colors
 
@@ -51,95 +56,106 @@ $primary-color: #009688;
 $secondary-color-light: #26c6da;
 $primary-color-light: #26a69a;
 
-.btn, .btn:visited,
+.btn,
+.btn:visited,
 .btn:link {
-  background-color: $primary-color;
+	background-color: $primary-color;
 }
 
 .btn:hover,
 .btn:active {
-  background-color: $primary-color-light;
+	background-color: $primary-color-light;
 }
 
-form> :focus {
-  border-color: $primary-color;
-  box-shadow: 0 1px 0 0 $primary-color;
+form > :focus {
+	border-color: $primary-color;
+	box-shadow: 0 1px 0 0 $primary-color;
 }
 
 input:not([type]),
-input[type=text]:not(.browser-default),
-input[type=password]:not(.browser-default),
-input[type=email]:not(.browser-default),
-input[type=url]:not(.browser-default),
-input[type=time]:not(.browser-default),
-input[type=date]:not(.browser-default),
-input[type=datetime]:not(.browser-default),
-input[type=datetime-local]:not(.browser-default),
-input[type=tel]:not(.browser-default),
-input[type=number]:not(.browser-default),
-input[type=search]:not(.browser-default),
-textarea.materialize-textarea{
-    &:hover, &:focus:not([read-only]) {
-      border-color: $primary-color;
-      box-shadow: 0 1px 0 0 $primary-color;
-    }
+input[type='text']:not(.browser-default),
+input[type='password']:not(.browser-default),
+input[type='email']:not(.browser-default),
+input[type='url']:not(.browser-default),
+input[type='time']:not(.browser-default),
+input[type='date']:not(.browser-default),
+input[type='datetime']:not(.browser-default),
+input[type='datetime-local']:not(.browser-default),
+input[type='tel']:not(.browser-default),
+input[type='number']:not(.browser-default),
+input[type='search']:not(.browser-default),
+textarea.materialize-textarea {
+	&:hover,
+	&:focus:not([read-only]) {
+		border-color: $primary-color;
+		box-shadow: 0 1px 0 0 $primary-color;
+	}
 }
 
-.dropdown-content li>a,
-.dropdown-content li>span{
-        color: $primary-color;
+.dropdown-content li > a,
+.dropdown-content li > span {
+	color: $primary-color;
 }
 
-[type="radio"]:checked+label:after,
-[type="radio"].with-gap:checked+label:after{
-    background-color: $primary-color;
+[type='radio']:checked + label:after,
+[type='radio'].with-gap:checked + label:after {
+	background-color: $primary-color;
 }
-[type="radio"]:checked+label:after,
-[type="radio"].with-gap:checked+label:before,
-[type="radio"].with-gap:checked+label:after{
-      border: 2px solid $primary-color;
+[type='radio']:checked + label:after,
+[type='radio'].with-gap:checked + label:before,
+[type='radio'].with-gap:checked + label:after {
+	border: 2px solid $primary-color;
 }
 
-.picker__date-display,{
-    background-color: $primary-color;
+.picker__date-display {
+	background-color: $primary-color;
 }
 .picker__close,
-.picker__today,{
-  color: $primary-color;
+.picker__today {
+	color: $primary-color;
 }
-.picker__day--today{
-  color: $primary-color !important;
+.picker__day--today {
+	color: $primary-color !important;
 }
 .picker__nav--prev:hover,
 .picker__nav--next:hover {
-  color: white !important;
-  background-color: $primary-color-light !important;
+	color: white !important;
+	background-color: $primary-color-light !important;
 }
 //.picker__day--infocus,
 .picker__day--selected,
 .picker__day--selected:hover,
-//.picker--focused,
+/*.picker--focused,*/
 .picker__day--highlighted {
-    color: white!important;
-    background-color: $primary-color!important;
+	color: white !important;
+	background-color: $primary-color !important;
 }
 
-html h4{
-  color: $primary-color;
+.tabs .tab a:hover, .tabs .tab a.active, .tabs .tab a {
+    background-color: transparent;
+    color: $primary-color;
+}
+
+.tabs .indicator{
+  background-color: $primary-color;
+}
+
+html h4 {
+	color: $primary-color;
 }
 // custom colors
 
 .center-block {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-.card-content{
-  padding: 14px 20px !important;
+.card-content {
+	padding: 14px 20px !important;
 }
-.card-title{
-  font-size: 22px!important;
+.card-title {
+	font-size: 22px !important;
 }
 
 // .side-nav li.active {
@@ -150,41 +166,44 @@ html h4{
 // }
 
 .m-0 {
-  margin:0px!important; 
+	margin: 0px !important;
 }
 
 .m-t-0 {
-  margin-top:0px!important; 
+	margin-top: 0px !important;
 }
 
 .m-b-0 {
-  margin-bottom:0px!important; 
+	margin-bottom: 0px !important;
 }
 
 .m-10 {
-  margin: 10px;
+	margin: 10px;
 }
 
 .m-lr-10 {
-  margin-left: 10px;
-  margin-right: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
-.p-10{
-  padding: 10px;
+.p-10 {
+	padding: 10px;
 }
 
 .m-b-10 {
-  margin-bottom:10px!important; 
+	margin-bottom: 10px !important;
 }
 
 .text-cyan-shadow {
-  text-shadow: rgb(49, 49, 48) 3px 0 10px;
+	text-shadow: rgb(49, 49, 48) 3px 0 10px;
 }
 
-.fab-relative{
-  transform: scaleY(0.4) scaleX(0.4) translateY(0px) translateX(40px); 
-  opacity: 0;
+.fab-relative {
+	transform: scaleY(0.4) scaleX(0.4) translateY(0px) translateX(40px);
+	opacity: 0;
 }
 
-/* vanilla calendar css */
+.collection-title {
+  font-size: 1.3rem;
+  line-height: 2.2rem;
+}

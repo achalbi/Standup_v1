@@ -11,8 +11,14 @@ config :standup, StandupWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../assets", __DIR__)]]
+  watchers: [
+    node: [
+      "node_modules/brunch/bin/brunch",
+      "watch",
+      "--stdin",
+      cd: Path.expand("../assets", __DIR__)
+    ]
+  ]
 
 # ## SSL Support
 #
@@ -34,7 +40,7 @@ config :standup, StandupWeb.Endpoint,
 config :standup, StandupWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg|sass|scss)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/standup_web/views/.*(ex)$},
       ~r{lib/standup_web/templates/.*(eex)$}
