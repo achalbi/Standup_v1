@@ -7,6 +7,8 @@ defmodule Standup.ToDos do
   alias Standup.Repo
 
   alias Standup.ToDos.ToDo
+  alias Standup.Organizations
+  alias Standup.Accounts.User
 
   @doc """
   Returns the list of to_dos.
@@ -17,24 +19,84 @@ defmodule Standup.ToDos do
       [%ToDo{}, ...]
 
   """
-  def list_to_dos(organization_id, day, privacy, status) do
-    
-    query = from t in ToDo, 
-    where: t.organization_id == ^organization_id
-    
-    if day == Standup.ToDos.ToDo.day[:Today] do
-        {:ok, datetime} = NaiveDateTime.new(Date.utc_today, ~T[00:00:00])
-        query = from t in query, where: t.start_date == ^datetime
+  def list_to_dos(organization_id, day, privacy, status, user_id) do
+    query =
+      from(
+        t in ToDo,
+        where: t.organization_id == ^organization_id,
+        where: t.user_id == ^user_id
+      )
+
+    if day == Standup.ToDos.ToDo.day()[:Today] do
+      {:ok, datetime} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
+      query = from(t in query, where: t.start_date == ^datetime)
     end
+
     if privacy && privacy != "" do
-        query = from t in query, where: t.list_type == ^privacy
+      query = from(t in query, where: t.list_type == ^privacy)
     end
+
     if status && status != "" do
-        query = from t in query, where: t.status == ^status
+      query = from(t in query, where: t.status == ^status)
     end
-    query = from t in query, order_by: [desc: t.start_date], preload: [:organization]
-    
+
+    query = from(t in query, order_by: [desc: t.start_date], preload: [:organization])
+
     Repo.all(query)
+  end
+
+  @doc """
+  Returns the list of to_dos by date.
+
+  ## Examples
+
+      iex> list_to_dos_by_date()
+      [%ToDo{}, ...]
+
+  """
+  def list_to_dos_by_date(organization_id, date, privacy, status, user_id) do
+    query =
+      from(
+        t in ToDo,
+        where: t.organization_id == ^organization_id,
+        where: t.user_id == ^user_id
+      )
+
+    query = from(t in query, where: t.start_date <= ^date, where: t.end_date >= ^date)
+
+    if privacy && privacy != "" do
+      query = from(t in query, where: t.list_type == ^privacy)
+    end
+
+    if status && status != "" do
+      query = from(t in query, where: t.status == ^status)
+    end
+
+    query = from(t in query, order_by: [desc: t.end_date], preload: [:organization])
+
+    Repo.all(query)
+  end
+
+  def list_to_dos_by_team_and_date(team, date) do
+    users = Organizations.get_team_users(team.id)
+    team_users = Enum.map(users, fn user -> user.id end)
+    privacy = Standup.ToDos.ToDo.privacy()[:Public]
+
+    query =
+      from(
+        t in ToDo,
+        join: u in User,
+        where: t.start_date <= ^date and t.end_date >= ^date,
+        where: t.user_id in ^team_users,
+        where: t.user_id == u.id,
+        where: t.list_type == ^privacy,
+        order_by: [asc: u.firstname],
+        order_by: [desc: t.start_date],
+        select: t
+      )
+
+    to_dos = Repo.all(query)
+    to_dos |> Repo.preload(user: :photo)
   end
 
   @doc """

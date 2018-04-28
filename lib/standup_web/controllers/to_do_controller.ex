@@ -1,14 +1,29 @@
 defmodule StandupWeb.ToDoController do
   use StandupWeb, :controller
+  require IEx
 
   alias Standup.ToDos
   alias Standup.ToDos.ToDo
+  alias Standup.Organizations
 
   def index(conn, %{"organization_id" => organization_id} = params) do
+    user_id = params["user_id"] || conn.assigns.current_user.id
     day = params["day"] || "Today"
     privacy = params["privacy"]
     status = params["status"]
-    to_dos = ToDos.list_to_dos(organization_id, day, privacy, status)
+    to_dos = ToDos.list_to_dos(organization_id, day, privacy, status, user_id)
+    {:ok, datetime} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
+
+    {:ok, yesterday} =
+      NaiveDateTime.new(NaiveDateTime.to_date(NaiveDateTime.add(datetime, -1)), ~T[00:00:00])
+
+    yesterday_to_dos =
+      ToDos.list_to_dos_by_date(organization_id, yesterday, privacy, status, user_id)
+
+    unless day == "Today" do
+      yesterday_to_dos = []
+    end
+
     {:ok, datetime} = NaiveDateTime.new(Date.utc_today(), ~T[00:00:00])
     changeset = ToDos.change_to_do(%ToDo{start_date: datetime, end_date: datetime})
 
@@ -16,6 +31,7 @@ defmodule StandupWeb.ToDoController do
       conn,
       "index.html",
       to_dos: to_dos,
+      yesterday_to_dos: yesterday_to_dos,
       organization_id: organization_id,
       day: day,
       privacy: privacy,
@@ -40,7 +56,7 @@ defmodule StandupWeb.ToDoController do
     to_do_params = Map.put(to_do_params, "organization_id", organization_id)
 
     case ToDos.create_to_do(to_do_params) do
-      {:ok, to_do} ->
+      {:ok, _to_do} ->
         conn
         |> put_flash(:info, "To do created successfully.")
         |> redirect(to: organization_to_do_path(conn, :index, organization_id))
@@ -100,5 +116,30 @@ defmodule StandupWeb.ToDoController do
     conn
     |> put_flash(:info, "To do deleted successfully.")
     |> redirect(to: organization_to_do_path(conn, :index, organization_id))
+  end
+
+  def team_to_dos(conn, params) do
+    org = hd(conn.assigns.current_user.organizations)
+    teams = Organizations.get_teams_by_user_and_org(conn.assigns.current_user.id, org.id)
+
+    if Enum.count(teams) > 0 do
+      case params do
+        %{"team_id" => team_id, "on_date" => on_date} ->
+          date = Timex.parse!(on_date, "%Y-%m-%d", :strftime)
+          team = Organizations.get_team!(team_id)
+
+        _ ->
+          {:ok, time} = Time.new(0, 0, 0, 0)
+          {:ok, date} = NaiveDateTime.new(Date.utc_today(), time)
+          team = hd(teams)
+      end
+
+      to_dos = ToDos.list_to_dos_by_team_and_date(team, date)
+      render(conn, "team_index.html", to_dos: to_dos, teams: teams, date: date, team: team)
+    else
+      conn
+      |> put_flash(:error, "Please join a Team")
+      |> render("team_index.html", teams: teams)
+    end
   end
 end

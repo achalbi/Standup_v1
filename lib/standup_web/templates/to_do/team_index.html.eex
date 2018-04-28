@@ -1,5 +1,5 @@
 <%= if Enum.count(@teams) > 0 do %>
-<h4>Your Team <%= @work_status_type.name %> Work Status</h4>
+<h4>Your Team To Dos</h4>
     <div class="row">
     <div class="input-field col s12 m6">
       <select id="team_ws">
@@ -15,32 +15,37 @@
     </div>
     </div>
 
-<%= if Enum.count(@work_statuses) > 0 do %>
+<%= if Enum.count(@to_dos) > 0 do %>
   <ul class="collapsible popout" data-collapsible="accordion">
-  <%= for work_status <- @work_statuses do %>
+  <% to_dos_by_users = Enum.chunk_by(@to_dos, fn to_do -> to_do.user_id end) %>
+  
+  <%= for to_dos <- to_dos_by_users do %>
+  <% to_do_agg = Enum.at(to_dos, 0) %>
   <li class="m-0 grey lighten-5">
-        <h5 class="collapsible-header cyan white-text">
+        <h5 class="collapsible-header cyan white-text p-10">
           <div class="avatar">
-          <%= unless is_nil(work_status.user.photo) do %>
-            <%= cl_image_tag(work_status.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
+          <%= unless is_nil(to_do_agg.user.photo) do %>
+            <%= cl_image_tag(to_do_agg.user.photo.public_id, class: "circle responsive-img", transforms: %{width: 40, height: 40, sign_url: true, quality: 100, crop: :fill, gravity: :face}) %>
           <% end %> 
           </div>
           <div class="m-lr-10" style="margin-top: 3px;">
-            <%= work_status.user.firstname <> " " <> work_status.user.lastname %>
+            <%= to_do_agg.user.firstname <> " " <> to_do_agg.user.lastname %>
           </div>
         </h5>
-        <div class="collapsible-body"><span class="right"><%= link "Details", to: work_status_path(@conn, :show, work_status), class: "btn" %></span>
-          <div class="html-newline hide"><b><%= Map.get(Standup.StatusTrack.WorkStatus.working_at_map, work_status.status_type, "Working From Office") %></b></div>
-          <div class="html-newline hide"><%= work_status.notes %></div>
-          <div class="html-newline"><%= work_status.task_summary %></div>
+
+  <%= for to_do <- to_dos do %>
+        <div class="collapsible-body p-20 m-lr-10">
+          <div class="html-newline"><h6><%= to_do.item_number %> <%= to_do.title %></h6></div>
         </div>
+  <% end %>
+
   </li>
   <% end %>
   </ul>
 <% else %>
   <div class="card green lighten-5" role="alert">
     <div class="card-content green-text">
-      <h6 class="center-align"> No Work Status present! </h6>
+      <h6 class="center-align"> No To Dos present! </h6>
     </div>
   </div>
 
@@ -65,14 +70,10 @@
 
     $("#date_ws, #team_ws").change(function () {
         if($("#date_ws").val() != ""){
-          location.href = "/team_work_statuses?work_status_type_id=<%= @work_status_type.id %>&on_date=" + $("[name='on_date']").val() + "&team_id=" + $("#team_ws").val();
+          location.href = "/team_to_dos?on_date=" + $("[name='on_date']").val() + "&team_id=" + $("#team_ws").val();
         }
     });
   });
 </script>
-<script>
-  $(document).ready(function(){
-    $('.collapsible').collapsible('open', 0);
-  });
-</script>
+
 <% end %>

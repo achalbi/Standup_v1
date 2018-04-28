@@ -87,7 +87,19 @@
       </div>
     </li>
     <li><a class="waves-effect waves-teal" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
-    <li><a class="waves-effect waves-teal" href="/organizations/<%= hd(@conn.assigns.current_user.organizations).id %>/to_dos"><i class="material-icons">list</i>To-Do</a></li>
+    <li class="">
+      <ul class="collapsible collapsible-accordion">
+        <li>
+        <a class="collapsible-header waves-effect waves-teal" style="padding: 0 30px;"><i class="material-icons">list</i>To-Do</a>
+          <div class="collapsible-body">
+            <ul class="collapsible collapsible-accordion">
+              <li><a class="waves-effect waves-teal" href="/organizations/<%= hd(@conn.assigns.current_user.organizations).id %>/to_dos" style="padding: 0 64px;"><i class="material-icons">face</i>Your</a></li>
+              <li><a class="waves-effect waves-teal" href="/team_to_dos" style="padding: 0 64px;"><i class="material-icons">people</i>Your Team</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
     <li><a class="waves-effect waves-teal" href="/organizations"><i class="material-icons">business</i>Organization</a></li>
       
     <%= if !!@conn.assigns.current_user.organizations do %>
@@ -105,6 +117,7 @@
                       <li><a class="waves-effect waves-teal" href="/work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">face</i>Your</a></li>
                       <li><a class="waves-effect waves-teal" href="/team_work_statuses?work_status_type_id=<%= work_status_type.id %>" style="padding: 0 64px;"><i class="material-icons">people</i>Your Team</a></li>
                     </ul>
+                  </div>
                 </li>
               <% end %>
             </ul>

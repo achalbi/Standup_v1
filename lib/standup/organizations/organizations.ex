@@ -337,6 +337,17 @@ defmodule Standup.Organizations do
     
     Repo.all(query)
   end
+
+  def get_team_users(team_id) do
+    query = from ut in UserTeam,
+    join: u in User,
+    where: ut.user_id == u.id,
+    where: ut.team_id == ^team_id,
+    select: u
+    
+    users = Repo.all(query)
+    users |> Repo.preload(:photo)
+  end
   
   def get_org_users_for_team(team_id)  do
     team = Repo.get!(Team, team_id) |> Repo.preload([:organization, :users])

@@ -131,13 +131,15 @@ textarea.materialize-textarea {
 	background-color: $primary-color !important;
 }
 
-.tabs .tab a:hover, .tabs .tab a.active, .tabs .tab a {
-    background-color: transparent;
-    color: $primary-color;
+.tabs .tab a:hover,
+.tabs .tab a.active,
+.tabs .tab a {
+	background-color: transparent;
+	color: $primary-color;
 }
 
-.tabs .indicator{
-  background-color: $primary-color;
+.tabs .indicator {
+	background-color: $primary-color;
 }
 
 html h4 {
@@ -186,7 +188,15 @@ html h4 {
 	margin-right: 10px;
 }
 
+.p-0 {
+	padding: 0px;
+}
+
 .p-10 {
+	padding: 10px;
+}
+
+.p-20 {
 	padding: 10px;
 }
 
@@ -204,6 +214,6 @@ html h4 {
 }
 
 .collection-title {
-  font-size: 1.3rem;
-  line-height: 2.2rem;
+	font-size: 1.3rem;
+	line-height: 2.2rem;
 }

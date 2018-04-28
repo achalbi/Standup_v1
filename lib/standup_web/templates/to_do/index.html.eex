@@ -19,8 +19,8 @@
         <span class="card-title m-b-0">TO-DO ITEMS</span>
       </div>
       <div class="card-content grey lighten-5">
-      <div class="collection">
       <%= if Enum.count(@to_dos) > 0 do %>
+      <div class="collection">
         <%= for to_do <- @to_dos do %>
         <a class="collection-item" href="<%= organization_to_do_path(@conn, :show, to_do.organization, to_do) %>">
           <div class="collection-title">
@@ -63,7 +63,56 @@
           </div>
         </a>
         <% end %>
-        <% else %>
+      </div>
+        <% end %>
+      <%= if Enum.count(@yesterday_to_dos) > 0 do %>
+      <h5 class="m-10 p-10"> Yesterday<h5>
+      <div class="collection">
+        <%= for to_do <- @yesterday_to_dos do %>
+        <a class="collection-item" href="<%= organization_to_do_path(@conn, :show, to_do.organization, to_do) %>">
+          <div class="collection-title">
+            <%= to_do.item_number %> <%= to_do.title %>
+            <span class='new badge' data-badge-caption="<%= to_do.status %>"></span>
+          </div>
+          <div class="hide grey lighten-5">
+              <div class="right">
+                <a class='dropdown-button btn ' style="margin-top: 15px; " href='#' data-activates='dropdown_to_do_<%= to_do.id %>'>Action</a>
+                  <ul id='dropdown_to_do_<%= to_do.id %>' class='dropdown-content'>
+                    <li><%= link "Show", to: organization_to_do_path(@conn, :show, to_do.organization, to_do), class: "" %></li>
+                    <li><%= link "Export to Task", to: export_to_do_to_tasks_path(@conn, :export_to_do_to_tasks, to_do_id: to_do.id), class: "" %></li>
+                    <li><%= link "Edit", to: organization_to_do_path(@conn, :edit, to_do.organization, to_do), class: "" %></li>
+                    <li><%= link "Delete", to: organization_to_do_path(@conn, :delete, to_do.organization, to_do), method: :delete, data: [confirm: "Are you sure?"], class: "" %></li>
+                  </ul>
+              </div>
+
+            <span class="html-newline"><%= to_do.description %></span>
+              <p>
+                <strong>Start date:</strong>
+                <%= NaiveDateTime.to_date(to_do.start_date) %>
+              </p>
+
+              <p>
+                <strong>End date:</strong>
+                <%= NaiveDateTime.to_date(to_do.end_date) %>
+              </p>
+
+              <p>
+                <strong>Ownership:</strong>
+                <%= to_do.ownership %>
+              </p>
+
+              <p>
+                <strong>Privacy:</strong>
+                <%= to_do.list_type %>
+              </p>
+
+
+          </div>
+        </a>
+        <% end %>
+      </div>
+        <% end %>
+        <%= if (Enum.count(@to_dos) < 1 && Enum.count(@yesterday_to_dos) < 1) do %>
           <p class="center"> No results found </p>
 
                     <!-- Tap Target Structure -->
@@ -82,7 +131,6 @@
           </script>
         <% end %>
 
-      </div>
       </div>
     </div>
 
