@@ -34,9 +34,9 @@
         </h5>
 
   <%= for to_do <- to_dos do %>
-        <div class="collapsible-body p-20 m-lr-10">
-          <div class="html-newline"><h6><%= to_do.item_number %> <%= to_do.title %></h6></div>
-        </div>
+    <div class="collapsible-body p-20 m-lr-10">
+      <div class="html-newline"><h6><%= to_do.item_number %> <%= to_do.title %></h6></div>
+    </div>
   <% end %>
 
   </li>

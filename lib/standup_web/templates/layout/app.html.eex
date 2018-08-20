@@ -251,10 +251,10 @@ $(function () {
 //      }
 //    })
   .on('pjax:start', function() { //do before request start 
-      $('#pjax-container').fadeOut(100).slideUp('slow');
+     // $('#pjax-container').fadeOut(1000).slideUp('slow');
     })
   .on('pjax:end',   function() { //after the request ends 
-      $('#pjax-container').fadeIn(1000).slideDown('slow');
+    //  $('#pjax-container').fadeIn(1000).slideDown('slow');
         $('.dropdown-button').dropdown();
         Materialize.updateTextFields();
         
