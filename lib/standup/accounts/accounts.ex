@@ -364,8 +364,11 @@ defmodule Standup.Accounts do
 
   defp authorize(nil,_auth), do: {:error, "Invalid username or password"}
   defp authorize(user, auth) do
-    checkpw(auth.credentials.other.password, user.credential.password_hash)
-    |> resolve_authorization(user)
+    case user.credential.password_hash do
+      nil -> {:error, "Invalid username or password"}
+      _ ->  checkpw(auth.credentials.other.password, user.credential.password_hash)
+            |> resolve_authorization(user)
+      end
   end
 
   defp resolve_authorization(false, _user), do: {:error, "Invalid username or password"}
